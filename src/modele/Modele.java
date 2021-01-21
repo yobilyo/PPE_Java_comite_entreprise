@@ -15,10 +15,10 @@ public class Modele
 	// pour PC : 
 	private static Bdd uneBdd = new Bdd ("localhost","ce","root","");
 	
-	public static Utilisateur verifConnexion (String email, String mdp) 
+	public static Utilisateur verifConnexion (String email, String password) 
 	{
 		Utilisateur unUser = null; 
-		String requete = "select * from user where email = '" + email +"'  and mdp ='" + mdp + "' ; ";
+		String requete = "select * from utilisateur where email = '" + email +"'  and password ='" + password + "' ; ";
 		try {
 			uneBdd.seConnecter();
 			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
@@ -26,7 +26,7 @@ public class Modele
 			
 			if (unRes.next()) {
 				unUser = new Utilisateur (
-						unRes.getInt("iduser"), unRes.getString("username"),
+						unRes.getInt("idutilisateur"), unRes.getString("username"),
 						unRes.getString("email"), unRes.getString("password"),  unRes.getString("droits")
 						);
 			}
