@@ -29,23 +29,27 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	
 	private JPanel panelConnexion = new JPanel(); 
 	private JPanel panelMenu = new JPanel (); 
-	
+	private JPanel panelQuitter = new JPanel (); 
+
 	private JButton btActivites = new JButton("Gestion des activités"); 
 	private JButton btCommentaires = new JButton("Gestion des commentaires"); 
 	private JButton btDons = new JButton("Gestion des dons"); 
-	private JButton btQuitter = new JButton("Quitter l'application"); 
+	private JButton btSponsor = new JButton("Gestion des sponsors"); 
+	private JButton btContact = new JButton("Nous contacter"); 
+
+	private JButton btSeDeconnecter = new JButton("Se déconnecter"); 
 	
 	
 	public VueConnexion() {
 		this.setBounds(200, 200, 700, 300);
-		this.setTitle("Connexion à l'application Air France");
+		this.setTitle("Connexion au CE de 3D Soft");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
 		
 		this.getContentPane().setBackground(new Color (206,214, 224 ));
 		
-		this.panelConnexion.setLayout(new GridLayout(3, 2));
+		this.panelConnexion.setLayout(new GridLayout(3, 2, 3, 3));
 		this.panelConnexion.setBounds(340, 60, 300, 140);
 		this.panelConnexion.setBackground(new Color (206,214, 224 ));
 		this.panelConnexion.add(new JLabel("Email : ")); 
@@ -71,14 +75,14 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.add(this.panelConnexion);
 		
 		//construction du panel Menu 
-		this.panelMenu.setLayout(new GridLayout(2, 2));
+		this.panelMenu.setLayout(new GridLayout(2, 2, 2, 2));
 		this.panelMenu.setBounds(340, 60, 300, 140);
 		this.panelMenu.setBackground(new Color (51, 215, 255  ));
 		
 		this.panelMenu.add(this.btActivites); 
 		this.panelMenu.add(this.btCommentaires); 
 		this.panelMenu.add(this.btDons); 
-		this.panelMenu.add(this.btQuitter); 
+		this.panelMenu.add(this.btSponsor);
 		
 		this.panelMenu.setVisible(false);
 		this.add(this.panelMenu);
@@ -87,7 +91,17 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.btCommentaires.addActionListener(this);
 		this.btActivites.addActionListener(this);
 		this.btDons.addActionListener(this);
-		this.btQuitter.addActionListener(this);
+		this.btSeDeconnecter.addActionListener(this);
+		
+		
+		//construction du pannel pour le bouton quitter
+		this.panelQuitter.setBounds(340, 200, 300, 60);
+		this.panelQuitter.setBackground(new Color(51, 215, 255  ));
+		this.panelQuitter.add(btSeDeconnecter);
+		this.panelQuitter.setVisible(false);
+		this.add(panelQuitter); 
+		
+		
 		
 		
 		this.setVisible(true);
@@ -101,18 +115,19 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		}else if (e.getSource() == this.btSeConnecter) {
 			this.traitement();
 		}
-		else if (e.getSource() == this.btQuitter) {
-			int retour = JOptionPane.showConfirmDialog(this, "Voulez-Vous Quitter l'Application !", "Quitter L'application", JOptionPane.YES_NO_OPTION);
+		else if (e.getSource() == this.btSeDeconnecter) {
+			int retour = JOptionPane.showConfirmDialog(this, "Voulez-vous revenir au menu principal ?", "Se déconnecter", JOptionPane.YES_NO_OPTION);
 			if (retour == 0) {
 				this.panelConnexion.setVisible(true);
 				this.panelMenu.setVisible(false);
+				this.panelQuitter.setVisible(false);
 			}
 		}else if (e.getSource() == this.btActivites) {
 			
 			//on rend invisible la vue connexion 
 			this.setVisible(false);
-			//on instancie la vue pilotes 
-			Main.instancierVuePilote();
+			//on instancie la vue Activite 
+			Main.instancierVueActivite();
 			
 		}else if (e.getSource() == this.btCommentaires) {
 			
@@ -129,10 +144,11 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		if (unUser == null) {
 			JOptionPane.showMessageDialog(this, "Erreur de connexion, vérifiez vos identifiants");
 		}else {
-			JOptionPane.showMessageDialog(this, "Bienvenue " + unUser.getEmail()+"  "+unUser.getPassword());
+			JOptionPane.showMessageDialog(this, "Bienvenue " + unUser.getUsername()+"  "+unUser.getEmail());
 			// Ouverture du menu général 
 			this.panelConnexion.setVisible(false);
 			this.panelMenu.setVisible(true);
+			this.panelQuitter.setVisible(true);
 			this.txtEmail.setText("");
 			this.txtMdp.setText("");
 			

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import controleur.Activite;
 import controleur.Utilisateur;
 
 
@@ -40,6 +41,57 @@ public class Modele
 		
 		return unUser; 
 	}
+	
+	/************* ACTIVITE ********************/
+	
+	
+	public static void insertActivite (Activite uneActivite) {
+		String requete = "insert into activite values (null, '" + uneActivite.getNom() + "','" + uneActivite.getLieu()
+		+"', " + "null, "   + "null, " +  uneActivite.getBudget() + ",'" + uneActivite.getDescription()+ "',"  + "null, "
+		 + "null, "+ uneActivite.getPrix() +", " + uneActivite.getNb_personnes() 
+		+", 1 );" ;
+		executerRequete(requete);
+		}
+	
+	//methode générique d'exécution de n'importe quelle requete nécessitant pas un retour de résultats 
+	public static void executerRequete (String requete)
+	{
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			unStat.execute(requete); 
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'ex�cution de la requete : " + requete );
+		}
+	}
+}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//Les méthodes de gestion de la table Pilote 
 /*	public static void insertPilote (Pilote unPilote)
@@ -143,22 +195,6 @@ public class Modele
 	
 	
 	*/
-	//methode générique d'exécution de n'importe quelle requete nécessitant pas un retour de résultats 
-	public static void executerRequete (String requete)
-	{
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			unStat.execute(requete); 
-			unStat.close();
-			uneBdd.seDeconnecter();
-		}
-		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
-		}
-	}
-}
-
 
 
 
