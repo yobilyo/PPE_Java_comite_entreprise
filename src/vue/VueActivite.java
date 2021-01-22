@@ -1,5 +1,9 @@
 package vue;
 
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
