@@ -1,13 +1,13 @@
 package controleur;
 
 import modele.Modele;
-import vue.VueActivite_;
+
 import vue.VueConnexion;
 import vue.VueUtilisateur;
 
 
 public class Main {
-	public static VueActivite_ uneVueActivite;
+
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 
@@ -18,10 +18,6 @@ public class Main {
 
 	public static Utilisateur verifConnexion(String email, String mdp) {
 		return Modele.verifConnexion(email, mdp);
-	}
-	
-	public static void instancierVueActivite () {
-		uneVueActivite = new VueActivite_();
 	}
 	
 	public static void instancierVueConnexion() {
