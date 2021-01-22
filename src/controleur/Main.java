@@ -3,10 +3,12 @@ package controleur;
 import modele.Modele;
 import vue.VueActivite;
 import vue.VueConnexion;
+import vue.VueUtilisateur;
 
 
 public class Main {
 	public static VueActivite uneVueActivite;
+	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 
 	public static void main(String[] args) {
@@ -26,6 +28,10 @@ public class Main {
 		uneVueConnexion = new VueConnexion();
 	}
 	
+	public static void instancierVueUtilisateur() {
+		uneVueUtilisateur = new VueUtilisateur();
+	}
+	
 	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
 	public static void rendreVisible(boolean action) {
 		uneVueConnexion.setVisible(action);
@@ -39,8 +45,14 @@ public class Main {
 		Modele.insertActivite(uneActivite);
 	}
 	
+
+	/********************* CONTROLEUR UTILISATEUR ***************************/
+/*	
+	public static void insertActivite(Utilisateur unUtilisateur) {
+		Modele.insertUtilisateur(unUtilisateur);
+	}
 	
-	
+	*/
 	
 	
 	

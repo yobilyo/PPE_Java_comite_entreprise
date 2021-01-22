@@ -34,7 +34,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	private JButton btActivites = new JButton("Gestion des activités"); 
 	private JButton btCommentaires = new JButton("Gestion des commentaires"); 
 	private JButton btDons = new JButton("Gestion des dons"); 
-	private JButton btSponsor = new JButton("Gestion des sponsors"); 
+	private JButton btUtilisateur = new JButton("Gestion des utilisateurs"); 
 	private JButton btContact = new JButton("Nous contacter"); 
 
 	private JButton btSeDeconnecter = new JButton("Se déconnecter"); 
@@ -77,12 +77,12 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		//construction du panel Menu 
 		this.panelMenu.setLayout(new GridLayout(2, 2, 2, 2));
 		this.panelMenu.setBounds(340, 60, 300, 140);
-		this.panelMenu.setBackground(new Color (51, 215, 255  ));
+		this.panelMenu.setBackground(new Color (206,214, 224  ));
 		
 		this.panelMenu.add(this.btActivites); 
 		this.panelMenu.add(this.btCommentaires); 
 		this.panelMenu.add(this.btDons); 
-		this.panelMenu.add(this.btSponsor);
+		this.panelMenu.add(this.btUtilisateur);
 		
 		this.panelMenu.setVisible(false);
 		this.add(this.panelMenu);
@@ -91,12 +91,13 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.btCommentaires.addActionListener(this);
 		this.btActivites.addActionListener(this);
 		this.btDons.addActionListener(this);
+		this.btUtilisateur.addActionListener(this);
 		this.btSeDeconnecter.addActionListener(this);
 		
 		
 		//construction du pannel pour le bouton quitter
 		this.panelQuitter.setBounds(340, 200, 300, 60);
-		this.panelQuitter.setBackground(new Color(51, 215, 255  ));
+		this.panelQuitter.setBackground(new Color(206,214, 224  ));
 		this.panelQuitter.add(btSeDeconnecter);
 		this.panelQuitter.setVisible(false);
 		this.add(panelQuitter); 
@@ -133,6 +134,10 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 			
 		}else if (e.getSource() == this.btDons) {
 			
+		}else if (e.getSource() == this.btUtilisateur) {
+			this.setVisible(false);
+			
+			Main.instancierVueUtilisateur();
 		}
 	}
 	

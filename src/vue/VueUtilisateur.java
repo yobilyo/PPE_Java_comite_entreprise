@@ -10,12 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import controleur.Activite;
+import controleur.Utilisateur;
 import controleur.Main;
 
-public class VueActivite extends JFrame implements ActionListener{
+public class VueUtilisateur extends JFrame implements ActionListener{
 	
 	private final static int WIDTH = 900;
 	private final static int HEIGHT = 500;
@@ -28,21 +29,24 @@ public class VueActivite extends JFrame implements ActionListener{
 	private JButton btAnnuler = new JButton("Annuler");
 	private JButton btEnregistrer = new JButton("Enregistrer");
 	
-	private JTextField txtNomAct = new JTextField(); 
-	private JTextField txtLieu = new JTextField(); 
-	private JTextField txtBudget = new JTextField(); 
-	private JTextField txtDescription = new JTextField(); 
-	private JTextField txtPrix= new JTextField();
-	private JTextField txtNbPersonnes = new JTextField();
+	private JTextField txtNomUtil = new JTextField(); 
+	private JTextField txtEmail = new JTextField(); 
+	private JTextField txtMdp = new JTextField(); 
+	private JTextField txtNom = new JTextField(); 
+	private JTextField txtPrenom= new JTextField();
+	private JTextField txtTel = new JTextField();
+	private JTextField txtAdresse = new JTextField();
+    private JRadioButton radioHomme = new JRadioButton("H");
+    private JRadioButton radioFemme = new JRadioButton("F");
 	
-	public VueActivite() {
+	public VueUtilisateur() {
 		this.setBounds(100, 100, WIDTH, HEIGHT);
-		this.setTitle("Gestion des activités");
+		this.setTitle("Gestion des utilisateurs");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
 		
-		this.getContentPane().setBackground(new Color (206,214, 224   ));
+		this.getContentPane().setBackground(new Color (206,214, 224  ));
 		
 		//installer le bouton retour 
 		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
@@ -51,20 +55,29 @@ public class VueActivite extends JFrame implements ActionListener{
 		
 		//construction du panel Ajout
 		this.panelAjout.setBounds(40, 100, 300, 250);
-		this.panelAjout.setBackground(new Color (206,214, 224  ));
-		this.panelAjout.setLayout(new GridLayout(7,2));
-		this.panelAjout.add(new JLabel("Nom activité :")); 
-		this.panelAjout.add(this.txtNomAct);
-		this.panelAjout.add(new JLabel("Lieu de l'activité :")); 
-		this.panelAjout.add(this.txtLieu);
-		this.panelAjout.add(new JLabel("Budget de l'activité :")); 
-		this.panelAjout.add(this.txtBudget);
-		this.panelAjout.add(new JLabel("Description de l'activité :")); 
-		this.panelAjout.add(this.txtDescription);
-		this.panelAjout.add(new JLabel("Prix de l'activité :")); 
-		this.panelAjout.add(this.txtPrix);
-		this.panelAjout.add(new JLabel("Nb de personnes de l'activité :")); 
-		this.panelAjout.add(this.txtNbPersonnes);
+		this.panelAjout.setBackground(new Color (206,214, 224   ));
+		this.panelAjout.setLayout(new GridLayout(10,2));
+		this.panelAjout.add(new JLabel("Nom utilisateur :")); 
+		this.panelAjout.add(this.txtNomUtil);
+		this.panelAjout.add(new JLabel("Email :")); 
+		this.panelAjout.add(this.txtEmail);
+		this.panelAjout.add(new JLabel("Mot de passe :")); 
+		this.panelAjout.add(this.txtMdp);
+		this.panelAjout.add(new JLabel("Nom :")); 
+		this.panelAjout.add(this.txtNom);
+		this.panelAjout.add(new JLabel("Prenom :")); 
+		this.panelAjout.add(this.txtPrenom);
+		this.panelAjout.add(new JLabel("Téléphone :")); 
+		this.panelAjout.add(this.txtTel);
+		this.panelAjout.add(new JLabel("Adresse :")); 
+		this.panelAjout.add(this.txtAdresse);
+		
+		
+		
+		this.panelAjout.add(new JLabel("Sexe :"));
+		this.panelAjout.add(this.radioHomme);
+		this.panelAjout.add(this.radioFemme);
+
 		this.panelAjout.add(this.btAnnuler); 
 		this.panelAjout.add(this.btEnregistrer);
 		this.add(this.panelAjout);
@@ -89,29 +102,28 @@ public class VueActivite extends JFrame implements ActionListener{
 	
 	
 	public void insertActivite() {
-		String nom = this.txtNomAct.getText();
-		String lieu = this.txtLieu.getText();
-		String description = this.txtDescription.getText();
+		String nom = this.txtNomUtil.getText();
+		String lieu = this.txtEmail.getText();
+		String description = this.txtNom.getText();
 
-		int nbPersonnes;
-		float budget, prix ;
+		int tel;
+		float mdp, prix ;
 		
 		try {
-			budget = Float.parseFloat(this.txtBudget.getText());
-			prix = Float.parseFloat(this.txtBudget.getText());
-			nbPersonnes = Integer.parseInt(this.txtNbPersonnes.getText());
+			mdp = Float.parseFloat(this.txtMdp.getText());
+			tel = Integer.parseInt(this.txtTel.getText());
 		} catch (NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(this,"Attention au format des nombres !");
-			budget = -1; 
-			prix = -1; 
-			nbPersonnes = -1;
+			mdp = -1; 
+			 
+			tel = -1;
 		}
 	
-		if(nbPersonnes >= 1) {
-			Activite uneActivite = new Activite(nom, lieu, budget, description, 
-				prix, nbPersonnes	);
+		if(tel >= 1) {
+			Utilisateur unUtilisateur = new Utilisateur(nom, lieu, budget, description, 
+				prix, tel	);
 			System.out.println("la ca va");
-			Main.insertActivite(uneActivite);
+			Main.insertUtilisateur(unUtilisateur);
 /*		
  * 	POUR AFFICHER DANS LE TABLEAU PLUS TARD
 			//recuperation de l'id a travers un select where 
@@ -124,18 +136,19 @@ public class VueActivite extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
 		} else {
-			this.txtNbPersonnes.setBackground(Color.red);
+			this.txtTel.setBackground(Color.red);
 			JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
 		}
 	}
 	
 	
 	public void viderLesChamps() {
-		this.txtNomAct.setText("");
-		this.txtLieu.setText("");
-		this.txtBudget.setText("");
-		this.txtDescription.setText("");
-		this.txtPrix.setText("");
-		this.txtNbPersonnes.setText("");
+		this.txtNomUtil.setText("");
+		this.txtEmail.setText("");
+		this.txtMdp.setText("");
+		this.txtNom.setText("");
+		this.txtPrenom.setText("");
+		this.txtTel.setText("");
+		this.txtAdresse.setText("");
 	}
 }
