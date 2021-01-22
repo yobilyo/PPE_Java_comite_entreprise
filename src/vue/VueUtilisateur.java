@@ -49,43 +49,70 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.setTitle("Gestion des utilisateurs");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(null);
+		getContentPane().setLayout(null);
 		
 		this.getContentPane().setBackground(new Color (206,214, 224  ));
 		
 		//installer le bouton retour 
 		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
-		this.add(this.btRetour); 
+		getContentPane().add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
 		//construction du panel Ajout
 		this.panelAjout.setBounds(40, 100, 300, 250);
 		this.panelAjout.setBackground(new Color (206,214, 224   ));
-		this.panelAjout.setLayout(new GridLayout(10,2));
-		this.panelAjout.add(new JLabel("Nom utilisateur :")); 
+		panelAjout.setLayout(null);
+		JLabel label = new JLabel("Nom utilisateur :");
+		label.setBounds(0, 0, 150, 25);
+		this.panelAjout.add(label); 
+		txtNomUtil.setBounds(150, 0, 150, 25);
 		this.panelAjout.add(this.txtNomUtil);
-		this.panelAjout.add(new JLabel("Email :")); 
+		JLabel label_1 = new JLabel("Email :");
+		label_1.setBounds(0, 25, 150, 25);
+		this.panelAjout.add(label_1); 
+		txtEmail.setBounds(150, 25, 150, 25);
 		this.panelAjout.add(this.txtEmail);
-		this.panelAjout.add(new JLabel("Mot de passe :")); 
+		JLabel label_2 = new JLabel("Mot de passe :");
+		label_2.setBounds(0, 50, 150, 25);
+		this.panelAjout.add(label_2); 
+		txtMdp.setBounds(150, 50, 150, 25);
 		this.panelAjout.add(this.txtMdp);
-		this.panelAjout.add(new JLabel("Nom :")); 
+		JLabel label_3 = new JLabel("Nom :");
+		label_3.setBounds(0, 75, 150, 25);
+		this.panelAjout.add(label_3); 
+		txtNom.setBounds(150, 75, 150, 25);
 		this.panelAjout.add(this.txtNom);
-		this.panelAjout.add(new JLabel("Prenom :")); 
+		JLabel label_4 = new JLabel("Prenom :");
+		label_4.setBounds(0, 100, 150, 25);
+		this.panelAjout.add(label_4); 
+		txtPrenom.setBounds(150, 100, 150, 25);
 		this.panelAjout.add(this.txtPrenom);
-		this.panelAjout.add(new JLabel("Téléphone :")); 
+		JLabel label_5 = new JLabel("Téléphone :");
+		label_5.setBounds(0, 125, 150, 25);
+		this.panelAjout.add(label_5); 
+		txtTel.setBounds(150, 125, 150, 25);
 		this.panelAjout.add(this.txtTel);
-		this.panelAjout.add(new JLabel("Adresse :")); 
+		JLabel label_6 = new JLabel("Adresse :");
+		label_6.setBounds(0, 150, 150, 25);
+		this.panelAjout.add(label_6); 
+		txtAdresse.setBounds(150, 150, 150, 25);
 		this.panelAjout.add(this.txtAdresse);
 		
 		
 		
-		this.panelAjout.add(new JLabel("Sexe :"));
+		JLabel label_7 = new JLabel("Sexe :");
+		label_7.setBounds(0, 175, 150, 25);
+		this.panelAjout.add(label_7);
+		radioHomme.setBounds(150, 175, 76, 25);
 		this.panelAjout.add(this.radioHomme);
+		radioFemme.setBounds(224, 175, 76, 25);
 		this.panelAjout.add(this.radioFemme);
+		btAnnuler.setBounds(150, 225, 150, 25);
 
 		this.panelAjout.add(this.btAnnuler); 
+		btEnregistrer.setBounds(0, 225, 150, 25);
 		this.panelAjout.add(this.btEnregistrer);
-		this.add(this.panelAjout);
+		getContentPane().add(this.panelAjout);
 		
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);

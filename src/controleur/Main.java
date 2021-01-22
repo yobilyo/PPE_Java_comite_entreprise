@@ -4,12 +4,14 @@ import modele.Modele;
 
 import vue.VueConnexion;
 import vue.VueUtilisateur;
+import vue.VueActivite;
 
 
 public class Main {
 
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
+	public static VueActivite uneVueActivite;
 
 	public static void main(String[] args) {
 		uneVueConnexion = new VueConnexion();
@@ -26,6 +28,10 @@ public class Main {
 	
 	public static void instancierVueUtilisateur() {
 		uneVueUtilisateur = new VueUtilisateur();
+	}
+	
+	public static void instancierVueActivite() {
+		uneVueActivite = new VueActivite();
 	}
 	
 	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
