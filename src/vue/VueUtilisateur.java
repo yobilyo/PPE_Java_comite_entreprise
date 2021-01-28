@@ -1,146 +1,201 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import controleur.Activite;
 import controleur.Main;
-import controleur.Pilote;
-import controleur.Utilisateur;
 
-public class VueUtilisateur extends JFrame implements ActionListener{
-	
-	private final static int WIDTH = 900;
-	private final static int HEIGHT = 500;
+public class VueDon extends JFrame implements ActionListener {
 
-	
-	private static VueConnexion uneVueConnexion; 
-	
-	private JPanel panelAjout = new JPanel();
-	private JButton btRetour = new JButton("Retour au menu");
-	private JButton btAnnuler = new JButton("Annuler");
-	private JButton btEnregistrer = new JButton("Enregistrer");
-	
-	private JTextField txtUsername = new JTextField(); 
-	private JPasswordField txtMdp = new JPasswordField(); 
-	private JTextField txtEmail = new JTextField(); 
-	private JComboBox<String> cbxDroits = new JComboBox<String>();
-	
-	public VueUtilisateur() {
-		this.setBounds(100, 100, WIDTH, HEIGHT);
-		this.setTitle("Gestion des utilisateurs");
-		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(null);
-		
-		this.getContentPane().setBackground(new Color (206,214, 224  ));
-		
-		//installer le bouton retour 
-		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
-		getContentPane().add(this.btRetour); 
-		this.btRetour.addActionListener(this);
-		
-		//construction du panel Ajout
-		this.panelAjout.setBounds(40, 100, 300, 250);
-		this.panelAjout.setBackground(new Color (206,214, 224   ));
-		panelAjout.setLayout(null);
-		JLabel label = new JLabel("Nom utilisateur :");
-		label.setBounds(0, 0, 150, 25);
-		this.panelAjout.add(label); 
-		txtUsername.setBounds(150, 0, 150, 25);
-		this.panelAjout.add(this.txtUsername);
-		
-		JLabel label_2 = new JLabel("Mot de passe :");
-		label_2.setBounds(0, 25, 150, 25);
-		this.panelAjout.add(label_2); 
-		txtMdp.setBounds(150, 25, 150, 25);
-		this.panelAjout.add(this.txtMdp);
-		
-		JLabel label_1 = new JLabel("Email :");
-		label_1.setBounds(0, 50, 150, 25);
-		this.panelAjout.add(label_1); 
-		txtEmail.setBounds(150, 50, 150, 25);
-		this.panelAjout.add(this.txtEmail);
-		
-		JLabel label_3 = new JLabel("Droits: ");
-		label_3.setBounds(0, 75, 150, 25);
-		this.panelAjout.add(label_3);
-		cbxDroits.setBounds(150, 75, 150, 25);
-		this.panelAjout.add(this.cbxDroits);
-		//remplir les cbx 
-		this.remplirCBXDroits();
-	
-		this.panelAjout.add(this.btAnnuler); 
-		btEnregistrer.setBounds(0, 225, 150, 25);
-		this.panelAjout.add(this.btEnregistrer);
-		getContentPane().add(this.panelAjout);
-		
-		this.btEnregistrer.addActionListener(this);
-		this.btAnnuler.addActionListener(this);
-		
-		this.setVisible(true);
-	}
+/*
 
-	public void remplirCBXDroits()
-	{
-		//this.cbxDroits.removeAllItems();
-		this.cbxDroits.addItem("salarie");
-		this.cbxDroits.addItem("admin");
-		this.cbxDroits.addItem("sponsor");
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == this.btRetour) {
-			this.dispose();
-			Main.rendreVisible(true);
-		}else if (e.getSource() == this.btEnregistrer) {
-			this.insertUtilisateur();
-		}else if (e.getSource() == this.btAnnuler) {
-			this.viderLesChamps();
+	IL FAUT CHANGER LE NOM DE LA CLASSE 
+    
+    CHANGER LE NOM DES TEXTES POUR L4 ADAPTER A UTILISATEUR
+    
+    METTRE EN COMMENTAIRE INSERT ACTIVITE 
+    
+    
+ */
+
+
+
+		private final static int WIDTH = 900;
+		private final static int HEIGHT = 500;
+
+		
+		private static VueConnexion uneVueConnexion; 
+		
+		private JPanel panelAjout = new JPanel();
+		private JButton btRetour = new JButton("Retour au menu");
+		private JButton btAnnuler = new JButton("Annuler");
+		private JButton btEnregistrer = new JButton("Enregistrer");
+		
+		private JButton btSponsor = new JButton("Sponsor");
+		private JPanel panSponsor = new JPanel();
+		
+		private JTextField txtNomSpons = new JTextField();
+		private JTextField txtBudgetSpons = new JTextField();
+		
+		private JTextField txtNomAct = new JTextField(); 
+		private JTextField txtLieu = new JTextField(); 
+		private JTextField txtBudget = new JTextField(); 
+		private JTextField txtDescription = new JTextField(); 
+		private JTextField txtPrix= new JTextField();
+		private JTextField txtNbPersonnes = new JTextField();
+		
+		
+		public VueDon() {
+			this.setBounds(100, 100, WIDTH, HEIGHT);
+			this.setTitle("Gestion des Dons");
+			this.setResizable(false);
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setLayout(null);
+			
+			this.getContentPane().setBackground(new Color (51, 215, 255  ));
+			
+			this.btSponsor.setBounds(WIDTH -500, HEIGHT -80, 140, 30);
+			this.add(btSponsor);
+			
+			//installer le bouton retour 
+			this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
+			this.add(this.btRetour); 
+			this.btRetour.addActionListener(this);
+			
+			//construction du panel Ajout
+			this.panelAjout.setBounds(40, 100, 300, 250);
+			this.panelAjout.setBackground(new Color (51, 215, 255  ));
+			
+			
+			
+			this.panelAjout.add(this.btAnnuler); 
+			this.panelAjout.add(this.btEnregistrer);
+			this.add(this.panelAjout);
+			
+			this.btEnregistrer.addActionListener(this);
+			this.btAnnuler.addActionListener(this);
+			
+			
+			
+			this.panelAjout.setBounds(40, 100, 300, 250);
+			this.panelAjout.setBackground(new Color (51, 215, 255  ));
+			this.panelAjout.setLayout(new GridLayout(7,2));
+			this.panelAjout.add(new JLabel("Nom activité :")); 
+			this.panelAjout.add(this.txtNomAct);
+			this.panelAjout.add(new JLabel("Lieu de l'activité :")); 
+			this.panelAjout.add(this.txtLieu);
+			this.panelAjout.add(new JLabel("Budget de l'activité :")); 
+			this.panelAjout.add(this.txtBudget);
+			this.panelAjout.add(new JLabel("Description de l'activité :")); 
+			this.panelAjout.add(this.txtDescription);
+			this.panelAjout.add(new JLabel("Prix de l'activité :")); 
+			this.panelAjout.add(this.txtPrix);
+			this.panelAjout.add(new JLabel("Nb de personnes de l'activité :")); 
+			this.panelAjout.add(this.txtNbPersonnes);
+			this.panelAjout.add(this.btAnnuler); 
+			this.panelAjout.add(this.btEnregistrer);
+			this.add(this.panelAjout);
+		
+			this.panSponsor.setBounds(40, 100, 300, 250);
+			this.panelAjout.setBackground(new Color (51, 215, 255  ));
+			this.panSponsor.add(new JLabel("Nom du sponsor :"));
+			this.panSponsor.add(txtNomSpons);
+			this.panSponsor.add(new JLabel("Budget du sponsor"));
+			this.panSponsor.add(txtBudgetSpons);
+			this.panSponsor.setVisible(false);
+			
+			this.add(panSponsor);
+			this.btSponsor.addActionListener(this);
+			
+			this.setVisible(true);
 		}
-	}
-	
-	public void insertUtilisateur() {
-		String username = this.txtUsername.getText();
-		String mdp = new String(this.txtMdp.getPassword());
-		String email = this.txtEmail.getText();
-		String droits = this.cbxDroits.getSelectedItem().toString();
-	
-		try {
-			Utilisateur unUtilisateur = new Utilisateur(username, mdp, email, droits);
-			Main.insertUtilisateur(unUtilisateur);
-			JOptionPane.showMessageDialog(this,"Insertion réussie !");
-			this.viderLesChamps();
-		} catch(Exception e) {
-			JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource() == this.btRetour) {
+				this.dispose();
+				Main.rendreVisible(true);
+			}else if (e.getSource() == this.btEnregistrer) {
+				this.insertActivite();
+			}else if (e.getSource() == this.btAnnuler) {
+				this.viderLesChamps();
+			}else if(e.getSource() == this.btSponsor) {
+				if (! panSponsor.isVisible()) {
+					panelAjout.setVisible(false);
+					panSponsor.setVisible(true);
+				}else {
+					panelAjout.setVisible(true);
+					panSponsor.setVisible(false);
+				}
+			}
 		}
+		
+		public boolean panSponsVisible(boolean visi) {
+			panSponsor.setVisible(visi);
+			return visi;
+		}
+		
+		public void insertActivite() {
+			String nom = this.txtNomAct.getText();
+			String lieu = this.txtLieu.getText();
+			String description = this.txtDescription.getText();
+
+			int nbPersonnes;
+			float budget, prix ;
+			
+			try {
+				budget = Float.parseFloat(this.txtBudget.getText());
+				prix = Float.parseFloat(this.txtBudget.getText());
+				nbPersonnes = Integer.parseInt(this.txtNbPersonnes.getText());
+			} catch (NumberFormatException nfe) {
+				JOptionPane.showMessageDialog(this,"Attention au format des nombres !");
+				budget = -1; 
+				prix = -1; 
+				nbPersonnes = -1;
+			}
+		
+			if(nbPersonnes >= 1) {
+				Activite uneActivite = new Activite(nom, lieu, budget, description, 
+					prix, nbPersonnes	);
+				System.out.println("la ca va");
+				Main.insertActivite(uneActivite);
+	/*		
+	 * 	POUR AFFICHER DANS LE TABLEAU PLUS TARD
+				//recuperation de l'id a travers un select where 
+				unPilote = Main.selectWherePilote(email, bip);
+				
+				//insertion dans l'affichage tableau 
+				Object ligne[] = {unPilote.getIdpilote(), nom, prenom, email, bip, nationalite, nbHeuresVols+""};
+				this.unTableau.insertLigne(ligne);
+		*/
+				JOptionPane.showMessageDialog(this,"Insertion réussie !");
+				this.viderLesChamps();
+			} else {
+				this.txtNbPersonnes.setBackground(Color.red);
+				JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
+			}
+		}
+		
+		
+		public void viderLesChamps() {
+			this.txtNomAct.setText("");
+			this.txtLieu.setText("");
+			this.txtBudget.setText("");
+			this.txtDescription.setText("");
+			this.txtPrix.setText("");
+			this.txtNbPersonnes.setText("");
+		}
+		
+		
 	}
-	
-	/*	POUR AFFICHER DANS LE TABLEAU PLUS TARD
-	//recuperation de l'id a travers un select where 
-	unPilote = Main.selectWherePilote(email, bip);
-	
-	//insertion dans l'affichage tableau 
-	Object ligne[] = {unPilote.getIdpilote(), nom, prenom, email, bip, nationalite, nbHeuresVols+""};
-	this.unTableau.insertLigne(ligne);
-	 */
-	
-	public void viderLesChamps() {
-		this.txtUsername.setText("");
-		this.txtMdp.setText("");
-		this.txtEmail.setText("");
-		this.cbxDroits.setSelectedIndex(0);
-	}
-}
+
