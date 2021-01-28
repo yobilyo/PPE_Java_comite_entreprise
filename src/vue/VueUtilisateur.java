@@ -1,25 +1,23 @@
 package vue;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-
-
 import java.awt.Color;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
-
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import controleur.Utilisateur;
 import controleur.Main;
+import controleur.Pilote;
+import controleur.Utilisateur;
 
 public class VueUtilisateur extends JFrame implements ActionListener{
 	
@@ -34,15 +32,10 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	private JButton btAnnuler = new JButton("Annuler");
 	private JButton btEnregistrer = new JButton("Enregistrer");
 	
-	private JTextField txtNomUtil = new JTextField(); 
+	private JTextField txtUsername = new JTextField(); 
+	private JPasswordField txtMdp = new JPasswordField(); 
 	private JTextField txtEmail = new JTextField(); 
-	private JTextField txtMdp = new JTextField(); 
-	private JTextField txtNom = new JTextField(); 
-	private JTextField txtPrenom= new JTextField();
-	private JTextField txtTel = new JTextField();
-	private JTextField txtAdresse = new JTextField();
-    private JRadioButton radioHomme = new JRadioButton("H");
-    private JRadioButton radioFemme = new JRadioButton("F");
+	private JComboBox<String> cbxDroits = new JComboBox<String>();
 	
 	public VueUtilisateur() {
 		this.setBounds(100, 100, WIDTH, HEIGHT);
@@ -65,50 +58,29 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		JLabel label = new JLabel("Nom utilisateur :");
 		label.setBounds(0, 0, 150, 25);
 		this.panelAjout.add(label); 
-		txtNomUtil.setBounds(150, 0, 150, 25);
-		this.panelAjout.add(this.txtNomUtil);
-		JLabel label_1 = new JLabel("Email :");
-		label_1.setBounds(0, 25, 150, 25);
-		this.panelAjout.add(label_1); 
-		txtEmail.setBounds(150, 25, 150, 25);
-		this.panelAjout.add(this.txtEmail);
+		txtUsername.setBounds(150, 0, 150, 25);
+		this.panelAjout.add(this.txtUsername);
+		
 		JLabel label_2 = new JLabel("Mot de passe :");
-		label_2.setBounds(0, 50, 150, 25);
+		label_2.setBounds(0, 25, 150, 25);
 		this.panelAjout.add(label_2); 
-		txtMdp.setBounds(150, 50, 150, 25);
+		txtMdp.setBounds(150, 25, 150, 25);
 		this.panelAjout.add(this.txtMdp);
-		JLabel label_3 = new JLabel("Nom :");
+		
+		JLabel label_1 = new JLabel("Email :");
+		label_1.setBounds(0, 50, 150, 25);
+		this.panelAjout.add(label_1); 
+		txtEmail.setBounds(150, 50, 150, 25);
+		this.panelAjout.add(this.txtEmail);
+		
+		JLabel label_3 = new JLabel("Droits: ");
 		label_3.setBounds(0, 75, 150, 25);
-		this.panelAjout.add(label_3); 
-		txtNom.setBounds(150, 75, 150, 25);
-		this.panelAjout.add(this.txtNom);
-		JLabel label_4 = new JLabel("Prenom :");
-		label_4.setBounds(0, 100, 150, 25);
-		this.panelAjout.add(label_4); 
-		txtPrenom.setBounds(150, 100, 150, 25);
-		this.panelAjout.add(this.txtPrenom);
-		JLabel label_5 = new JLabel("Téléphone :");
-		label_5.setBounds(0, 125, 150, 25);
-		this.panelAjout.add(label_5); 
-		txtTel.setBounds(150, 125, 150, 25);
-		this.panelAjout.add(this.txtTel);
-		JLabel label_6 = new JLabel("Adresse :");
-		label_6.setBounds(0, 150, 150, 25);
-		this.panelAjout.add(label_6); 
-		txtAdresse.setBounds(150, 150, 150, 25);
-		this.panelAjout.add(this.txtAdresse);
-		
-		
-		
-		JLabel label_7 = new JLabel("Sexe :");
-		label_7.setBounds(0, 175, 150, 25);
-		this.panelAjout.add(label_7);
-		radioHomme.setBounds(150, 175, 76, 25);
-		this.panelAjout.add(this.radioHomme);
-		radioFemme.setBounds(224, 175, 76, 25);
-		this.panelAjout.add(this.radioFemme);
-		btAnnuler.setBounds(150, 225, 150, 25);
-
+		this.panelAjout.add(label_3);
+		cbxDroits.setBounds(150, 75, 150, 25);
+		this.panelAjout.add(this.cbxDroits);
+		//remplir les cbx 
+		this.remplirCBXDroits();
+	
 		this.panelAjout.add(this.btAnnuler); 
 		btEnregistrer.setBounds(0, 225, 150, 25);
 		this.panelAjout.add(this.btEnregistrer);
@@ -120,67 +92,55 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.setVisible(true);
 	}
 
+	public void remplirCBXDroits()
+	{
+		//this.cbxDroits.removeAllItems();
+		this.cbxDroits.addItem("salarie");
+		this.cbxDroits.addItem("admin");
+		this.cbxDroits.addItem("sponsor");
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btRetour) {
 			this.dispose();
 			Main.rendreVisible(true);
 		}else if (e.getSource() == this.btEnregistrer) {
-			this.insertActivite();
+			this.insertUtilisateur();
 		}else if (e.getSource() == this.btAnnuler) {
 			this.viderLesChamps();
 		}
 	}
 	
+	public void insertUtilisateur() {
+		String username = this.txtUsername.getText();
+		String mdp = new String(this.txtMdp.getPassword());
+		String email = this.txtEmail.getText();
+		String droits = this.cbxDroits.getSelectedItem().toString();
 	
-	public void insertActivite() {
-		String nom = this.txtNomUtil.getText();
-		String lieu = this.txtEmail.getText();
-		String description = this.txtNom.getText();
-
-		int tel;
-		float mdp, prix ;
-		
 		try {
-			mdp = Float.parseFloat(this.txtMdp.getText());
-			tel = Integer.parseInt(this.txtTel.getText());
-		} catch (NumberFormatException nfe) {
-			JOptionPane.showMessageDialog(this,"Attention au format des nombres !");
-			mdp = -1; 
-			 
-			tel = -1;
-		}
-	
-		if(tel >= 1) {
-			Utilisateur unUtilisateur = new Utilisateur(nom, lieu, budget, description, 
-				prix, tel	);
-			System.out.println("la ca va");
+			Utilisateur unUtilisateur = new Utilisateur(username, mdp, email, droits);
 			Main.insertUtilisateur(unUtilisateur);
-/*		
- * 	POUR AFFICHER DANS LE TABLEAU PLUS TARD
-			//recuperation de l'id a travers un select where 
-			unPilote = Main.selectWherePilote(email, bip);
-			
-			//insertion dans l'affichage tableau 
-			Object ligne[] = {unPilote.getIdpilote(), nom, prenom, email, bip, nationalite, nbHeuresVols+""};
-			this.unTableau.insertLigne(ligne);
-	*/
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
-		} else {
-			this.txtTel.setBackground(Color.red);
+		} catch(Exception e) {
 			JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
 		}
 	}
 	
+	/*	POUR AFFICHER DANS LE TABLEAU PLUS TARD
+	//recuperation de l'id a travers un select where 
+	unPilote = Main.selectWherePilote(email, bip);
+	
+	//insertion dans l'affichage tableau 
+	Object ligne[] = {unPilote.getIdpilote(), nom, prenom, email, bip, nationalite, nbHeuresVols+""};
+	this.unTableau.insertLigne(ligne);
+	 */
 	
 	public void viderLesChamps() {
-		this.txtNomUtil.setText("");
-		this.txtEmail.setText("");
+		this.txtUsername.setText("");
 		this.txtMdp.setText("");
-		this.txtNom.setText("");
-		this.txtPrenom.setText("");
-		this.txtTel.setText("");
-		this.txtAdresse.setText("");
+		this.txtEmail.setText("");
+		this.cbxDroits.setSelectedIndex(0);
 	}
 }

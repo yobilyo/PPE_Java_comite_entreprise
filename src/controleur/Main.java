@@ -16,6 +16,7 @@ public class Main {
 	public static void main(String[] args) {
 		uneVueConnexion = new VueConnexion();
 		//new VueActivite();
+		//new VueUtilisateur();
 	}
 
 	public static Utilisateur verifConnexion(String email, String mdp) {
@@ -49,12 +50,12 @@ public class Main {
 	
 
 	/********************* CONTROLEUR UTILISATEUR ***************************/
-/*	
-	public static void insertActivite(Utilisateur unUtilisateur) {
+	
+	public static void insertUtilisateur(Utilisateur unUtilisateur) {
 		Modele.insertUtilisateur(unUtilisateur);
 	}
 	
-	*/
+	
 	
 	
 	

@@ -67,6 +67,13 @@ public class Modele
 			System.out.println("Erreur d'exécution de la requete : " + requete );
 		}
 	}
+
+	public static void insertUtilisateur(Utilisateur unUtilisateur) {
+		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
+		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
+		
+		executerRequete(requete);
+	}
 }
 
 

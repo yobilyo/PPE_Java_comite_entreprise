@@ -6,29 +6,28 @@ public class Utilisateur {
 	private String email, username, password, droits;
 	
 
-	public Utilisateur(int idUtilisateur, String username, String email,  String password, String droits) {
+	public Utilisateur(int idUtilisateur, String username, String password, String email, String droits) {
 		this.idUtilisateur = idUtilisateur;
-		this.email = email;
 		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.droits = droits;
 	}
 	
-	public Utilisateur( String username, String email,  String password, String droits) {
+	public Utilisateur(String username, String password, String email, String droits) {
 		this.idUtilisateur = 0;
-		this.email = email;
+		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.droits = droits;
 	} 
 	public Utilisateur() {
 		this.idUtilisateur = 0;
-		this.email = "";
+		this.username = "";
 		this.password = "";
+		this.email = "";
 		this.droits = "";
 	}
-	
-	
-
 	
 	public int getIdUtilisateur() {
 		return idUtilisateur;
