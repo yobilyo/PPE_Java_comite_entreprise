@@ -16,7 +16,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import controleur.Main;
-import controleur.Pilote;
 import controleur.Utilisateur;
 
 public class VueUtilisateur extends JFrame implements ActionListener{
