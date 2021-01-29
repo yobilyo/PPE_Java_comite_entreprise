@@ -62,7 +62,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.panelConnexion.add(this.btAnnuler); 
 		this.panelConnexion.add(this.btSeConnecter); 
 		
-		ImageIcon uneImage = new ImageIcon("images/3Dsoft-logo.png");
+		ImageIcon uneImage = new ImageIcon("src/images/3Dsoft-logo.png");
 		JLabel monLogo = new JLabel(uneImage); 
 		monLogo.setBounds(20, 60, 300, 150); 
 		this.add(monLogo);
