@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 
@@ -62,7 +63,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.panelConnexion.add(this.btAnnuler); 
 		this.panelConnexion.add(this.btSeConnecter); 
 		
-		ImageIcon uneImage = new ImageIcon("src/images/3Dsoft-logo.png");
+		ImageIcon uneImage = new ImageIcon("images/3Dsoft-logo.png");
 		JLabel monLogo = new JLabel(uneImage); 
 		monLogo.setBounds(20, 60, 300, 150); 
 		this.add(monLogo);
@@ -106,11 +107,22 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.add(panelQuitter); 
 		
 		
-		
+		initBoutons();
 		
 		this.setVisible(true);
 	}
 
+	public void initBoutons() {
+		this.btSeConnecter.setBackground(new Color(31, 61, 128));
+		this.btSeConnecter.setForeground(new Color(206, 214, 224));
+		this.btSeConnecter.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		this.btAnnuler.setBackground(new Color(47, 53, 66));
+		this.btAnnuler.setForeground(new Color(252, 179, 22));
+		this.btAnnuler.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.btAnnuler) {
