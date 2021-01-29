@@ -1,5 +1,7 @@
 package controleur;
 
+import java.util.ArrayList;
+
 import modele.Modele;
 
 import vue.VueConnexion;
@@ -14,8 +16,8 @@ public class Main {
 	public static VueActivite uneVueActivite;
 
 	public static void main(String[] args) {
-		uneVueConnexion = new VueConnexion();
-		//new VueActivite();
+		//uneVueConnexion = new VueConnexion();
+		new VueActivite();
 		//new VueUtilisateur();
 	}
 
@@ -53,6 +55,10 @@ public class Main {
 	
 	public static void insertUtilisateur(Utilisateur unUtilisateur) {
 		Modele.insertUtilisateur(unUtilisateur);
+	}
+
+	public static ArrayList<Activite> selectAllActivites(String mot) {
+		return Modele.selectAllActivites(mot);
 	}
 	
 	

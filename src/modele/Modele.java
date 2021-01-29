@@ -3,6 +3,7 @@ package modele;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import controleur.Activite;
 import controleur.Utilisateur;
@@ -73,6 +74,38 @@ public class Modele
 		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
 		
 		executerRequete(requete);
+	}
+
+	public static ArrayList<Activite> selectAllActivites (String mot){
+		
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from activite ;" ;
+		}else {
+			requete ="select * from activite where nom like '%"+mot+"%'" + " or prix like '%"+mot+"%'"
+					+ " or lieu like '%"+mot+"%' or budget like '%" + mot + 
+					 "or description like '%"+mot+"%' or nb_personnes like '%"+mot+"%' ; " ;
+		}
+		ArrayList<Activite> lesActivites = new ArrayList<Activite>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Activite uneActivite = new Activite (
+						desRes.getInt("id_activite"), desRes.getString("nom"), desRes.getString("lieu"), desRes.getFloat("budget"), 
+						desRes.getString("description"), desRes.getFloat("prix"), desRes.getInt("nb_personnes")
+						);
+				lesActivites.add(uneActivite);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		return lesActivites ; 
 	}
 }
 

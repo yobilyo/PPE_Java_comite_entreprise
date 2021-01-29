@@ -8,16 +8,20 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import controleur.Activite;
 import controleur.Main;
+import controleur.Tableau;
 
 public class VueActivite extends JFrame implements ActionListener{
 	
@@ -38,6 +42,16 @@ public class VueActivite extends JFrame implements ActionListener{
 	private JTextField txtDescription = new JTextField(); 
 	private JTextField txtPrix= new JTextField();
 	private JTextField txtNbPersonnes = new JTextField();
+	
+	//Construction de la partie Tableau
+	private JPanel panelLister = new JPanel(); 
+	private JTable uneTable ; 
+	private JScrollPane uneScroll ; 
+	private Tableau unTableau ;
+
+//	Barre de filtrage
+//	private JTextField txtMot = new JTextField ();
+//	private JButton btFiltrer = new JButton("filtrer"); 
 	
 	public VueActivite() {
 		this.setBounds(100, 100, WIDTH, HEIGHT);
@@ -76,6 +90,8 @@ public class VueActivite extends JFrame implements ActionListener{
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 		
+		remplirPanelLister("");
+		
 		this.setVisible(true);
 	}
 
@@ -102,7 +118,7 @@ public class VueActivite extends JFrame implements ActionListener{
 		
 		try {
 			budget = Float.parseFloat(this.txtBudget.getText());
-			prix = Float.parseFloat(this.txtBudget.getText());
+			prix = Float.parseFloat(this.txtPrix.getText());
 			nbPersonnes = Integer.parseInt(this.txtNbPersonnes.getText());
 		} catch (NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(this,"Attention au format des nombres !");
@@ -114,17 +130,7 @@ public class VueActivite extends JFrame implements ActionListener{
 		if(nbPersonnes >= 1) {
 			Activite uneActivite = new Activite(nom, lieu, budget, description, 
 				prix, nbPersonnes	);
-			System.out.println("la ca va");
 			Main.insertActivite(uneActivite);
-/*		
- * 	POUR AFFICHER DANS LE TABLEAU PLUS TARD
-			//recuperation de l'id a travers un select where 
-			unPilote = Main.selectWherePilote(email, bip);
-			
-			//insertion dans l'affichage tableau 
-			Object ligne[] = {unPilote.getIdpilote(), nom, prenom, email, bip, nationalite, nbHeuresVols+""};
-			this.unTableau.insertLigne(ligne);
-	*/
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
 		} else {
@@ -132,6 +138,58 @@ public class VueActivite extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
 		}
 	}
+	
+	
+	public void initPanelLister() {
+		//construire le panel Lister 
+		this.panelLister.setBackground(new Color (206,214, 224  ));
+		this.panelLister.setLayout(null);
+
+		this.panelLister.setBounds(350, 80, 530, 300);
+		
+		this.uneScroll.setBounds(010, 10, 510, 280);
+		this.panelLister.add(this.uneScroll);
+		
+		
+		this.add(this.panelLister); 
+	}
+	
+	public void remplirPanelLister(String mot) {
+		this.panelLister.removeAll();
+		String entetes [] = {"IdActivite", "Nom", "Lieu", "Budget", "Description", "Prix", "Nb de Personnes"};
+		Object donnees [][] = this.getDonnees(mot) ;			
+		this.unTableau = new Tableau (donnees, entetes); 
+		this.uneTable = new JTable(this.unTableau); 
+		this.uneScroll = new JScrollPane(this.uneTable); 
+		
+
+		initPanelLister();
+
+	}
+	
+	public Object [] [] getDonnees(String mot) {
+		//recuperer les pilotes de la bdd 
+		ArrayList<Activite> lesActivites = Main.selectAllActivites(mot); 
+		//transofrmation des pilotes en matrice de donnÃ©es 
+		Object donnees [][] = new Object [lesActivites.size()][7];
+		int i = 0 ; 
+		for (Activite uneActivite : lesActivites) {
+			donnees[i][0] = uneActivite.getIdActivite()+""; 
+			donnees[i][1] = uneActivite.getNom(); 
+			donnees[i][2] = uneActivite.getLieu(); 
+			donnees[i][3] = uneActivite.getBudget(); 
+			donnees[i][4] = uneActivite.getDescription(); 
+			donnees[i][5] = uneActivite.getPrix(); 
+			donnees[i][6] = uneActivite.getNb_personnes() + ""; 
+			i++; 
+		}
+				
+		return donnees;
+	}
+
+	
+	
+	
 	
 	
 	public void viderLesChamps() {
