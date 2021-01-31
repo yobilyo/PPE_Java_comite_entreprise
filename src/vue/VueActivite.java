@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 
@@ -32,7 +33,7 @@ public class VueActivite extends JFrame implements ActionListener{
 	private static VueConnexion uneVueConnexion; 
 	
 	private JPanel panelAjout = new JPanel();
-	private JButton btRetour = new JButton("Retour au menu");
+	private JButton btRetour = new JButton("Retour");
 	private JButton btAnnuler = new JButton("Annuler");
 	private JButton btEnregistrer = new JButton("Enregistrer");
 	
@@ -93,7 +94,24 @@ public class VueActivite extends JFrame implements ActionListener{
 		remplirPanelLister("");
 		
 		this.setVisible(true);
+		
+		initBoutons();
 	}
+
+	private void initBoutons() {
+		this.btAnnuler.setBackground(new Color(52, 58, 64));
+		this.btAnnuler.setForeground(new Color(255, 255, 255));
+		this.btAnnuler.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
+		this.btEnregistrer.setBackground(new Color(52, 58, 64));
+		this.btEnregistrer.setForeground(new Color(255, 255, 255));
+		this.btEnregistrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
+		this.btRetour.setBackground(new Color(31, 61, 128));
+		this.btRetour.setForeground(new Color(255, 255, 255));
+		this.btRetour.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
+}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

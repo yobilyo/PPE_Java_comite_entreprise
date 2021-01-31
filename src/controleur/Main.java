@@ -14,7 +14,10 @@ public class Main {
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;
+	
 
+	
+	
 	public static void main(String[] args) {
 		uneVueConnexion = new VueConnexion();
 		//new VueActivite();
@@ -41,6 +44,8 @@ public class Main {
 	public static void rendreVisible(boolean action) {
 		uneVueConnexion.setVisible(action);
 	}
+	
+	
 	
 	
 	/********************* CONTROLEUR ACTIVITE ***************************/

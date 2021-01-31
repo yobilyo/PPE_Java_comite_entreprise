@@ -35,11 +35,11 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	private JPanel panelMenu = new JPanel (); 
 	private JPanel panelQuitter = new JPanel (); 
 
-	private JButton btActivites = new JButton("Gestion des activités"); 
-	private JButton btCommentaires = new JButton("Gestion des commentaires"); 
-	private JButton btDons = new JButton("Gestion des dons"); 
-	private JButton btUtilisateur = new JButton("Gestion des utilisateurs"); 
-	private JButton btContact = new JButton("Nous contacter"); 
+	private JButton btActivites = new JButton("Activités"); 
+	private JButton btCommentaires = new JButton("Commentaires"); 
+	private JButton btDons = new JButton("Dons"); 
+	private JButton btUtilisateur = new JButton("Utilisateurs"); 
+	//private JButton btContact = new JButton("Nous contacter"); 
 
 	private JButton btSeDeconnecter = new JButton("Se déconnecter"); 
 	
@@ -63,7 +63,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.panelConnexion.add(this.btAnnuler); 
 		this.panelConnexion.add(this.btSeConnecter); 
 		
-		ImageIcon uneImage = new ImageIcon("images/3Dsoft-logo.png");
+		ImageIcon uneImage = new ImageIcon("src/images/3Dsoft-logo.png");
 		JLabel monLogo = new JLabel(uneImage); 
 		monLogo.setBounds(20, 60, 300, 150); 
 		this.add(monLogo);
@@ -114,12 +114,34 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 
 	public void initBoutons() {
 		this.btSeConnecter.setBackground(new Color(31, 61, 128));
-		this.btSeConnecter.setForeground(new Color(206, 214, 224));
+		this.btSeConnecter.setForeground(new Color(255, 255, 255));
 		this.btSeConnecter.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		this.btAnnuler.setBackground(new Color(47, 53, 66));
-		this.btAnnuler.setForeground(new Color(252, 179, 22));
+		
+		this.btAnnuler.setBackground(new Color(31, 61, 128));
+		this.btAnnuler.setForeground(new Color(255, 255, 255));
 		this.btAnnuler.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-
+		
+		this.btActivites.setBackground(new Color(52, 58, 64));
+		this.btActivites.setForeground(new Color(255, 255, 255));
+		this.btActivites.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btCommentaires.setBackground(new Color(52, 58, 64));
+		this.btCommentaires.setForeground(new Color(255, 255, 255));
+		this.btCommentaires.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btDons.setBackground(new Color(52, 58, 64));
+		this.btDons.setForeground(new Color(255, 255, 255));
+		this.btDons.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btUtilisateur.setBackground(new Color(52, 58, 64));
+		this.btUtilisateur.setForeground(new Color(255, 255, 255));
+		this.btUtilisateur.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		
+		this.btSeDeconnecter.setBackground(new Color(31, 61, 128));
+		this.btSeDeconnecter.setForeground(new Color(255, 255, 255));
+		this.btSeDeconnecter.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
 	}
 	
 	
