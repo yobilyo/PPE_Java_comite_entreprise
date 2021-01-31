@@ -19,8 +19,8 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-		uneVueConnexion = new VueConnexion();
-		//new VueActivite();
+		//uneVueConnexion = new VueConnexion();
+		new VueActivite();
 		//new VueUtilisateur();
 	}
 
@@ -54,6 +54,18 @@ public class Main {
 	public static void insertActivite(Activite uneActivite) {
 		Modele.insertActivite(uneActivite);
 	}
+	public static void deleteActivite (int idActivite){
+		Modele.deleteActivite(idActivite);
+	}
+	public static ArrayList<Activite> selectAllActivites(String mot) {
+		return Modele.selectAllActivites(mot);
+	}
+
+	public static void updateActivite(Activite uneActivite) {
+		Modele.updateActivite(uneActivite);
+		
+	}
+	
 	
 
 	/********************* CONTROLEUR UTILISATEUR ***************************/
@@ -62,11 +74,7 @@ public class Main {
 		Modele.insertUtilisateur(unUtilisateur);
 	}
 
-	public static ArrayList<Activite> selectAllActivites(String mot) {
-		return Modele.selectAllActivites(mot);
-	}
-	
-	
+
 	
 	
 	

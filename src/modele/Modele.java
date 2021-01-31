@@ -37,7 +37,7 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch (SQLException exp) {
-			System.out.println("Erreur d'exÃ©cution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete );
 		}
 		
 		return unUser; 
@@ -84,7 +84,7 @@ public class Modele
 		}else {
 			requete ="select * from activite where nom like '%"+mot+"%'" + " or prix like '%"+mot+"%'"
 					+ " or lieu like '%"+mot+"%' or budget like '%" + mot + 
-					 "or description like '%"+mot+"%' or nb_personnes like '%"+mot+"%' ; " ;
+					 "%' or description like '%"+mot+"%' or nb_personnes like '%"+mot+"%' ; " ;
 		}
 		ArrayList<Activite> lesActivites = new ArrayList<Activite>();  
 		
@@ -103,9 +103,23 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exÃ©cution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete );
 		}
 		return lesActivites ; 
+	}
+
+	public static void deleteActivite (int idActivite)
+	{
+		String requete =" delete from activite where id_activite = " + idActivite +" ; " ;
+		executerRequete(requete);
+	}
+
+	public static void updateActivite(Activite uneActivite) {
+		String requete ="update activite set nom = '" + uneActivite.getNom() + "', lieu = '" + uneActivite.getLieu()
+		+"', budget = " + uneActivite.getBudget() + ", description = '" + uneActivite.getDescription()
+		+ "', prix = " + uneActivite.getPrix() +", nb_personnes= " + uneActivite.getNb_personnes() 
+		+ "  where id_activite = " + uneActivite.getIdActivite() + " ;" ;
+		executerRequete(requete);		
 	}
 }
 
