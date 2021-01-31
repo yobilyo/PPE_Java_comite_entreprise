@@ -35,7 +35,7 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	private JButton btAnnuler = new JButton("Annuler");
 	private JButton btEnregistrer = new JButton("Enregistrer");
 	
-	private JButton btSalarie = new JButton("Salari�");
+	private JButton btSalarie = new JButton("Salarié");
 	private JButton btSponsor = new JButton("Sponsor");
 	private JPanel panelAjoutSponsor = new JPanel();
 	
@@ -121,7 +121,7 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.panelAjoutSponsor.add(txtUserSpons);
 		this.panelAjoutSponsor.add(new JLabel("Email du sponsor :"));
 		this.panelAjoutSponsor.add(txtEmailSpons);
-		this.panelAjoutSponsor.add(new JLabel("Nom de soci�t�  :"));
+		this.panelAjoutSponsor.add(new JLabel("Nom de société  :"));
 		this.panelAjoutSponsor.add(txtNomSoc);
 		this.panelAjoutSponsor.add(new JLabel("Budget du sponsor :"));
 		this.panelAjoutSponsor.add(txtBudgetSpons);
@@ -235,14 +235,14 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 			if(!txtUsername.getText().equals("") || !txtEmail.getText().equals("")) {
 			Utilisateur unUtilisateur = new Utilisateur(username, mdp, email, droits);
 			Main.insertUtilisateur(unUtilisateur);
-			JOptionPane.showMessageDialog(this,"Insertion r�ussie !");
+			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
 			txtUsername.setBackground(Color.WHITE);
 			txtEmail.setBackground(Color.WHITE);
 			}else {
 				txtUsername.setBackground(Color.RED);
 				txtEmail.setBackground(Color.RED);
-				JOptionPane.showMessageDialog(this,"Erreur d'insertion v�rifier les champs !");
+				JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
 			}
 		} catch(Exception e) {
 			System.out.println("Aie " + e.getStackTrace());	
