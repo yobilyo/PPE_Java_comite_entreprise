@@ -7,6 +7,7 @@ import modele.Modele;
 import vue.VueConnexion;
 import vue.VueUtilisateur;
 import vue.VueActivite;
+import vue.VueCommentaire;
 
 
 public class Main {
@@ -14,7 +15,7 @@ public class Main {
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;
-	
+	public static VueCommentaire uneVueCommentaire;
 
 	
 	
@@ -22,6 +23,7 @@ public class Main {
 		uneVueConnexion = new VueConnexion();
 		//new VueConnexion();
 		//new VueUtilisateur();
+		//new VueCommentaire();
 	}
 
 	public static Utilisateur verifConnexion(String email, String mdp) {
@@ -39,7 +41,9 @@ public class Main {
 	public static void instancierVueActivite() {
 		uneVueActivite = new VueActivite();
 	}
-	
+	public static void instancierVueCommentaire() {
+		uneVueCommentaire = new VueCommentaire();
+	}
 	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
 	public static void rendreVisible(boolean action) {
 		uneVueConnexion.setVisible(action);
@@ -71,6 +75,17 @@ public class Main {
 
 	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
 		return Modele.selectAllUtilisateurs(mot);
+	}
+
+	/********************* CONTROLEUR COMMENTAIRE ***************************/
+	
+	
+	public static ArrayList<Commentaire> selectAllCommentaires(String mot) {
+		return Modele.selectAllCommentaires(mot);
+	}
+
+	public static void insertCommentaire(Commentaire unCommentaire) {
+		Modele.insertCommentaire(unCommentaire); 
 	}
 	
 }

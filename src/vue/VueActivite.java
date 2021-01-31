@@ -40,7 +40,6 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	private final static int HEIGHT = 500;
 
 	
-	private static VueConnexion uneVueConnexion; 
 	
 	private JPanel panelAjout = new JPanel();
 	private JButton btRetour = new JButton("Retour");
@@ -84,7 +83,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		//construction du panel Ajout
 		this.panelAjout.setBounds(40, 100, 300, 250);
 		this.panelAjout.setBackground(new Color (206,214, 224  ));
-		this.panelAjout.setLayout(new GridLayout(7,2));
+		this.panelAjout.setLayout(new GridLayout(7,2, 5, 5));
 		this.panelAjout.add(new JLabel("Nom activité :")); 
 		this.panelAjout.add(this.txtNomAct);
 		this.panelAjout.add(new JLabel("Lieu de l'activité :")); 
@@ -288,7 +287,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			int ligne = uneTable.getSelectedRow();
 			System.out.println(ligne);
 			int idActivite = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
-			int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce pilote ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+			int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette activité ?", "Suppression", JOptionPane.YES_NO_OPTION); 
 			if (retour == 0) {
 				//suppression dans la base 
 				Main.deleteActivite(idActivite);

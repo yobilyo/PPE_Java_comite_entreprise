@@ -161,19 +161,17 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 				this.panelQuitter.setVisible(false);
 			}
 		}else if (e.getSource() == this.btActivites) {
-			
 			//on rend invisible la vue connexion 
 			this.setVisible(false);
 			//on instancie la vue Activite 
 			Main.instancierVueActivite();
-			
 		}else if (e.getSource() == this.btCommentaires) {
-			
+			this.setVisible(false);
+			Main.instancierVueCommentaire();
 		}else if (e.getSource() == this.btDons) {
 			
 		}else if (e.getSource() == this.btUtilisateur) {
 			this.setVisible(false);
-			
 			Main.instancierVueUtilisateur();
 		}
 	}

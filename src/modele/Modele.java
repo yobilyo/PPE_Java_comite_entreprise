@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import controleur.Activite;
+import controleur.Commentaire;
 import controleur.Utilisateur;
 
 
@@ -43,7 +44,7 @@ public class Modele
 		return unUser; 
 	}
 	
-	/************* ACTIVITE ********************/
+													/************* ACTIVITE ********************/
 	
 	
 	public static void insertActivite (Activite uneActivite) {
@@ -68,14 +69,8 @@ public class Modele
 			System.out.println("Erreur d'exÈcution de la requete : " + requete );
 		}
 	}
-
-	public static void insertUtilisateur(Utilisateur unUtilisateur) {
-		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
-		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
-		
-		executerRequete(requete);
-	}
-
+	
+	
 	public static ArrayList<Activite> selectAllActivites (String mot){
 		
 		String requete ; 
@@ -122,6 +117,18 @@ public class Modele
 		executerRequete(requete);		
 	}
 	
+	
+	
+													/************* UTILISATEUR ********************/
+
+	public static void insertUtilisateur(Utilisateur unUtilisateur) {
+		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
+		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
+		
+		executerRequete(requete);
+	}
+
+	
 	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
 		String requete ; 
 		if (mot.equals("")) {
@@ -149,7 +156,44 @@ public class Modele
 			System.out.println("Erreur d'exÈcution de la requete : " + requete );
 		}
 		return lesUtilisateurs ; 
-		
+	}
+	
+								/************* COMMENTAIRE ********************/	
+	
+	
+	public static ArrayList<Commentaire> selectAllCommentaires(String mot) {
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from commentaire ;" ;
+		}else {
+			requete ="select * from commentaire where datecomment like '%"+mot+"%' or contenu like '%"+mot+"%'; " ;
+		}
+		ArrayList<Commentaire> lesCommentaires = new ArrayList<Commentaire>();  
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Commentaire unCommentaire = new Commentaire (
+						desRes.getInt("id_commentaire"), desRes.getString("datecomment"), desRes.getString("contenu"), desRes.getInt("id_activite"), 
+						desRes.getInt("idutilisateur")
+						);
+				lesCommentaires.add(unCommentaire);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exÈcution de la requete : " + requete );
+		}
+		return lesCommentaires ; 
+	}
+
+	public static void insertCommentaire(Commentaire unCommentaire) {
+		String requete = "insert into commentaire values (null, '" + unCommentaire.getDateComment() + "', '" + unCommentaire.getContenu()
+		 +"', " + unCommentaire.getIdActivite() + "', '" + unCommentaire.getIdUtilisateur() + "' "
+		 + ");";
+		executerRequete(requete);
 	}
 }
 
@@ -172,114 +216,6 @@ public class Modele
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	//Les m√©thodes de gestion de la table Pilote 
-/*	public static void insertPilote (Pilote unPilote)
-	{
-		String requete ="insert into pilote values (null, '" + unPilote.getNom() + "','" + unPilote.getPrenom()
-		+"','" + unPilote.getNationalite() + "','" + unPilote.getEmail()+ "','" + unPilote.getBip() +"', " + unPilote.getNbheuresvol() +" );" ;
-		executerRequete(requete);
-	}
-	
-	public static void deletePilote (int idPilote)
-	{
-		String requete =" delete from pilote where idpilote = " + idPilote +" ; " ;
-		executerRequete(requete);
-	}
-	
-	public static void updatePilote (Pilote unPilote)
-	{
-		String requete ="update pilote set nom = '" + unPilote.getNom() + "', prenom = '" + unPilote.getPrenom()
-		+"', nationalite = '" + unPilote.getNationalite() + "', email = '" + unPilote.getEmail()
-		+ "', bip = '" + unPilote.getBip() +"', nbheuresvol= " + unPilote.getNbheuresvol() 
-		+ "  where idpilote = " + unPilote.getIdpilote() + " ;" ;
-		executerRequete(requete);
-	}
-	
-	public static Pilote selectWherePilote (int idPilote)
-	{
-		String requete ="select * from pilote where idpilote = "+ idPilote +";" ;
-		Pilote unPilote = null ; 
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			ResultSet unRes = unStat.executeQuery(requete);
-			if (unRes.next()) {
-				unPilote = new Pilote (
-						unRes.getInt("idpilote"), unRes.getString("nom"), unRes.getString("prenom"), unRes.getString("email"), 
-						unRes.getString("bip"), unRes.getString("nationalite"), unRes.getInt("nbheuresvol")
-						);
-			}
-			unStat.close();
-			uneBdd.seDeconnecter();
-		}
-		catch(SQLException exp) {
-			System.out.println("Erreur d'ex√©cution de la requete : " + requete );
-		}
-		return unPilote ; 
-	}
-	
-	//surcharge de la m√©thode avec de nouveaux arguments 
-	public static Pilote selectWherePilote (String email, String bip)
-	{
-		String requete ="select * from pilote where email = '"+ email +"' and bip = '"+bip +"' ;" ;
-		Pilote unPilote = null ; 
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			ResultSet unRes = unStat.executeQuery(requete);
-			if (unRes.next()) {
-				unPilote = new Pilote (
-						unRes.getInt("idpilote"), unRes.getString("nom"), unRes.getString("prenom"), unRes.getString("email"), 
-						unRes.getString("bip"), unRes.getString("nationalite"), unRes.getInt("nbheuresvol")
-						);
-			}
-			unStat.close();
-			uneBdd.seDeconnecter();
-		}
-		catch(SQLException exp) {
-			System.out.println("Erreur d'ex√©cution de la requete : " + requete );
-		}
-		return unPilote ; 
-	}
-
-	public static ArrayList<Pilote> selectAllPilotes (String mot){
-		
-		String requete ; 
-		if (mot.equals("")) {
-			requete ="select * from pilote ;" ;
-		}else {
-			requete ="select * from pilote where nom like '%"+mot+"%' or prenom like '%"+mot+"%' or nationalite like '%" + mot + "%' ; " ;
-		}
-		ArrayList<Pilote> lesPilotes = new ArrayList<Pilote>();  
-		
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			ResultSet desRes = unStat.executeQuery(requete);
-			while (desRes.next()) {
-				Pilote unPilote = new Pilote (
-						desRes.getInt("idpilote"), desRes.getString("nom"), desRes.getString("prenom"), desRes.getString("email"), 
-						desRes.getString("bip"), desRes.getString("nationalite"), desRes.getInt("nbheuresvol")
-						);
-				lesPilotes.add(unPilote);
-			}
-			unStat.close();
-			uneBdd.seDeconnecter();
-		}
-		catch(SQLException exp) {
-			System.out.println("Erreur d'ex√©cution de la requete : " + requete );
-		}
-		return lesPilotes ; 
-	}
-	
-	
-	*/
 
 
 
