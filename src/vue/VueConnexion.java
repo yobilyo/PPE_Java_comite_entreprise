@@ -170,6 +170,9 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		}else if (e.getSource() == this.btCommentaires) {
 			
 		}else if (e.getSource() == this.btDons) {
+			this.setVisible(false);
+			
+			Main.instancierVueDon();
 			
 		}else if (e.getSource() == this.btUtilisateur) {
 			this.setVisible(false);
