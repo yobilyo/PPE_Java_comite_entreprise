@@ -45,9 +45,6 @@ public class Main {
 		uneVueConnexion.setVisible(action);
 	}
 	
-	
-	
-	
 	/********************* CONTROLEUR ACTIVITE ***************************/
 	
 	
@@ -65,8 +62,6 @@ public class Main {
 		Modele.updateActivite(uneActivite);
 		
 	}
-	
-	
 
 	/********************* CONTROLEUR UTILISATEUR ***************************/
 	
@@ -74,10 +69,8 @@ public class Main {
 		Modele.insertUtilisateur(unUtilisateur);
 	}
 
-
-	
-	
-	
-	
+	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
+		return Modele.selectAllUtilisateurs(mot);
+	}
 	
 }

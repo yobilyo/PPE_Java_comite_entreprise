@@ -121,6 +121,36 @@ public class Modele
 		+ "  where id_activite = " + uneActivite.getIdActivite() + " ;" ;
 		executerRequete(requete);		
 	}
+	
+	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from utilisateur ;" ;
+		}else {
+			requete ="select * from utilisateur where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
+		}
+		ArrayList<Utilisateur> lesUtilisateurs = new ArrayList<Utilisateur>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Utilisateur unUtilisateur = new Utilisateur (
+						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("password"), desRes.getString("email"), 
+						desRes.getString("droits")
+						);
+				lesUtilisateurs.add(unUtilisateur);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		return lesUtilisateurs ; 
+		
+	}
 }
 
 
