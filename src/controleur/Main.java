@@ -19,8 +19,8 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-		//uneVueConnexion = new VueConnexion();
-		new VueActivite();
+		uneVueConnexion = new VueConnexion();
+		//new VueConnexion();
 		//new VueUtilisateur();
 	}
 
