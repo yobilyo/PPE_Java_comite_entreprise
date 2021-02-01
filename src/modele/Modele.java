@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import controleur.Activite;
 import controleur.Commentaire;
+import controleur.Don;
 import controleur.Utilisateur;
 
 
@@ -69,8 +70,6 @@ public class Modele
 			System.out.println("Erreur d'exécution de la requete : " + requete );
 		}
 	}
-	
-	
 	public static ArrayList<Activite> selectAllActivites (String mot){
 		
 		String requete ; 
@@ -120,14 +119,12 @@ public class Modele
 	
 	
 													/************* UTILISATEUR ********************/
-
 	public static void insertUtilisateur(Utilisateur unUtilisateur) {
 		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
 		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
 		
 		executerRequete(requete);
 	}
-
 	
 	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
 		String requete ; 
@@ -157,6 +154,71 @@ public class Modele
 		}
 		return lesUtilisateurs ; 
 	}
+	/************* DON ********************/
+	
+	
+	public static void insertDon (Don unDon) {
+		String requete = "insert into don values (null, '" + unDon.getDatedon() + "','" + unDon.getMontant() + "','" + unDon.getAppreciation() + "','" + unDon.getIdutilisateur()
+		 + "','" + unDon.getId_tresorerie()+"');";
+		executerRequete(requete);
+		}
+
+
+	public static ArrayList<Don> selectAllDons (String mot){
+		
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from don ;" ;
+		}else {
+			requete ="select * from don where appreciation like '%"+mot+"%'" + " or montant like '%"+mot+"%'"
+					+ " or iddon like '%"+mot+"%' or datedon like '%" + mot + "%' ; " ;
+		}
+		ArrayList<Don> lesDons = new ArrayList<Don>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Don unDon = new Don (
+						desRes.getInt("iddon"), 
+						desRes.getInt("idutilisateur"), 
+						desRes.getInt("id_tresorerie"), 
+						desRes.getString("appreciation"), 
+						desRes.getFloat("montant"), 
+						desRes.getString("datedon")
+						);
+				lesDons.add(unDon);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		return lesDons ; 
+	}
+
+	public static void deleteDon (int iddon)
+	{
+		String requete =" delete from don where iddon = " + iddon +" ; " ;
+		executerRequete(requete);
+	}
+
+	public static void updateDon(Don unDon) {
+		String requete ="update don set datedon = '" + unDon.getDatedon() + "', montant = '" + unDon.getMontant()
+		+"', appreciation = " + unDon.getAppreciation() + ", idutilisateur = '" + unDon.getIdutilisateur()
+		+ "', id_tresorerie = " + unDon.getId_tresorerie() 
+		+ "  where iddon = " + unDon.getIddon() + " ;" ;
+		executerRequete(requete);		
+	}
+	
+
+
+
+
+	
+	
 	
 								/************* COMMENTAIRE ********************/	
 	
