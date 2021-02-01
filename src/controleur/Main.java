@@ -65,12 +65,28 @@ public class Main {
 
 	/********************* CONTROLEUR UTILISATEUR ***************************/
 	
-	public static void insertUtilisateur(Utilisateur unUtilisateur) {
-		Modele.insertUtilisateur(unUtilisateur);
+	public static Utilisateur selectFindUtilisateur(String username, String email, String droits) {
+		return Modele.selectFindUtilisateur(username, email, droits);
+	}
+	
+	/********************* CONTROLEUR UTILISATEUR SALARIE ***************************/
+	
+	public static void insertUtilisateurSalarie(Salarie unSalarie) {
+		Modele.insertUtilisateurSalarie(unSalarie);
 	}
 
-	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
-		return Modele.selectAllUtilisateurs(mot);
+	public static ArrayList<Salarie> selectAllUtilisateursSalaries(String mot) {
+		return Modele.selectAllUtilisateursSalaries(mot);
+	}
+	
+	/********************* CONTROLEUR UTILISATEUR SPONSOR ***************************/
+	
+	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
+		Modele.insertUtilisateurSponsor(unSponsor);
+	}
+
+	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {
+		return Modele.selectAllUtilisateursSponsors(mot);
 	}
 	
 }

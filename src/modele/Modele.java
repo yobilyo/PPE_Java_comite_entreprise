@@ -6,9 +6,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import controleur.Activite;
+import controleur.Main;
+import controleur.Salarie;
+import controleur.Sponsor;
 import controleur.Utilisateur;
-
-
 
 public class Modele 
 {
@@ -45,7 +46,6 @@ public class Modele
 	
 	/************* ACTIVITE ********************/
 	
-	
 	public static void insertActivite (Activite uneActivite) {
 		String requete = "insert into activite values (null, '" + uneActivite.getNom() + "','" + uneActivite.getLieu()
 		+"', " + "null, "   + "null, " +  uneActivite.getBudget() + ",'" + uneActivite.getDescription()+ "',"  + "null, "
@@ -69,13 +69,6 @@ public class Modele
 		}
 	}
 
-	public static void insertUtilisateur(Utilisateur unUtilisateur) {
-		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
-		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
-		
-		executerRequete(requete);
-	}
-
 	public static ArrayList<Activite> selectAllActivites (String mot){
 		
 		String requete ; 
@@ -83,8 +76,10 @@ public class Modele
 			requete ="select * from activite ;" ;
 		}else {
 			requete ="select * from activite where nom like '%"+mot+"%'" + " or prix like '%"+mot+"%'"
-					+ " or lieu like '%"+mot+"%' or budget like '%" + mot + 
-					 "%' or description like '%"+mot+"%' or nb_personnes like '%"+mot+"%' ; " ;
+					+ " or lieu like '%"+mot+"%' or description like '%"+mot+"%' or nb_personnes like '%"+mot+"%' ; " ;
+					// budget est de type double, on ne le cherche pas avec des like '%string%'
+					// ex: select * from sponsor where budget = 8000 or societe like '%Lys D\'Or%';
+					// donc on ne le met pas ici
 		}
 		ArrayList<Activite> lesActivites = new ArrayList<Activite>();  
 		
@@ -122,25 +117,22 @@ public class Modele
 		executerRequete(requete);		
 	}
 	
-	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
-		String requete ; 
-		if (mot.equals("")) {
-			requete ="select * from utilisateur ;" ;
-		}else {
-			requete ="select * from utilisateur where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
-		}
-		ArrayList<Utilisateur> lesUtilisateurs = new ArrayList<Utilisateur>();  
+	/************* UTILISATEUR ********************/
+
+	public static Utilisateur selectFindUtilisateur(String username, String email, String droits) {
+		Utilisateur unUtilisateur = null;
 		
+		String requete = "select * from utilisateur where username like '%"+username+"%' and email like '%"+email+"%' and droits like '%"+droits+"%'; " ;
+	
 		try {
 			uneBdd.seConnecter();
 			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
-				Utilisateur unUtilisateur = new Utilisateur (
+				unUtilisateur = new Utilisateur (
 						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("password"), desRes.getString("email"), 
 						desRes.getString("droits")
 						);
-				lesUtilisateurs.add(unUtilisateur);
 			}
 			unStat.close();
 			uneBdd.seDeconnecter();
@@ -148,9 +140,121 @@ public class Modele
 		catch(SQLException exp) {
 			System.out.println("Erreur d'exécution de la requete : " + requete );
 		}
-		return lesUtilisateurs ; 
+		return unUtilisateur; 
 		
 	}
+	
+	/************* UTILISATEUR SALARIE ********************/
+	
+	public static void insertUtilisateurSalarie(Salarie unSalarie) {
+		// Utilisateur
+		String requeteUtilisateur = "insert into utilisateur values (null, '" + unSalarie.getUsername() + "', '" + unSalarie.getPassword()
+		+"', '" + unSalarie.getEmail()+ "', '" + unSalarie.getDroits() +"');";
+		
+		executerRequete(requeteUtilisateur);
+		
+		//SelectWhere pour obtenir l'idutilisateur réel inséré:
+		int idUtilisateurInsere = Main.selectFindUtilisateur(unSalarie.getUsername(), unSalarie.getEmail(), unSalarie.getDroits()).getIdUtilisateur();
+		
+		// Salarie
+		String requeteSalarie = "insert into salarie values(" + idUtilisateurInsere + ", '" + unSalarie.getNom() + "', '"
+		+ unSalarie.getPrenom() + "', '" + unSalarie.getTel() + "', '" + unSalarie.getAdresse() + "', '"
+		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '" + unSalarie.getSexe() + "';";
+		
+		executerRequete(requeteSalarie);
+	}
+	
+	public static ArrayList<Salarie> selectAllUtilisateursSalaries(String mot) {
+		String requete ; 
+		// + simple d'utiliser la view sql utilisateur_salarie directement
+		if (mot.equals("")) {
+			requete ="select * from utilisateur_salarie ;" ;
+		}else {
+			requete ="select * from utilisateur_salarie where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
+		}
+		ArrayList<Salarie> lesUtilisateursSalaries = new ArrayList<Salarie>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Salarie unSalarie = new Salarie (
+						// utilisateur
+						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("email"), desRes.getString("password"),  
+						desRes.getString("droits"),
+						// salarie (suivre l'ordre de la table salarie, pas de la vue utilisateur_salarie)
+						desRes.getString("nom"), desRes.getString("prenom"), desRes.getString("tel"), desRes.getString("adresse"),
+						desRes.getString("quotient_fam"), desRes.getString("service"), desRes.getString("sexe")
+						);
+				lesUtilisateursSalaries.add(unSalarie);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		
+		return lesUtilisateursSalaries ; 
+	}
+	
+	/************* UTILISATEUR SPONSOR ********************/
+	
+	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
+		// Utilisateur
+		String requeteUtilisateur = "insert into utilisateur values (null, '" + unSponsor.getUsername() + "', '" + unSponsor.getPassword()
+		+"', '" + unSponsor.getEmail()+ "', '" + unSponsor.getDroits() +"');";
+		
+		executerRequete(requeteUtilisateur);
+		
+		//SelectWhere pour obtenir l'idutilisateur réel inséré:
+		int idUtilisateurInsere = Main.selectFindUtilisateur(unSponsor.getUsername(), unSponsor.getEmail(), unSponsor.getDroits()).getIdUtilisateur();
+		
+		// Salarie
+		String requeteSponsor = "insert into salarie values(" + idUtilisateurInsere + ", '" + unSponsor.getSociete() + "', '"
+		+ unSponsor.getImage_url() + "', '" + unSponsor.getBudget() + "', '" + unSponsor.getTel() + "', '"
+		+ unSponsor.getLien() + "';";
+		
+		executerRequete(requeteSponsor);
+	}
+	
+	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {
+		String requete ; 
+		// + simple d'utiliser la view sql utilisateur_sponsor directement
+		if (mot.equals("")) {
+			requete ="select * from utilisateur_sponsor ;" ;
+		}else {
+			requete ="select * from utilisateur_sponsor where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
+		}
+		ArrayList<Sponsor> lesUtilisateursSponsors = new ArrayList<Sponsor>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Sponsor unSponsor = new Sponsor (
+						// utilisateur
+						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("email"), desRes.getString("password"),  
+						desRes.getString("droits"),
+						// sponsor (suivre l'ordre de la table sponsor, pas de la vue utilisateur_sponsor)
+						desRes.getString("societe"), desRes.getString("image_url"), desRes.getDouble("budget"), desRes.getString("tel"),
+						desRes.getString("lien")
+						);
+				lesUtilisateursSponsors.add(unSponsor);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		
+		return lesUtilisateursSponsors ; 
+	}
+	
+
 }
 
 

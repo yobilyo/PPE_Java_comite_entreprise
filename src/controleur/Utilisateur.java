@@ -2,9 +2,8 @@ package controleur;
 
 public class Utilisateur {
 
-	private int idUtilisateur;
-	private String email, username, password, droits;
-	
+	protected int idUtilisateur;
+	protected String email, username, password, droits;
 
 	public Utilisateur(int idUtilisateur, String username, String password, String email, String droits) {
 		this.idUtilisateur = idUtilisateur;
