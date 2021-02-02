@@ -212,7 +212,7 @@ public class Modele
 		int idUtilisateurInsere = Main.selectFindUtilisateur(unSponsor.getUsername(), unSponsor.getEmail(), unSponsor.getDroits()).getIdUtilisateur();
 		
 		// Salarie
-		String requeteSponsor = "insert into salarie values(" + idUtilisateurInsere + ", '" + unSponsor.getSociete() + "', '"
+		String requeteSponsor = "insert into sponsor values(" + idUtilisateurInsere + ", '" + unSponsor.getSociete() + "', '"
 		+ unSponsor.getImage_url() + "', '" + unSponsor.getBudget() + "', '" + unSponsor.getTel() + "', '"
 		+ unSponsor.getLien() + "');";
 		

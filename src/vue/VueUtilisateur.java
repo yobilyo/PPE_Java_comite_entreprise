@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 
 import controleur.Main;
 import controleur.Salarie;
+import controleur.Sponsor;
 import controleur.Tableau;
 import controleur.Utilisateur;
 
@@ -39,6 +40,9 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	private JButton btSalarie = new JButton("Salarié");
 	private JButton btSponsor = new JButton("Sponsor");
 	private JPanel panelAjoutSponsor = new JPanel();
+	
+	// nous permet de savoir si on est sur le bouton salarie ou le bouton sponsor
+	private boolean isSalarie;
 	
 	//utilisateurSponsor - 9 elements à remplir
 	//utilisateur
@@ -120,6 +124,9 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		//this.initPanelListerSalarie();
 		//this.remplirPanelListerSalarie("");
 		
+		//par défaut on commence sur le panel salarie au début
+		this.isSalarie = true;
+		
 		this.setVisible(true);
 	}
 	
@@ -184,21 +191,29 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	}
 	
 	public void remplirPanelAjoutSponsor() {
-		this.panelAjoutSponsor.setLayout(new GridLayout(6,2));
+		this.panelAjoutSponsor.setLayout(new GridLayout(9,2));
 		this.panelAjoutSponsor.setBounds(40, 100, 300, 250);
 		this.panelAjoutSponsor.setBackground(new Color (206,214, 224  ));
-		this.panelAjoutSponsor.add(new JLabel("Username du sponsor :"));
+		
+		this.panelAjoutSponsor.add(new JLabel("Nom d'utilisateur :"));
 		this.panelAjoutSponsor.add(txtUserSpons);
-		this.panelAjoutSponsor.add(new JLabel("Email du sponsor :"));
+		this.panelAjoutSponsor.add(new JLabel("Mot de passe :"));
+		this.panelAjoutSponsor.add(txtMdpSpons);
+		this.panelAjoutSponsor.add(new JLabel("Email :"));
 		this.panelAjoutSponsor.add(txtEmailSpons);
-		this.panelAjoutSponsor.add(new JLabel("Nom de société  :"));
-		this.panelAjoutSponsor.add(txtSocieteSpons);
-		this.panelAjoutSponsor.add(new JLabel("Budget du sponsor :"));
-		this.panelAjoutSponsor.add(txtBudgetSpons);
-		this.panelAjoutSponsor.add(new JLabel("Tel du sponsor :" ));
-		this.panelAjoutSponsor.add(txtTelSpons);
-		this.panelAjoutSponsor.add(new JLabel("Droits du sponsor :"));
+		this.panelAjoutSponsor.add(new JLabel("Droits :"));
 		this.panelAjoutSponsor.add(cbxDroitsSpons);
+		this.panelAjoutSponsor.add(new JLabel("Nom de société :"));
+		this.panelAjoutSponsor.add(txtSocieteSpons);
+		this.panelAjoutSponsor.add(new JLabel("URL de l'image :"));
+		this.panelAjoutSponsor.add(txtImgurlSpons);
+		this.panelAjoutSponsor.add(new JLabel("Budget :"));
+		this.panelAjoutSponsor.add(txtBudgetSpons);
+		this.panelAjoutSponsor.add(new JLabel("Téléphone :" ));
+		this.panelAjoutSponsor.add(txtTelSpons);
+		this.panelAjoutSponsor.add(new JLabel("Adresse web :" ));
+		this.panelAjoutSponsor.add(txtLienSpons);
+
 		this.remplircbxDroitsSpons();
 		this.panelAjoutSponsor.setVisible(false);
 	}
@@ -271,13 +286,75 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		}
 	}
 	
+	public void insertUtilisateurSpons() {
+		// utilisateur
+		String username = this.txtUserSpons.getText();
+		String mdp = new String(this.txtMdpSpons.getPassword());
+		String email = this.txtEmailSpons.getText();
+		String droits = this.cbxDroitsSpons.getSelectedItem().toString();
+		// sponsor
+		String societe = this.txtSocieteSpons.getText();
+		String image_url = this.txtImgurlSpons.getText();
+		double budget = 0;
+		try {
+			budget = Double.parseDouble(this.txtBudgetSpons.getText());
+		} catch (NumberFormatException exp) {
+			JOptionPane.showMessageDialog(this, "Erreur de saisie de montant");
+		}
+		String tel = this.txtTelSpons.getText();
+		String lien = this.txtLienSpons.getText();
+	
+		try {
+			if(!txtUserSpons.getText().equals("") || !txtEmailSpons.getText().equals("")) {
+				Sponsor unSponsor = new Sponsor(username, mdp, email, droits, societe, image_url, budget, 
+						tel, lien);
+				Main.insertUtilisateurSponsor(unSponsor);
+				JOptionPane.showMessageDialog(this,"Insertion réussie !");
+				this.viderLesChampsSpons();
+				txtUserSpons.setBackground(Color.WHITE);
+				txtEmailSpons.setBackground(Color.WHITE);
+			}else {
+				txtUserSpons.setBackground(Color.RED);
+				txtEmailSpons.setBackground(Color.RED);
+				JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
+			}
+		} catch(Exception e) {
+			System.out.println("Aie " + e.getStackTrace());	
+		}
+	}
+
 	public void viderLesChampsSalarie() {
+		// après insertion réussie, on vide les champs
+		// utilisateur
 		this.txtUsernameSalarie.setText("");
 		this.txtMdpSalarie.setText("");
 		this.txtEmailSalarie.setText("");
 		this.cbxDroitsSalarie.setSelectedIndex(0);
+		// salarie
+		this.txtNomSalarie.setText("");
+		this.txtPrenomSalarie.setText("");
+		this.txtTelSalarie.setText("");
+		this.txtAdresseSalarie.setText("");
+		this.cbxQuotientFamSalarie.setSelectedIndex(0);
+		this.cbxServiceSalarie.setSelectedIndex(0);
+		this.cbxSexeSalarie.setSelectedIndex(0);
 	}
-
+	
+	public void viderLesChampsSpons() {
+		// après insertion réussie, on vide les champs
+		// utilisateur
+		this.txtUserSpons.setText("");
+		this.txtMdpSpons.setText("");
+		this.txtEmailSpons.setText("");
+		this.cbxDroitsSpons.setSelectedIndex(0);
+		// sponsor
+		this.txtSocieteSpons.setText("");
+		this.txtImgurlSpons.setText("");
+		this.txtBudgetSpons.setText("");
+		this.txtTelSpons.setText("");
+		this.txtLienSpons.setText("");
+	}
+	
 	public void initPanelListerSalarie() {
 		//construire le panel Lister Salarie
 		this.panelListerSalarie.setBackground(new Color (206,214, 224  ));
@@ -326,13 +403,29 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 			this.dispose();
 			Main.rendreVisible(true);
 		}else if (e.getSource() == this.btEnregistrer) {
-			this.insertUtilisateurSalarie();
+			//System.out.println(this.isSalarie);
+			if (this.isSalarie == true) {
+				//System.out.println("sa");
+				this.insertUtilisateurSalarie();
+			}
+			else {
+				//System.out.println("sp");
+				this.insertUtilisateurSpons();
+			}
 		}else if (e.getSource() == this.btAnnuler) {
-			this.viderLesChampsSalarie();
+			//System.out.println(this.isSalarie);
+			if (this.isSalarie == true) {
+				this.viderLesChampsSalarie();
+			}
+			else {
+				this.viderLesChampsSpons();
+			}
 		}else if(e.getSource() == this.btSponsor) {
+			this.isSalarie = false;
 			this.panelAjoutSalarie.setVisible(false);
 			this.panelAjoutSponsor.setVisible(true);
 		}else if(e.getSource() == this.btSalarie) {
+			this.isSalarie = true;
 			this.panelAjoutSalarie.setVisible(true);
 			this.panelAjoutSponsor.setVisible(false);
 		}
