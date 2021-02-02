@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -241,7 +242,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.uneTable = new JTable(this.unTableau); 
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		
-
+		Main.styleTableau(this.uneTable);
 		initPanelLister();
 
 	}

@@ -1,6 +1,11 @@
 package controleur;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.util.ArrayList;
+
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 
 import modele.Modele;
 
@@ -25,15 +30,34 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-		uneVueConnexion = new VueConnexion();
-		//new VueConnexion();
-		//new VueUtilisateur();
-		//new VueCommentaire();
+		//lancement plus propre
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				//uneVueConnexion = new VueConnexion();
+				//new VueConnexion();
+				//new VueUtilisateur();
+				//new VueCommentaire();
+				new VueActivite();
+			}
+		});
 	}
 
-	public static Utilisateur verifConnexion(String email, String mdp) {
-		return Modele.verifConnexion(email, mdp);
+	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
+	public static void rendreVisible(boolean action) {
+		uneVueConnexion.setVisible(action);
 	}
+	
+	/******************* STYLISATION ***********************************/
+	
+	public static void styleTableau(JTable uneTable) {
+		uneTable.setSelectionBackground(Color.RED);
+		uneTable.setBackground(new Color(31, 61, 128));
+		uneTable.setForeground(new Color(255, 255, 255));
+		uneTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	}
+	
+	/********************** INSTANCTIATIONS *********************/
 	
 	public static void instancierVueConnexion() {
 		uneVueConnexion = new VueConnexion();
@@ -57,10 +81,7 @@ public class Main {
 	}
 	
 
-	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
-	public static void rendreVisible(boolean action) {
-		uneVueConnexion.setVisible(action);
-	}
+
 	
 	/********************* CONTROLEUR ACTIVITE ***************************/
 	
@@ -115,4 +136,10 @@ public class Main {
 	public static void updateDon(Don unDon) {
 		Modele.updateDon(unDon);
 	}
+	
+	/************************* CONNEXION *************************/
+	public static Utilisateur verifConnexion(String email, String mdp) {
+		return Modele.verifConnexion(email, mdp);
+	}
+	
 }
