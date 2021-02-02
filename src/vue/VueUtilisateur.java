@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import controleur.Main;
+import controleur.Salarie;
 import controleur.Tableau;
 import controleur.Utilisateur;
 
@@ -93,6 +94,11 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		
 		//construction du panel Ajout Sponsor
 		this.remplirPanelAjoutSponsor();
+		this.add(panelAjoutSponsor);
+		
+		// rendre visible les panels pour mieux comprendre
+		this.panelAjoutSponsor.setBorder(LineBorder.createBlackLineBorder());
+		this.panelAjoutSalarie.setBorder(LineBorder.createBlackLineBorder());
 		
 		this.btEnregistrer.setBounds(50, 350, 140, 25);
 		this.add(this.btEnregistrer);
@@ -100,11 +106,7 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.add(this.btAnnuler); 
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
-		
-		//PANNEAU SPONSOR
-		this.remplirPanelAjoutSponsor();
-		this.add(panelAjoutSponsor);
-		
+
 		// boutons pour toggle salarie/sponsor
 		this.btSalarie.setBounds(50 , 25, 140, 25);
 		this.add(btSalarie);
@@ -113,12 +115,8 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.btSponsor.setBounds(200 , 25, 140, 25);
 		this.add(btSponsor);
 		this.btSponsor.addActionListener(this);
-
-		// rendre visible les panels pour mieux comprendre
-		this.panelAjoutSponsor.setBorder(LineBorder.createBlackLineBorder());
-		this.panelAjoutSalarie.setBorder(LineBorder.createBlackLineBorder());
 		
-		// Construire le panel Lister, puis le remplir avec une Scroll
+		// Construire le panel Lister Salarie, puis le remplir avec une Scroll
 		//this.initPanelListerSalarie();
 		//this.remplirPanelListerSalarie("");
 		
@@ -129,7 +127,37 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.panelAjoutSalarie.setLayout(new GridLayout(11,2));
 		this.panelAjoutSalarie.setBounds(40, 100, 300, 250);
 		this.panelAjoutSalarie.setBackground(new Color (206,214, 224   ));
-		JLabel label = new JLabel("Nom utilisateur :");
+		
+		this.panelAjoutSalarie.add(new JLabel("Nom d'utilisateur :"));
+		this.panelAjoutSalarie.add(this.txtUsernameSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Mot de passe :"));
+		this.panelAjoutSalarie.add(this.txtMdpSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Email :"));
+		this.panelAjoutSalarie.add(this.txtEmailSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Droits :"));
+		this.panelAjoutSalarie.add(this.cbxDroitsSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Nom :"));
+		this.panelAjoutSalarie.add(this.txtNomSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Prenom :"));
+		this.panelAjoutSalarie.add(this.txtPrenomSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Téléphone :"));
+		this.panelAjoutSalarie.add(this.txtTelSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Adresse :"));
+		this.panelAjoutSalarie.add(this.txtAdresseSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Quotient familial :"));
+		this.panelAjoutSalarie.add(this.cbxQuotientFamSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Service :"));
+		this.panelAjoutSalarie.add(this.cbxServiceSalarie);
+		this.panelAjoutSalarie.add(new JLabel("Sexe :"));
+		this.panelAjoutSalarie.add(this.cbxSexeSalarie);
+		
+		//remplir les cbx Salarie
+		this.remplircbxDroitsSalarie();
+		this.remplircbxQuotientFamSalarie();
+		this.remplircbxServiceSalarie();
+		this.remplircbxSexeSalarie();
+		
+		/*JLabel label = new JLabel("Nom utilisateur :");
 		label.setBounds(0, 0, 150, 25);
 		this.panelAjoutSalarie.add(label); 
 		txtUsernameSalarie.setBounds(150, 0, 150, 25);
@@ -151,10 +179,8 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		label_3.setBounds(0, 75, 150, 25);
 		this.panelAjoutSalarie.add(label_3);
 		cbxDroitsSalarie.setBounds(150, 75, 150, 25);
-		this.panelAjoutSalarie.add(this.cbxDroitsSalarie);
+		this.panelAjoutSalarie.add(this.cbxDroitsSalarie);*/
 		
-		//remplir les cbx 
-		this.remplircbxDroitsSalarie();
 	}
 	
 	public void remplirPanelAjoutSponsor() {
@@ -184,30 +210,57 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.cbxDroitsSalarie.addItem("admin");
 	}
 	
+	public void remplircbxQuotientFamSalarie()
+	{
+		this.cbxQuotientFamSalarie.addItem("1");
+		this.cbxQuotientFamSalarie.addItem("2");
+		this.cbxQuotientFamSalarie.addItem("3");
+		this.cbxQuotientFamSalarie.addItem("4");
+		this.cbxQuotientFamSalarie.addItem("5");
+	}
+	
+	public void remplircbxServiceSalarie()
+	{
+		this.cbxServiceSalarie.addItem("comptabilite");
+		this.cbxServiceSalarie.addItem("developpeur");
+		this.cbxServiceSalarie.addItem("commercial");
+		this.cbxServiceSalarie.addItem("ressources_humaines");
+	}
+	
+	public void remplircbxSexeSalarie()
+	{
+		this.cbxSexeSalarie.addItem("homme");
+		this.cbxSexeSalarie.addItem("femme");
+	}
+	
 	public void remplircbxDroitsSpons() {
 		this.cbxDroitsSpons.addItem("sponsor");
 	}
 	
 	public void insertUtilisateurSalarie() {
-		//TODO
 		// utilisateur
 		String username = this.txtUsernameSalarie.getText();
 		String mdp = new String(this.txtMdpSalarie.getPassword());
 		String email = this.txtEmailSalarie.getText();
 		String droits = this.cbxDroitsSalarie.getSelectedItem().toString();
 		// salarie
-		String societe = this.txtSocieteSpons.getText();
-		String image_url = this.txtImgurlSpons.getText();
-		String budget = this.txt
+		String nom = this.txtNomSalarie.getText();
+		String prenom = this.txtPrenomSalarie.getText();
+		String tel = this.txtTelSalarie.getText();
+		String adresse = this.txtAdresseSalarie.getText();
+		String quotient_fam = this.cbxQuotientFamSalarie.getSelectedItem().toString();
+		String service = this.cbxServiceSalarie.getSelectedItem().toString();
+		String sexe = this.cbxSexeSalarie.getSelectedItem().toString();
 	
 		try {
 			if(!txtUsernameSalarie.getText().equals("") || !txtEmailSalarie.getText().equals("")) {
-			Utilisateur unUtilisateur = new Utilisateur(username, mdp, email, droits);
-			Main.insertUtilisateurSalarie(unUtilisateur);
-			JOptionPane.showMessageDialog(this,"Insertion réussie !");
-			this.viderLesChamps();
-			txtUsernameSalarie.setBackground(Color.WHITE);
-			txtEmailSalarie.setBackground(Color.WHITE);
+				Salarie unSalarie = new Salarie(username, mdp, email, droits, nom, prenom, tel, 
+						adresse, quotient_fam, service, sexe);
+				Main.insertUtilisateurSalarie(unSalarie);
+				JOptionPane.showMessageDialog(this,"Insertion réussie !");
+				this.viderLesChampsSalarie();
+				txtUsernameSalarie.setBackground(Color.WHITE);
+				txtEmailSalarie.setBackground(Color.WHITE);
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
@@ -218,7 +271,7 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		}
 	}
 	
-	public void viderLesChamps() {
+	public void viderLesChampsSalarie() {
 		this.txtUsernameSalarie.setText("");
 		this.txtMdpSalarie.setText("");
 		this.txtEmailSalarie.setText("");
@@ -275,7 +328,7 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		}else if (e.getSource() == this.btEnregistrer) {
 			this.insertUtilisateurSalarie();
 		}else if (e.getSource() == this.btAnnuler) {
-			this.viderLesChamps();
+			this.viderLesChampsSalarie();
 		}else if(e.getSource() == this.btSponsor) {
 			this.panelAjoutSalarie.setVisible(false);
 			this.panelAjoutSponsor.setVisible(true);

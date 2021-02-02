@@ -159,7 +159,7 @@ public class Modele
 		// Salarie
 		String requeteSalarie = "insert into salarie values(" + idUtilisateurInsere + ", '" + unSalarie.getNom() + "', '"
 		+ unSalarie.getPrenom() + "', '" + unSalarie.getTel() + "', '" + unSalarie.getAdresse() + "', '"
-		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '" + unSalarie.getSexe() + "';";
+		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '" + unSalarie.getSexe() + "');";
 		
 		executerRequete(requeteSalarie);
 	}
@@ -214,7 +214,7 @@ public class Modele
 		// Salarie
 		String requeteSponsor = "insert into salarie values(" + idUtilisateurInsere + ", '" + unSponsor.getSociete() + "', '"
 		+ unSponsor.getImage_url() + "', '" + unSponsor.getBudget() + "', '" + unSponsor.getTel() + "', '"
-		+ unSponsor.getLien() + "';";
+		+ unSponsor.getLien() + "');";
 		
 		executerRequete(requeteSponsor);
 	}
