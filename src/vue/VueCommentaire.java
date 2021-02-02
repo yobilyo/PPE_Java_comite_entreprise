@@ -5,10 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,9 +44,11 @@ public class VueCommentaire extends JFrame implements ActionListener{
 	private JButton btFiltrer = new JButton("Filtrer :");
 	private JTextField txtFiltrer = new JTextField();
 	
+	//Créer date et l'afficher
 	private JLabel labDate = new JLabel();
 	private SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Date dateComment = new Date();
+	private JTextField txtDate = new JTextField(sFormat.format(dateComment).toString());
 	
 	//private JTextField txtDateCommentaire = new JTextField(); 
 	private JTextField txtContenu = new JTextField(); 
@@ -79,7 +79,7 @@ public class VueCommentaire extends JFrame implements ActionListener{
 		this.panelAjout.setBackground(new Color (206,214, 224  ));
 		this.panelAjout.setLayout(new GridLayout(5,2, 4, 4));
 		this.panelAjout.add(new JLabel("Date du commentaire :")); 
-		this.panelAjout.add(new JLabel(sFormat.format(dateComment)));
+		this.panelAjout.add(this.txtDate);
 		this.panelAjout.add(new JLabel("Contenu du commentaire :")); 
 		this.panelAjout.add(this.txtContenu);
 		this.panelAjout.add(new JLabel("Utilisateur :"));
@@ -193,13 +193,21 @@ public class VueCommentaire extends JFrame implements ActionListener{
 	
 	public void insertCommentaire() {
 		String contenu = this.txtContenu.getText();
-		String dateComment = this.labDate.getText();
+		String dateComment = this.txtDate.getText(); //récupération de la date dans un String
 		String chaineAct = this.cbxActivite.getSelectedItem().toString();
 		String tabAct [] = chaineAct.split(" - ");
 		int idActivite = 0;
 		int idUtilisateur = 0;
 		String chaineUti = this.cbxUtilisateur.getSelectedItem().toString();
 		String tabUti [] = chaineUti.split(" - ");
+		
+		//parser le String date dans un type Date pour permettre l'insertion
+		Date ddcoment = null ;
+		try {
+			ddcoment = java.sql.Date.valueOf(dateComment);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		try {
 			idActivite = Integer.parseInt(tabAct[0]);
 		} catch (NumberFormatException nfe) {
@@ -211,6 +219,7 @@ public class VueCommentaire extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(this, "Impossible de parser l'idUtilisateur");
 
 		}
+	
 
 //		try {
 //			dateComment = Date.parse(this.txtDateCommentaire.getText());
@@ -221,8 +230,8 @@ public class VueCommentaire extends JFrame implements ActionListener{
 //			nbPersonnes = -1;
 //		}
 	
-		if(! this.txtContenu.equals("")) {
-			Commentaire unCommentaire = new Commentaire(dateComment, contenu, idActivite, idUtilisateur);
+		if(! this.txtContenu.getText().equals("")){
+			Commentaire unCommentaire = new Commentaire(ddcoment, contenu, idActivite, idUtilisateur);
 			Main.insertCommentaire(unCommentaire);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();

@@ -237,7 +237,7 @@ public class Modele
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
 				Commentaire unCommentaire = new Commentaire (
-						desRes.getInt("id_commentaire"), desRes.getString("datecomment"), desRes.getString("contenu"), desRes.getInt("id_activite"), 
+						desRes.getInt("id_commentaire"), desRes.getDate("datecomment"), desRes.getString("contenu"), desRes.getInt("id_activite"), 
 						desRes.getInt("idutilisateur")
 						);
 				lesCommentaires.add(unCommentaire);
@@ -253,7 +253,7 @@ public class Modele
 
 	public static void insertCommentaire(Commentaire unCommentaire) {
 		String requete = "insert into commentaire values (null, '" + unCommentaire.getDateComment() + "', '" + unCommentaire.getContenu()
-		 +"', " + unCommentaire.getIdActivite() + "', '" + unCommentaire.getIdUtilisateur() + "' "
+		 +"', " + unCommentaire.getIdActivite() + ", " + unCommentaire.getIdUtilisateur() + " "
 		 + ");";
 		executerRequete(requete);
 	}

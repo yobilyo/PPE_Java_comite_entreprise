@@ -5,7 +5,7 @@ import java.util.Date;
 public class Commentaire {
 	
 	private int idCommentaire;
-	private String dateComment;
+	private Date dateComment;
 	private String contenu;
 	private int idActivite, idUtilisateur;
 	
@@ -17,7 +17,7 @@ public class Commentaire {
 	
 	
 	
-	public Commentaire(int idCommentaire, String dateComment, String contenu, int idActivite, int idUtilisateur ) {
+	public Commentaire(int idCommentaire, Date dateComment, String contenu, int idActivite, int idUtilisateur ) {
 		this.idCommentaire = idCommentaire;
 		this.idActivite = idActivite;
 		this.idUtilisateur = idUtilisateur;
@@ -26,7 +26,7 @@ public class Commentaire {
 	}
 	
 	
-	public Commentaire(String dateComment, String contenu, int idActivite, int idUtilisateur ) {
+	public Commentaire(Date dateComment, String contenu, int idActivite, int idUtilisateur ) {
 		this.idActivite = idActivite;
 		this.idUtilisateur = idUtilisateur;
 		this.dateComment = dateComment;
@@ -52,10 +52,10 @@ public class Commentaire {
 	public void setIdUtilisateur(int idUtilisateur) {
 		this.idUtilisateur = idUtilisateur;
 	}
-	public String getDateComment() {
+	public Date getDateComment() {
 		return dateComment;
 	}
-	public void setDateComment(String dateComment) {
+	public void setDateComment(Date dateComment) {
 		this.dateComment = dateComment;
 	}
 	public String getContenu() {
