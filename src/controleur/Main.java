@@ -18,6 +18,10 @@ import vue.VueCommentaire;
 
 public class Main {
 
+	//Taille des Jpanels
+	public final static int WIDTH = 1200;
+	public final static int HEIGHT = 500;  
+	
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;

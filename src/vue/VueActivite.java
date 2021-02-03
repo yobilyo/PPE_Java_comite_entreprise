@@ -1,25 +1,17 @@
 package vue;
 
-import java.awt.EventQueue;
-
-import java.awt.Font;
-import java.awt.Graphics;
-
-
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,18 +20,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 import controleur.Activite;
 import controleur.Main;
+import controleur.StretchIcon;
 import controleur.Tableau;
 
 public class VueActivite extends JFrame implements ActionListener, MouseListener{
 	
-	private final static int WIDTH = 900;
-	private final static int HEIGHT = 500;
 
+	
+	private JButton btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+	
 
 	private JPanel panelAjout = new JPanel();
 	private JButton btRetour = new JButton("Retour");
@@ -67,7 +60,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 //	private JButton btFiltrer = new JButton("filtrer"); 
 	
 	public VueActivite() {
-		this.setBounds(100, 100, WIDTH, HEIGHT);
+		this.setBounds(100, 100, Main.WIDTH, Main.HEIGHT);
 		this.setTitle("Gestion des activités");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,13 +96,14 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 
-		this.btFiltrer.setBounds(WIDTH /2 - 80, 20, 100, 20);
+		this.btFiltrer.setBounds(Main.WIDTH /2 - 80, 20, 100, 20);
 		this.add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(WIDTH / 2 + 40, 20 , 100, 20);
+		this.txtFiltrer.setBounds(Main.WIDTH / 2 + 40, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
-		
+		this.btDelete.setBounds(10, 20, 50, 50);
+		this.add(btDelete);
 		remplirPanelLister("");
 		this.uneTable.addMouseListener(this);
 		
@@ -225,9 +219,10 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.panelLister.setBackground(new Color (206,214, 224  ));
 		this.panelLister.setLayout(null);
 
-		this.panelLister.setBounds(350, 80, 530, 300);
+		this.panelLister.setBounds(350, 80, 730, 300);
+		this.panelLister.setBorder(new LineBorder(Color.blue));
 		
-		this.uneScroll.setBounds(010, 10, 510, 280);
+		this.uneScroll.setBounds(010, 10, 710, 280);
 		this.panelLister.add(this.uneScroll);
 		
 		
@@ -236,7 +231,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	
 	public void remplirPanelLister(String mot) {
 		this.panelLister.removeAll();
-		String entetes [] = {"IdActivite", "Nom", "Lieu", "Budget", "Description", "Prix", "Nb de Personnes"};
+		String entetes [] = {"IdActivite", "Nom", "Lieu", "Budget", "Description", "Prix", "Nb de Personnes","Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		this.unTableau = new Tableau (donnees, entetes); 
 		this.uneTable = new JTable(this.unTableau); 
@@ -253,7 +248,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		//recuperer les pilotes de la bdd 
 		ArrayList<Activite> lesActivites = Main.selectAllActivites(mot); 
 		//transofrmation des pilotes en matrice de donnÃ©es 
-		Object donnees [][] = new Object [lesActivites.size()][7];
+		Object donnees [][] = new Object [lesActivites.size()][8];
 		int i = 0 ; 
 		for (Activite uneActivite : lesActivites) {
 			donnees[i][0] = uneActivite.getIdActivite()+""; 
@@ -262,7 +257,9 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			donnees[i][3] = uneActivite.getBudget(); 
 			donnees[i][4] = uneActivite.getDescription(); 
 			donnees[i][5] = uneActivite.getPrix(); 
-			donnees[i][6] = uneActivite.getNb_personnes() + ""; 
+			donnees[i][6] = uneActivite.getNb_personnes() ; 
+			donnees[i][7] = this.add(btDelete) ; 
+
 			i++; 
 		}
 				
