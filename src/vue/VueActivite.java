@@ -102,8 +102,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.txtFiltrer.setBounds(Main.WIDTH / 2 + 40, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
-		this.btDelete.setBounds(10, 20, 50, 50);
-		this.add(btDelete);
+	
 		remplirPanelLister("");
 		this.uneTable.addMouseListener(this);
 		

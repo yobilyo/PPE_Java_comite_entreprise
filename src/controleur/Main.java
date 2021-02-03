@@ -38,11 +38,11 @@ public class Main {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				//uneVueConnexion = new VueConnexion();
+				uneVueConnexion = new VueConnexion();
 				//new VueConnexion();
 				//new VueUtilisateur();
 				//new VueCommentaire();
-				new VueActivite();
+			//	new VueActivite();
 			}
 		});
 	}
