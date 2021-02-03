@@ -69,7 +69,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.getContentPane().setBackground(new Color (206,214, 224   ));
 		
 		//installer le bouton retour 
-		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
+		this.btRetour.setBounds(Main.WIDTH -170, Main.HEIGHT -80, 140, 30);
 		this.add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
