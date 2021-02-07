@@ -199,6 +199,38 @@ public class Modele
 		return lesUtilisateursSalaries ; 
 	}
 	
+	public static void deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+		// on supprime le salarie dans la classe fille sql salarie en premier (car clé étrangère), puis on peut supprimer le salarié dans la classe mère utilisateur
+		// Salarie
+		String requeteSalarie = "delete from salarie where idutilisateur =" + idUtilisateurSalarie + ";";
+		
+		executerRequete(requeteSalarie);
+		
+		// Utilisateur
+		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSalarie + ";";
+		
+		executerRequete(requeteUtilisateur);
+	}
+	
+	public static void updateUtilisateurSalarie(Salarie unSalarie) {
+		// utilisateur
+		String requeteUtilisateur = "update utilisateur set username = '" + unSalarie.getUsername()
+		+ "', password = '" + unSalarie.getPassword() + "', email = '" + unSalarie.getEmail()
+		+ "', droits = '" + unSalarie.getDroits()
+		+ "' where idutilisateur = " + unSalarie.getIdUtilisateur() + ";";
+		
+		executerRequete(requeteUtilisateur);
+		
+		// salarie
+		String requeteSalarie = "update salarie set nom = '" + unSalarie.getNom()
+		+ "', prenom = '" + unSalarie.getPrenom() + "', tel = '" + unSalarie.getTel()
+		+ "', adresse = '" + unSalarie.getAdresse() + "', quotient_fam = '" + unSalarie.getQuotient_fam()
+		+ "', service = '" + unSalarie.getService() + "', sexe = '" + unSalarie.getSexe()
+		+ "' where idutilisateur = " + unSalarie.getIdUtilisateur() + ";";
+		
+		executerRequete(requeteSalarie);
+	}
+	
 	/************* UTILISATEUR SPONSOR ********************/
 	
 	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
@@ -254,34 +286,39 @@ public class Modele
 		return lesUtilisateursSponsors ; 
 	}
 	
+	public static void deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+		// on supprime le sponsor dans la classe fille sql sponsor en premier (car clé étrangère), puis on peut supprimer le sponsor dans la classe mère utilisateur
+		// Sponsor
+		String requeteSponsor = "delete from sponsor where idutilisateur =" + idUtilisateurSponsor + ";";
+		
+		executerRequete(requeteSponsor);
+		
+		// Utilisateur
+		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSponsor + ";";
+		
+		executerRequete(requeteUtilisateur);
+	}
+	
+	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
+		// utilisateur
+		String requeteUtilisateur = "update utilisateur set username = '" + unSponsor.getUsername()
+		+ "', password = '" + unSponsor.getPassword() + "', email = '" + unSponsor.getEmail()
+		+ "', droits = '" + unSponsor.getDroits()
+		+ "' where idutilisateur = " + unSponsor.getIdUtilisateur() + ";";
+		
+		executerRequete(requeteUtilisateur);
+		
+		// sponsor
+		String requeteSponsor = "update sponsor set societe = '" + unSponsor.getSociete()
+		+ "', image_url = '" + unSponsor.getImage_url() + "', budget = " + unSponsor.getBudget()
+		+ ", tel = '" + unSponsor.getTel() + "', lien = '" + unSponsor.getLien()
+		+ "' where idutilisateur = " + unSponsor.getIdUtilisateur() + ";";
+		
+		executerRequete(requeteSponsor);
+	}
+	
 
 }
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//Les mÃ©thodes de gestion de la table Pilote 
 /*	public static void insertPilote (Pilote unPilote)
 	{

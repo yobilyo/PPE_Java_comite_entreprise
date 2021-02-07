@@ -79,6 +79,14 @@ public class Main {
 		return Modele.selectAllUtilisateursSalaries(mot);
 	}
 	
+	public static void deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+		Modele.deleteUtilisateurSalarie(idUtilisateurSalarie);
+	}
+	
+	public static void updateUtilisateurSalarie(Salarie unSalarie) {
+		Modele.updateUtilisateurSalarie(unSalarie);
+	}
+	
 	/********************* CONTROLEUR UTILISATEUR SPONSOR ***************************/
 	
 	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
@@ -87,6 +95,14 @@ public class Main {
 
 	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {
 		return Modele.selectAllUtilisateursSponsors(mot);
+	}
+	
+	public static void deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+		Modele.deleteUtilisateurSponsor(idUtilisateurSponsor);
+	}
+	
+	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
+		Modele.updateUtilisateurSponsor(unSponsor);
 	}
 	
 }

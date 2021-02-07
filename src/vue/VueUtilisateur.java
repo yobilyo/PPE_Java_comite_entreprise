@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -24,11 +26,10 @@ import controleur.Sponsor;
 import controleur.Tableau;
 import controleur.Utilisateur;
 
-public class VueUtilisateur extends JFrame implements ActionListener{
+public class VueUtilisateur extends JFrame implements ActionListener {
 	
 	private final static int WIDTH = 900;
 	private final static int HEIGHT = 500;
-
 	
 	private static VueConnexion uneVueConnexion; 
 	
@@ -72,11 +73,17 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	private JComboBox<String> cbxQuotientFamSalarie = new JComboBox<String>();
 	private JComboBox<String> cbxServiceSalarie = new JComboBox<String>();
 	
-	//Construction de la partie Tableau
+	//Construction de la partie Tableau Salarie
 	private JPanel panelListerSalarie = new JPanel();
 	private JTable uneTableSalarie;
 	private JScrollPane uneScrollSalarie;
 	private Tableau unTableauSalarie;
+	
+	//Construction de la partie Tableau Sponsor
+	private JPanel panelListerSponsor = new JPanel();
+	private JTable uneTableSponsor;
+	private JScrollPane uneScrollSponsor;
+	private Tableau unTableauSponsor;
 	
 	public VueUtilisateur() {
 		this.setBounds(100, 100, WIDTH, HEIGHT);
@@ -121,8 +128,138 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.btSponsor.addActionListener(this);
 		
 		// Construire le panel Lister Salarie, puis le remplir avec une Scroll
-		//this.initPanelListerSalarie();
-		//this.remplirPanelListerSalarie("");
+		this.initPanelListerSalarie();
+		this.remplirPanelListerSalarie("");
+		
+		// Construire le panel Lister Sponsor, puis le remplir avec une Scroll
+		this.initPanelListerSponsor();
+		this.remplirPanelListerSponsor("");
+		
+		//rendre les TableSalarie et TableSponsor mouse écoutables
+		this.uneTableSalarie.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() >= 2) {
+					// supprimer
+					int ligne = uneTableSalarie.getSelectedRow();
+					System.out.println(ligne);
+					int idUtilisateurSalarie = Integer.parseInt(unTableauSalarie.getValueAt(ligne, 0).toString()); 
+					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Salarié ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+					if (retour == 0) {
+						//suppression dans la base 
+						Main.deleteUtilisateurSalarie(idUtilisateurSalarie);
+						//suppression dans la table d'affichage 
+						unTableauSalarie.deleteLigne(ligne);
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
+					}
+				}else if (e.getClickCount() == 1) {
+					//modifier
+					int ligne = uneTableSalarie.getSelectedRow();
+					// utilisateur
+					txtUsernameSalarie.setText(unTableauSalarie.getValueAt(ligne, 1).toString());
+					txtMdpSalarie.setText(unTableauSalarie.getValueAt(ligne, 2).toString());
+					txtEmailSalarie.setText(unTableauSalarie.getValueAt(ligne, 3).toString());
+					cbxDroitsSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 4).toString());
+					// salarie
+					txtNomSalarie.setText(unTableauSalarie.getValueAt(ligne, 5).toString());
+					txtPrenomSalarie.setText(unTableauSalarie.getValueAt(ligne, 6).toString());
+					txtTelSalarie.setText(unTableauSalarie.getValueAt(ligne, 7).toString());
+					txtAdresseSalarie.setText(unTableauSalarie.getValueAt(ligne, 8).toString());
+					cbxQuotientFamSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 9).toString());
+					cbxServiceSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 10).toString());
+					cbxSexeSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 11).toString());
+					
+					btEnregistrer.setText("Modifier");
+				}
+				
+			}
+		});
+		this.uneTableSponsor.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getClickCount() >= 2) {
+					// supprimer
+					int ligne = uneTableSponsor.getSelectedRow();
+					System.out.println(ligne);
+					int idUtilisateurSponsor = Integer.parseInt(unTableauSponsor.getValueAt(ligne, 0).toString()); 
+					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Sponsor ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+					if (retour == 0) {
+						//suppression dans la base 
+						Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
+						//suppression dans la table d'affichage 
+						unTableauSponsor.deleteLigne(ligne);
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
+					}
+				}else if (e.getClickCount() == 1) {
+					//modifier
+					int ligne = uneTableSponsor.getSelectedRow();
+					// utilisateur
+					txtUserSpons.setText(unTableauSponsor.getValueAt(ligne, 1).toString());
+					txtMdpSpons.setText(unTableauSponsor.getValueAt(ligne, 2).toString());
+					txtEmailSpons.setText(unTableauSponsor.getValueAt(ligne, 3).toString());
+					cbxDroitsSpons.setSelectedItem(unTableauSponsor.getValueAt(ligne, 4).toString());
+					// sponsor
+					txtSocieteSpons.setText(unTableauSponsor.getValueAt(ligne, 5).toString());
+					txtImgurlSpons.setText(unTableauSponsor.getValueAt(ligne, 6).toString());
+					txtBudgetSpons.setText(unTableauSponsor.getValueAt(ligne, 7).toString());
+					txtTelSpons.setText(unTableauSponsor.getValueAt(ligne, 8).toString());
+					txtLienSpons.setText(unTableauSponsor.getValueAt(ligne, 9).toString());
+					
+					btEnregistrer.setText("Modifier");
+				}
+			}
+		});
 		
 		//par défaut on commence sur le panel salarie au début
 		this.isSalarie = true;
@@ -163,30 +300,6 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.remplircbxQuotientFamSalarie();
 		this.remplircbxServiceSalarie();
 		this.remplircbxSexeSalarie();
-		
-		/*JLabel label = new JLabel("Nom utilisateur :");
-		label.setBounds(0, 0, 150, 25);
-		this.panelAjoutSalarie.add(label); 
-		txtUsernameSalarie.setBounds(150, 0, 150, 25);
-		this.panelAjoutSalarie.add(this.txtUsernameSalarie);
-		
-		JLabel label_2 = new JLabel("Mot de passe :");
-		label_2.setBounds(0, 25, 150, 25);
-		this.panelAjoutSalarie.add(label_2); 
-		txtMdpSalarie.setBounds(150, 25, 150, 25);
-		this.panelAjoutSalarie.add(this.txtMdpSalarie);
-		
-		JLabel label_1 = new JLabel("Email :");
-		label_1.setBounds(0, 50, 150, 25);
-		this.panelAjoutSalarie.add(label_1); 
-		txtEmailSalarie.setBounds(150, 50, 150, 25);
-		this.panelAjoutSalarie.add(this.txtEmailSalarie);
-		
-		JLabel label_3 = new JLabel("Droits : ");
-		label_3.setBounds(0, 75, 150, 25);
-		this.panelAjoutSalarie.add(label_3);
-		cbxDroitsSalarie.setBounds(150, 75, 150, 25);
-		this.panelAjoutSalarie.add(this.cbxDroitsSalarie);*/
 		
 	}
 	
@@ -322,6 +435,85 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 			System.out.println("Aie " + e.getStackTrace());	
 		}
 	}
+	
+	public void updateUtilisateurSalarie() {
+		// utilisateur
+		String username = this.txtUsernameSalarie.getText();
+		String mdp = new String(this.txtMdpSalarie.getPassword());
+		String email = this.txtEmailSalarie.getText();
+		String droits = this.cbxDroitsSalarie.getSelectedItem().toString();
+		// salarie
+		String nom = this.txtNomSalarie.getText();
+		String prenom = this.txtPrenomSalarie.getText();
+		String tel = this.txtTelSalarie.getText();
+		String adresse = this.txtAdresseSalarie.getText();
+		String quotient_fam = this.cbxQuotientFamSalarie.getSelectedItem().toString();
+		String service = this.cbxServiceSalarie.getSelectedItem().toString();
+		String sexe = this.cbxSexeSalarie.getSelectedItem().toString();
+	
+		try {
+			if(!txtUsernameSalarie.getText().equals("") || !txtEmailSalarie.getText().equals("")) {
+				// récupération de l'idUtilisateur pour le constructeur du Salarie
+				int numLigne = uneTableSalarie.getSelectedRow(); 
+				int idUtilisateurSalarie = Integer.parseInt(unTableauSalarie.getValueAt(numLigne, 0).toString ());
+				// update dans la base de données
+				Salarie unSalarie = new Salarie(idUtilisateurSalarie, username, mdp, email, droits, nom, prenom, tel, 
+						adresse, quotient_fam, service, sexe);
+				Main.updateUtilisateurSalarie(unSalarie);
+				JOptionPane.showMessageDialog(this,"Modification réussie !");
+				this.viderLesChampsSalarie();
+				txtUsernameSalarie.setBackground(Color.WHITE);
+				txtEmailSalarie.setBackground(Color.WHITE);
+			}else {
+				txtUsernameSalarie.setBackground(Color.RED);
+				txtEmailSalarie.setBackground(Color.RED);
+				JOptionPane.showMessageDialog(this,"Erreur de modification, vérifier les champs !");
+			}
+		} catch(Exception e) {
+			System.out.println("Aie " + e.getStackTrace());	
+		}
+	}
+	
+	public void updateUtilisateurSpons() {
+		// utilisateur
+		String username = this.txtUserSpons.getText();
+		String mdp = new String(this.txtMdpSpons.getPassword());
+		String email = this.txtEmailSpons.getText();
+		String droits = this.cbxDroitsSpons.getSelectedItem().toString();
+		// sponsor
+		String societe = this.txtSocieteSpons.getText();
+		String image_url = this.txtImgurlSpons.getText();
+		double budget = 0;
+		try {
+			budget = Double.parseDouble(this.txtBudgetSpons.getText());
+		} catch (NumberFormatException exp) {
+			JOptionPane.showMessageDialog(this, "Erreur de saisie de montant");
+		}
+		String tel = this.txtTelSpons.getText();
+		String lien = this.txtLienSpons.getText();
+		
+		try {
+			if(!txtUserSpons.getText().equals("") || !txtEmailSpons.getText().equals("")) {
+				// récupération de l'idUtilisateur pour le constructeur du Spons
+				int numLigne = uneTableSponsor.getSelectedRow(); 
+				int idUtilisateurSpons = Integer.parseInt(unTableauSponsor.getValueAt(numLigne, 0).toString ());
+				// update dans la base de données
+				Sponsor unSponsor = new Sponsor(idUtilisateurSpons, username, mdp, email, droits, societe, image_url, budget, 
+						tel, lien);
+				Main.updateUtilisateurSponsor(unSponsor);
+				JOptionPane.showMessageDialog(this,"Modification réussie !");
+				this.viderLesChampsSpons();
+				txtUserSpons.setBackground(Color.WHITE);
+				txtEmailSpons.setBackground(Color.WHITE);
+			}else {
+				txtUserSpons.setBackground(Color.RED);
+				txtEmailSpons.setBackground(Color.RED);
+				JOptionPane.showMessageDialog(this,"Erreur de modification, vérifier les champs !");
+			}
+		} catch(Exception e) {
+			System.out.println("Aie " + e.getStackTrace());	
+		}
+	}
 
 	public void viderLesChampsSalarie() {
 		// après insertion réussie, on vide les champs
@@ -356,6 +548,7 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	}
 	
 	public void initPanelListerSalarie() {
+		//TODO
 		//construire le panel Lister Salarie
 		this.panelListerSalarie.setBackground(new Color (206,214, 224  ));
 		this.panelListerSalarie.setLayout(null);
@@ -365,10 +558,12 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 	}
 	
 	public void remplirPanelListerSalarie(String mot) {
+		//TODO
 		//remplir le panel Lister Salarie
 		this.panelListerSalarie.removeAll();
-		String entetes [] = {"IdUtilisateur", "Nom d'utilisateur", "Mot de passe", "Email","Droits"};
-		Object donnees [][] = this.getDonnees (mot) ;
+		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
+			"Nom", "Prénom", "Téléphone", "Adresse", "Quotient Familial", "Service", "Sexe" }; // sponsor
+		Object donnees [][] = this.getDonneesSalarie (mot) ;
 		
 		this.unTableauSalarie = new Tableau (donnees, entetes); 
 		this.uneTableSalarie = new JTable(this.unTableauSalarie); 
@@ -379,18 +574,85 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		this.panelListerSalarie.add(this.uneScrollSalarie);
 	}
 	
-	public Object [] [] getDonnees(String mot) {
-		//recuperer les Avions de la bdd 
-		ArrayList<Utilisateur> lesUtilisateurs = Main.selectAllUtilisateurs(mot); 
-		//transofrmation des Avions en matrice de données 
-		Object donnees [][] = new Object [lesUtilisateurs.size()][5];
-		int i = 0 ; 
-		for (Utilisateur unUtilisateur : lesUtilisateurs) {
-			donnees[i][0] = unUtilisateur.getIdUtilisateur()+""; 
-			donnees[i][1] = unUtilisateur.getUsername();
-			donnees[i][2] = unUtilisateur.getPassword();
-			donnees[i][3] = unUtilisateur.getEmail();
-			donnees[i][4] = unUtilisateur.getDroits();
+	public Object [] [] getDonneesSalarie(String mot) {
+		//TODO
+		//recuperer les utilisateursSalariés de la bdd 
+		ArrayList<Salarie> lesUtilisateursSalaries = Main.selectAllUtilisateursSalaries(mot);
+		
+		//transofrmation des utilisateursSalariés en matrice de données 
+		Object donnees [][] = new Object [lesUtilisateursSalaries.size()][12];
+		int i = 0;
+		for (Salarie unSalarie : lesUtilisateursSalaries) {
+			// utilisateur
+			donnees[i][0] = unSalarie.getIdUtilisateur()+""; 
+			donnees[i][1] = unSalarie.getUsername();
+			donnees[i][2] = unSalarie.getPassword();
+			donnees[i][3] = unSalarie.getEmail();
+			donnees[i][4] = unSalarie.getDroits();
+			// salarie
+			donnees[i][5] = unSalarie.getNom(); 
+			donnees[i][6] = unSalarie.getPrenom();
+			donnees[i][7] = unSalarie.getTel();
+			donnees[i][8] = unSalarie.getAdresse();
+			donnees[i][9] = unSalarie.getQuotient_fam();
+			donnees[i][10] = unSalarie.getService();
+			donnees[i][11] = unSalarie.getSexe();
+			
+			i++;
+		}
+				
+		return donnees;
+	}
+	
+	public void initPanelListerSponsor() {
+		//TODO
+		//construire le panel Lister Sponsor
+		this.panelListerSponsor.setBackground(new Color (206,214, 224  ));
+		this.panelListerSponsor.setLayout(null);
+		this.panelListerSponsor.setBounds(350, 80, 530, 300);
+
+		this.add(this.panelListerSponsor);
+	}
+	
+	public void remplirPanelListerSponsor(String mot) {
+		//TODO
+		//remplir le panel Lister Sponsor
+		this.panelListerSponsor.removeAll();
+		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
+			"Société", "Image (URL)", "Budget", "Téléphone", "Lien" }; // sponsor
+		Object donnees [][] = this.getDonneesSponsor (mot) ;
+		
+		this.unTableauSponsor = new Tableau (donnees, entetes); 
+		this.uneTableSponsor = new JTable(this.unTableauSponsor); 
+		
+		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
+		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
+		this.uneScrollSponsor.setBounds(20, 20, 510, 280);
+		this.panelListerSponsor.add(this.uneScrollSponsor);
+	}
+	
+	public Object [] [] getDonneesSponsor(String mot) {
+		//TODO
+		//recuperer les utilisateursSalariés de la bdd 
+		ArrayList<Sponsor> lesUtilisateursSponsors = Main.selectAllUtilisateursSponsors(mot);
+		
+		//transofrmation des utilisateursSalariés en matrice de données 
+		Object donnees [][] = new Object [lesUtilisateursSponsors.size()][10];
+		int i = 0;
+		for (Sponsor unSponsor : lesUtilisateursSponsors) {
+			// utilisateur
+			donnees[i][0] = unSponsor.getIdUtilisateur()+""; 
+			donnees[i][1] = unSponsor.getUsername();
+			donnees[i][2] = unSponsor.getPassword();
+			donnees[i][3] = unSponsor.getEmail();
+			donnees[i][4] = unSponsor.getDroits();
+			// salarie
+			donnees[i][5] = unSponsor.getSociete();
+			donnees[i][6] = unSponsor.getImage_url();
+			donnees[i][7] = unSponsor.getBudget();
+			donnees[i][8] = unSponsor.getTel();
+			donnees[i][9] = unSponsor.getLien();
+			
 			i++;
 		}
 				
@@ -402,7 +664,9 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 		if(e.getSource() == this.btRetour) {
 			this.dispose();
 			Main.rendreVisible(true);
-		}else if (e.getSource() == this.btEnregistrer) {
+		
+		}else if (e.getSource() == this.btEnregistrer && e.getActionCommand().equals("Enregistrer")) {
+			// le bouton Enregistrer est enregistrer, donc on fait un insert d'un nouvel utilisateur
 			//System.out.println(this.isSalarie);
 			if (this.isSalarie == true) {
 				//System.out.println("sa");
@@ -411,25 +675,54 @@ public class VueUtilisateur extends JFrame implements ActionListener{
 			else {
 				//System.out.println("sp");
 				this.insertUtilisateurSpons();
+			}	
+		} else if (e.getSource() == this.btEnregistrer && e.getActionCommand().equals("Modifier")) {
+			// le bouton Enregistrer est devenu le bouton modifier, donc on fait un update
+			//System.out.println(this.isSalarie);
+			if (this.isSalarie == true) {
+				//System.out.println("sa");
+				this.updateUtilisateurSalarie();
 			}
+			else {
+				//System.out.println("sp");
+				this.updateUtilisateurSpons();
+			}
+		
 		}else if (e.getSource() == this.btAnnuler) {
 			//System.out.println(this.isSalarie);
 			if (this.isSalarie == true) {
 				this.viderLesChampsSalarie();
+				// après avoir vidé tous les champs, on reset aussi le bouton Enregistrer : le bouton Modifier redevient Enregistrer
+				this.btEnregistrer.setText("Enregistrer");
 			}
 			else {
 				this.viderLesChampsSpons();
+				// après avoir vidé tous les champs, on reset aussi le bouton Enregistrer : le bouton Modifier redevient Enregistrer
+				this.btEnregistrer.setText("Enregistrer");
 			}
+
 		}else if(e.getSource() == this.btSponsor) {
 			this.isSalarie = false;
 			this.panelAjoutSalarie.setVisible(false);
 			this.panelAjoutSponsor.setVisible(true);
+			this.panelListerSalarie.setVisible(false);
+			this.panelListerSponsor.setVisible(true);
 		}else if(e.getSource() == this.btSalarie) {
 			this.isSalarie = true;
 			this.panelAjoutSalarie.setVisible(true);
 			this.panelAjoutSponsor.setVisible(false);
+			this.panelListerSalarie.setVisible(true);
+			this.panelListerSponsor.setVisible(false);
 		}
 	}
+	
+	/* ancienne methode pour ajouter un label puis un txtfield
+	    JLabel label = new JLabel("Nom utilisateur :");
+		label.setBounds(0, 0, 150, 25);
+		this.panelAjoutSalarie.add(label); 
+		txtUsernameSalarie.setBounds(150, 0, 150, 25);
+		this.panelAjoutSalarie.add(this.txtUsernameSalarie);
+	 */
 	
 	/*	POUR AFFICHER DANS LE TABLEAU PLUS TARD
 	//recuperation de l'id a travers un select where 
