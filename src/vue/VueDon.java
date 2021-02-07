@@ -17,10 +17,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,9 +33,11 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+import controleur.Activite;
 import controleur.Don;
 import controleur.Main;
 import controleur.Tableau;
+import controleur.Utilisateur;
 
 public class VueDon extends JFrame implements ActionListener, MouseListener{
 
@@ -49,11 +53,18 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	private JButton btFiltrer = new JButton("Filtrer :");
 	private JTextField txtFiltrer = new JTextField();
 	
-	private JTextField txtDateDon = new JTextField(); 
+	//Créer date et l'afficher
+	private JLabel labDate = new JLabel();
+	private SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private Date dateComment = new Date();
+	private JTextField txtDateDon = new JTextField(sFormat.format(dateComment).toString());
+	
 	private JTextField txtMontant = new JTextField(); 
 	private JTextField txtAppreciation = new JTextField(); 
 	private JTextField txtidutilisateur = new JTextField(); 
 	private JTextField txtid_tresorerie = new JTextField();
+	private JComboBox<String> cbxUtilisateur = new JComboBox<String>();
+	//private JTextField txtTresorerie = new JTextField("1"); 
 	
 	//Construction de la partie Tableau
 	private JPanel panelLister = new JPanel(); 
@@ -89,10 +100,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.panelAjout.add(this.txtMontant);
 		this.panelAjout.add(new JLabel("Appreciation :")); 
 		this.panelAjout.add(this.txtAppreciation);
-		this.panelAjout.add(new JLabel("Utilisateur :")); 
-		this.panelAjout.add(this.txtidutilisateur);
-		this.panelAjout.add(new JLabel("Trésorerie :")); 
-		this.panelAjout.add(this.txtid_tresorerie);
+		this.panelAjout.add(new JLabel("Utilisateur :"));
+		this.panelAjout.add(this.cbxUtilisateur);
+		//this.panelAjout.add(new JLabel("Trésorerie : "));
+		//this.panelAjout.add(this.txtTresorerie);
 		this.panelAjout.add(this.btAnnuler); 
 		this.panelAjout.add(this.btEnregistrer);
 		this.add(this.panelAjout);
@@ -106,7 +117,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.txtFiltrer.setBounds(WIDTH / 2 + 40, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
-		
+		remplirCBXUtilisateurs();
 		remplirPanelLister("");
 		this.uneTable.addMouseListener(this);
 		
@@ -114,6 +125,18 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		
 		initBoutons();
 	}
+	
+	public void remplirCBXUtilisateurs()
+	{
+		ArrayList<Utilisateur> lesUtilisateurs = Main.selectAllUtilisateurs("");
+		this.cbxUtilisateur.removeAllItems();
+		for (Utilisateur unUtilisateur : lesUtilisateurs)
+		{
+			this.cbxUtilisateur.addItem(unUtilisateur.getIdUtilisateur()+" - "+unUtilisateur.getUsername());
+		}
+	}
+	
+
 
 	private void initBoutons() {
 		this.btAnnuler.setBackground(new Color(52, 58, 64));
@@ -153,10 +176,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		float montant = 0;
 		String appreciation = this.txtAppreciation.getText(); 
 		int idutilisateur = 0;
-		int id_tresorerie = 0;
+		int id_tresorerie = 1;
 		
 		try {
-			montant = Integer.parseInt(this.txtMontant.getText());
+			montant = Float.parseFloat(this.txtMontant.getText());
 		}
 		catch (NumberFormatException exp) {
 			JOptionPane.showMessageDialog(this,"Attention au format du nombre d'heures  !");
@@ -188,8 +211,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		String datedon = this.txtDateDon.getText(); 
 		float montant;
 		String appreciation = this.txtAppreciation.getText(); 
-		int idutilisateur= 0;
-		int id_tresorerie= 0;
+		int idUtilisateur= 0;
+		int id_tresorerie= 1;
+		String chaineUti = this.cbxUtilisateur.getSelectedItem().toString();
+		String tabUti [] = chaineUti.split(" - ");
 		
 		
 		try {
@@ -198,9 +223,17 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			JOptionPane.showMessageDialog(this,"Attention au format des nombres !");
 			montant = -1; 
 		}
+		
+		try {
+			idUtilisateur = Integer.parseInt(tabUti[0]);
+		} catch (NumberFormatException nfe) {
+			JOptionPane.showMessageDialog(this, "Impossible de parser l'idUtilisateur");
+
+		}
+		
 	
 		if(montant >= 1) {
-			Don unDon = new Don(idutilisateur, id_tresorerie, appreciation, montant, datedon);
+			Don unDon = new Don(idUtilisateur, id_tresorerie, appreciation, montant, datedon);
 			Main.insertDon(unDon);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
