@@ -1,11 +1,13 @@
 package controleur;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableCellRenderer;
 
 import modele.Modele;
 

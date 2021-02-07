@@ -1,18 +1,18 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controleur.Activite;
 import controleur.Main;
@@ -123,6 +123,11 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.btRetour.setBackground(new Color(31, 61, 128));
 		this.btRetour.setForeground(new Color(255, 255, 255));
 		this.btRetour.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btFiltrer.setBackground(new Color(52, 58, 64));
+		this.btFiltrer.setForeground(new Color(255, 255, 255));
+		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
 	
 }
 
@@ -219,7 +224,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.panelLister.setLayout(null);
 
 		this.panelLister.setBounds(350, 80, 730, 300);
-		this.panelLister.setBorder(new LineBorder(Color.blue));
+		//this.panelLister.setBorder(new LineBorder(Color.blue));
 		
 		this.uneScroll.setBounds(010, 10, 710, 280);
 		this.panelLister.add(this.uneScroll);
@@ -236,12 +241,55 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.uneTable = new JTable(this.unTableau); 
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		
+		DefaultTableModel model = new DefaultTableModel(donnees, entetes);
+		this.uneTable.setModel(model);
+		this.uneTable.getColumn("Opérations").setCellRenderer(new BoutonJTable());
+		this.uneTable.getColumn("Opérations").setCellEditor(new ButtonEditor(new JCheckBox()));
+		this.btDelete.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int ligne = uneTable.getSelectedRow();
+				System.out.println(ligne);
+				int idActivite = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
+				int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette activité ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+				if (retour == 0) {
+					//suppression dans la base 
+					Main.deleteActivite(idActivite);
+					//suppression dans la table d'affichage 
+					unTableau.deleteLigne(ligne);
+					JOptionPane.showMessageDialog(null, "Suppression réussie");
+				}
+			}
+		});
 		Main.styleTableau(this.uneTable);
 		initPanelLister();
-
 	}
 	
 
+	  class ButtonEditor extends DefaultCellEditor 
+	  {
+	    private String label;
+	    
+	    public ButtonEditor(JCheckBox checkBox)
+	    {
+	      super(checkBox);
+	    }
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column) 
+	    {
+	      label = (value == null) ? "Delete" : value.toString();
+	      btDelete.setText(label);
+	      return btDelete;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	  }
+	  
+	  
+	 
 	
 	public Object [] [] getDonnees(String mot) {
 		//recuperer les pilotes de la bdd 
@@ -257,7 +305,6 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			donnees[i][4] = uneActivite.getDescription(); 
 			donnees[i][5] = uneActivite.getPrix(); 
 			donnees[i][6] = uneActivite.getNb_personnes() ; 
-			donnees[i][7] = this.add(btDelete) ; 
 
 			i++; 
 		}
@@ -280,17 +327,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() >=2) {
-			int ligne = uneTable.getSelectedRow();
-			System.out.println(ligne);
-			int idActivite = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
-			int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette activité ?", "Suppression", JOptionPane.YES_NO_OPTION); 
-			if (retour == 0) {
-				//suppression dans la base 
-				Main.deleteActivite(idActivite);
-				//suppression dans la table d'affichage 
-				unTableau.deleteLigne(ligne);
-				JOptionPane.showMessageDialog(null, "Suppression réussie");
-			}
+
 		}else if (e.getClickCount() ==1) {
 			int ligne = uneTable.getSelectedRow();
 			txtNomAct.setText(unTableau.getValueAt(ligne, 1).toString());

@@ -127,7 +127,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.btRetour.setBackground(new Color(31, 61, 128));
 		this.btRetour.setForeground(new Color(255, 255, 255));
 		this.btRetour.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-	
+		
+		this.btFiltrer.setBackground(new Color(52, 58, 64));
+		this.btFiltrer.setForeground(new Color(255, 255, 255));
+		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 }
 
 	@Override
@@ -233,7 +236,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.uneTable = new JTable(this.unTableau); 
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		
-
+		Main.styleTableau(this.uneTable);
 		initPanelLister();
 
 	}

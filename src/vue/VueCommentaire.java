@@ -97,6 +97,12 @@ public class VueCommentaire extends JFrame implements ActionListener{
 		this.btAnnuler.addActionListener(this);
 		this.btEnregistrer.addActionListener(this);
 		
+		this.btFiltrer.setBounds(Main.WIDTH /2 - 200, 20, 100, 20);
+		this.add(btFiltrer);
+		this.btFiltrer.addActionListener(this);
+		this.txtFiltrer.setBounds(Main.WIDTH / 2 - 80, 20 , 100, 20);
+		this.add(txtFiltrer);
+		
 		initBoutons();
 		this.setVisible(true);
 	}
@@ -110,6 +116,9 @@ public class VueCommentaire extends JFrame implements ActionListener{
 			this.txtContenu.setText("");
 		}else if(e.getSource() == this.btEnregistrer) {
 			insertCommentaire();
+		}else if (e.getSource() == this.btFiltrer)
+		{
+			this.remplirPanelLister(this.txtFiltrer.getText());
 		}
 	}
 	
@@ -140,6 +149,11 @@ public class VueCommentaire extends JFrame implements ActionListener{
 		this.btRetour.setBackground(new Color(31, 61, 128));
 		this.btRetour.setForeground(new Color(255, 255, 255));
 		this.btRetour.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btFiltrer.setBackground(new Color(52, 58, 64));
+		this.btFiltrer.setForeground(new Color(255, 255, 255));
+		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
 	
 }
 	
@@ -164,7 +178,7 @@ public class VueCommentaire extends JFrame implements ActionListener{
 		this.unTableau = new Tableau (donnees, entetes); 
 		this.uneTable = new JTable(this.unTableau); 
 		this.uneScroll = new JScrollPane(this.uneTable); 
-		
+		Main.styleTableau(this.uneTable);
 		initPanelLister();
 	}
 	
