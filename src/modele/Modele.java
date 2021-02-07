@@ -207,8 +207,8 @@ public class Modele
 
 	public static void updateDon(Don unDon) {
 		String requete ="update don set datedon = '" + unDon.getDatedon() + "', montant = '" + unDon.getMontant()
-		+"', appreciation = " + unDon.getAppreciation() + ", idutilisateur = '" + unDon.getIdutilisateur()
-		+ "', id_tresorerie = " + unDon.getId_tresorerie() 
+		+"', appreciation = '" + unDon.getAppreciation() + "', idutilisateur = " + unDon.getIdutilisateur()
+		+ ", id_tresorerie = " + unDon.getId_tresorerie() 
 		+ "  where iddon = " + unDon.getIddon() + " ;" ;
 		executerRequete(requete);		
 	}
