@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,8 +29,8 @@ import controleur.Utilisateur;
 
 public class VueUtilisateur extends JFrame implements ActionListener {
 	
-	private final static int WIDTH = 900;
-	private final static int HEIGHT = 500;
+//	private final static int WIDTH = 900;
+//	private final static int HEIGHT = 500;
 	
 	private static VueConnexion uneVueConnexion; 
 	
@@ -85,8 +86,13 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 	private JScrollPane uneScrollSponsor;
 	private Tableau unTableauSponsor;
 	
+	//bouton filtrer
+	private JButton btFiltrer = new JButton("Filtrer :");
+	private JTextField txtFiltrer = new JTextField();
+	
+	
 	public VueUtilisateur() {
-		this.setBounds(100, 100, WIDTH, HEIGHT);
+		this.setBounds(100, 100, Main.WIDTH, Main.HEIGHT);
 		this.setTitle("Gestion des utilisateurs");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,7 +101,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.getContentPane().setBackground(new Color (206,214, 224  ));
 		
 		//installer le bouton retour 
-		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
+		this.btRetour.setBounds(Main.WIDTH -170, Main.HEIGHT -80, 140, 30);
 		getContentPane().add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
@@ -264,6 +270,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		//par défaut on commence sur le panel salarie au début
 		this.isSalarie = true;
 		
+		initBoutons();
 		this.setVisible(true);
 	}
 	
@@ -546,13 +553,44 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.txtTelSpons.setText("");
 		this.txtLienSpons.setText("");
 	}
+	private void initBoutons() {
+		this.btAnnuler.setBackground(new Color(52, 58, 64));
+		this.btAnnuler.setForeground(new Color(255, 255, 255));
+		this.btAnnuler.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 	
+		this.btEnregistrer.setBackground(new Color(52, 58, 64));
+		this.btEnregistrer.setForeground(new Color(255, 255, 255));
+		this.btEnregistrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
+		this.btRetour.setBackground(new Color(31, 61, 128));
+		this.btRetour.setForeground(new Color(255, 255, 255));
+		this.btRetour.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btFiltrer.setBackground(new Color(52, 58, 64));
+		this.btFiltrer.setForeground(new Color(255, 255, 255));
+		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btFiltrer.setBounds(Main.WIDTH /2 - 200, 20, 100, 20);
+		this.add(btFiltrer);
+		this.btFiltrer.addActionListener(this);
+		this.txtFiltrer.setBounds(Main.WIDTH / 2 - 80, 20 , 100, 20);
+		this.add(txtFiltrer);
+		
+		this.btSalarie.setBackground(new Color(52, 58, 64));
+		this.btSalarie.setForeground(new Color(255, 255, 255));
+		this.btSalarie.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
+		this.btSponsor.setBackground(new Color(52, 58, 64));
+		this.btSponsor.setForeground(new Color(255, 255, 255));
+		this.btSponsor.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	
+	
+}
 	public void initPanelListerSalarie() {
-		//TODO
 		//construire le panel Lister Salarie
 		this.panelListerSalarie.setBackground(new Color (206,214, 224  ));
 		this.panelListerSalarie.setLayout(null);
-		this.panelListerSalarie.setBounds(350, 80, 530, 300);
+		this.panelListerSalarie.setBounds(365, 80, this.getWidth() - 400, this.getHeight() - 170);
 
 		this.add(this.panelListerSalarie);
 	}
@@ -570,7 +608,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		
 		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
 		//this.panelListerSalarie.setBounds(350, 80, 530, 300);
-		this.uneScrollSalarie.setBounds(20, 20, 510, 280);
+		this.uneScrollSalarie.setBounds(20, 20, this.panelListerSalarie.getWidth() - 40, this.panelListerSalarie.getHeight() - 40);
 		this.panelListerSalarie.add(this.uneScrollSalarie);
 	}
 	
@@ -609,7 +647,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		//construire le panel Lister Sponsor
 		this.panelListerSponsor.setBackground(new Color (206,214, 224  ));
 		this.panelListerSponsor.setLayout(null);
-		this.panelListerSponsor.setBounds(350, 80, 530, 300);
+		this.panelListerSponsor.setBounds(350, 80, this.getWidth() - 400, this.getHeight() - 170);
 
 		this.add(this.panelListerSponsor);
 	}
@@ -627,7 +665,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		
 		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
 		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
-		this.uneScrollSponsor.setBounds(20, 20, 510, 280);
+		this.uneScrollSponsor.setBounds(20, 20, this.panelListerSponsor.getWidth() - 40, this.panelListerSponsor.getHeight() - 40);
 		this.panelListerSponsor.add(this.uneScrollSponsor);
 	}
 	
