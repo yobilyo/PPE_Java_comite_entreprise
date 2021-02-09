@@ -139,6 +139,11 @@ public class Main {
 		return Modele.selectFindUtilisateur(username, email, droits);
 	}
 	
+	// TODO: ancienne méthode pour debugger les autres VueDon et VueCommentaire, à améliorer + tard
+	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
+		return Modele.selectAllUtilisateurs(mot);
+	}
+	
 	/********************* CONTROLEUR UTILISATEUR SALARIE ***************************/
 	
 	public static void insertUtilisateurSalarie(Salarie unSalarie) {
