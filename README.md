@@ -2,6 +2,10 @@
 
 PPE Java Swing: Logiciel d'administration du comité d'entreprise (CE) de 3DSoft
 
+## Trello
+
+https://trello.com/b/3jFugA1T/ppe-java
+
 ## Todo list en vrac
 
 https://docs.google.com/document/d/1cAkrPbdm6UKKG3r61bO79t1YnfBdHI6YRcG-U5adrGo/edit
@@ -27,3 +31,4 @@ Le drive contient le contexte, les instructions, le programme, la documentation,
 - Git Bash / TortoiseGit
 - Google Drive
 - Google Docs
+- Trello
