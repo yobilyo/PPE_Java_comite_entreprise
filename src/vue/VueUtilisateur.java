@@ -707,7 +707,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			donnees[i][2] = unSponsor.getPassword();
 			donnees[i][3] = unSponsor.getEmail();
 			donnees[i][4] = unSponsor.getDroits();
-			// salarie
+			// sponsor
 			donnees[i][5] = unSponsor.getSociete();
 			donnees[i][6] = unSponsor.getImage_url();
 			donnees[i][7] = unSponsor.getBudget();
@@ -774,6 +774,10 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			this.panelAjoutSponsor.setVisible(false);
 			this.panelListerSalarie.setVisible(true);
 			this.panelListerSponsor.setVisible(false);
+		}else if (e.getSource() == this.btFiltrer)
+		{
+			this.remplirPanelListerSalarie(this.txtFiltrer.getText());
+			this.remplirPanelListerSponsor(this.txtFiltrer.getText());			
 		}
 	}
 	
@@ -784,4 +788,11 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		txtUsernameSalarie.setBounds(150, 0, 150, 25);
 		this.panelAjoutSalarie.add(this.txtUsernameSalarie);
 	 */
+	
+	
+	
+	
+	
+	
+	
 }
