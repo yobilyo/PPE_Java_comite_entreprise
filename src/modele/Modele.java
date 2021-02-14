@@ -327,21 +327,27 @@ public class Modele
 		String requeteDons = "delete from don where idutilisateur = " + idUtilisateur + ";";
 		int resultDons = executerRequeteResultShowError(requeteDons);
 		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultDons == 1) return resultDons;
+		if (resultDons == 1) {
+			return resultDons;
+		}
 		// s'il n'y a pas d'erreur on continue:
 		
 		// Participer
 		String requeteParticiper = "delete from participer where idutilisateur = " + idUtilisateur + ";";
 		int resultParticiper = executerRequeteResultShowError(requeteParticiper);
 		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultParticiper == 1) return resultParticiper;
+		if (resultParticiper == 1) {
+			return resultParticiper;
+		}
 		// s'il n'y a pas d'erreur on continue:
 		
 		// Commentaire
 		String requeteCommentaire = "delete from commentaire where idutilisateur = " + idUtilisateur + ";";
 		int resultCommentaire = executerRequeteResultShowError(requeteCommentaire);
 		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultCommentaire == 1) return resultCommentaire;
+		if (resultCommentaire == 1) {
+			return resultCommentaire;
+		}
 		// s'il n'y a pas d'erreur on continue:
 		
 		// Contact
@@ -359,12 +365,17 @@ public class Modele
 	/************* UTILISATEUR SALARIE ********************/
 	
 	
-	public static void insertUtilisateurSalarie(Salarie unSalarie) {
+	public static int insertUtilisateurSalarie(Salarie unSalarie) {
 		// Utilisateur
 		String requeteUtilisateur = "insert into utilisateur values (null, '" + unSalarie.getUsername() + "', '" + unSalarie.getPassword()
 		+"', '" + unSalarie.getEmail()+ "', '" + unSalarie.getDroits() +"');";
 		
-		executerRequete(requeteUtilisateur);
+		int resultInsertUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
+		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
+		if (resultInsertUtilisateur == 1) {
+			return resultInsertUtilisateur;
+		}
+		// s'il n'y a pas d'erreur on continue:
 		
 		//SelectWhere pour obtenir l'idutilisateur réel inséré:
 		int idUtilisateurInsere = Main.selectFindUtilisateur(unSalarie.getUsername(), unSalarie.getEmail(), unSalarie.getDroits()).getIdUtilisateur();
@@ -374,7 +385,10 @@ public class Modele
 		+ unSalarie.getPrenom() + "', '" + unSalarie.getTel() + "', '" + unSalarie.getAdresse() + "', '"
 		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '" + unSalarie.getSexe() + "');";
 		
-		executerRequete(requeteSalarie);
+		int resultInsertSalarie = executerRequeteResultShowError(requeteSalarie);
+		// pour la dernière requête peu importe le résultat (1 ou 0), dans tous les cas
+		// on retourne le résultat de la dernière requête
+		return resultInsertSalarie;
 	}
 	
 	public static ArrayList<Salarie> selectAllUtilisateursSalaries(String mot) {

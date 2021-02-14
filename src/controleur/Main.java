@@ -150,8 +150,8 @@ public class Main {
 	
 	/********************* CONTROLEUR UTILISATEUR SALARIE ***************************/
 	
-	public static void insertUtilisateurSalarie(Salarie unSalarie) {
-		Modele.insertUtilisateurSalarie(unSalarie);
+	public static int insertUtilisateurSalarie(Salarie unSalarie) {
+		return Modele.insertUtilisateurSalarie(unSalarie);
 	}
 
 	public static ArrayList<Salarie> selectAllUtilisateursSalaries(String mot) {

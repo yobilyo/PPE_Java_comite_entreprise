@@ -398,11 +398,14 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			if(!txtUsernameSalarie.getText().equals("") || !txtEmailSalarie.getText().equals("")) {
 				Salarie unSalarie = new Salarie(username, mdp, email, droits, nom, prenom, tel, 
 						adresse, quotient_fam, service, sexe);
-				Main.insertUtilisateurSalarie(unSalarie);
-				JOptionPane.showMessageDialog(this,"Insertion réussie !");
-				this.viderLesChampsSalarie();
-				txtUsernameSalarie.setBackground(Color.WHITE);
-				txtEmailSalarie.setBackground(Color.WHITE);
+				int resultInsertSalarie = Main.insertUtilisateurSalarie(unSalarie);
+				if (resultInsertSalarie == 0) {
+					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
+					JOptionPane.showMessageDialog(this,"Insertion réussie !");
+					this.viderLesChampsSalarie();
+					txtUsernameSalarie.setBackground(Color.WHITE);
+					txtEmailSalarie.setBackground(Color.WHITE);
+				}
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
