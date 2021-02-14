@@ -246,10 +246,13 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Sponsor ?", "Suppression", JOptionPane.YES_NO_OPTION); 
 					if (retour == 0) {
 						//suppression dans la base 
-						Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
-						//suppression dans la table d'affichage 
-						unTableauSponsor.deleteLigne(ligne);
-						JOptionPane.showMessageDialog(null, "Suppression réussie");
+						int resultDeleteSponsor = Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
+						if (resultDeleteSponsor == 0) {
+							//s'il n'y a pas d'erreur, on supprime dans le tableau JTable et on affiche succès
+							//suppression dans la table d'affichage 
+							unTableauSponsor.deleteLigne(ligne);
+							JOptionPane.showMessageDialog(null, "Suppression réussie");
+						}
 					}
 				}else if (e.getClickCount() == 1) {
 					//modifier

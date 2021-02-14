@@ -464,17 +464,25 @@ public class Modele
 		return lesUtilisateursSponsors ; 
 	}
 	
-	public static void deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+	public static int deleteUtilisateurSponsor(int idUtilisateurSponsor) {
 		// on supprime le sponsor dans la classe fille sql sponsor en premier (car clé étrangère), puis on peut supprimer le sponsor dans la classe mère utilisateur
 		// Sponsor
 		String requeteSponsor = "delete from sponsor where idutilisateur =" + idUtilisateurSponsor + ";";
+		int resultSponsor = executerRequeteResultShowError(requeteSponsor);
+		// quitter s'il y'a une erreur et en informer
+		if (resultSponsor == 1) {
+			return resultSponsor;
+		}
 		
-		executerRequete(requeteSponsor);
-		
+		// s'il n'ya pas d'erreur pour la suppression du sponsor, on continue et on passe à la suppression de l'utilisateur
 		// Utilisateur
 		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSponsor + ";";
-		
-		executerRequete(requeteUtilisateur);
+		int resultUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
+		// résultat de la requête
+		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
+		//if (resultUtilisateur == 1 || resultUtilisateur == 0) {
+		return resultUtilisateur;
+		//}
 	}
 	
 	public static void updateUtilisateurSponsor(Sponsor unSponsor) {

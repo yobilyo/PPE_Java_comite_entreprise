@@ -172,8 +172,8 @@ public class Main {
 		return Modele.selectAllUtilisateursSponsors(mot);
 	}
 	
-	public static void deleteUtilisateurSponsor(int idUtilisateurSponsor) {
-		Modele.deleteUtilisateurSponsor(idUtilisateurSponsor);
+	public static int deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+		return Modele.deleteUtilisateurSponsor(idUtilisateurSponsor);
 	}
 	
 	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
