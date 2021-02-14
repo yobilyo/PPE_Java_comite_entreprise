@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,6 +105,58 @@ public class VueCommentaire extends JFrame implements ActionListener{
 		this.txtFiltrer.setBounds(Main.WIDTH / 2 - 80, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
+		this.uneTable.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getClickCount() >=2) {
+					int ligne = uneTable.getSelectedRow();
+					System.out.println(ligne);
+					int idActivite = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
+					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce commentaire ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+					if (retour == 0) {
+						//suppression dans la base 
+						Main.deleteActivite(idActivite);
+						//suppression dans la table d'affichage 
+						unTableau.deleteLigne(ligne);
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
+					}
+				}else if (e.getClickCount() ==1) {
+					int ligne = uneTable.getSelectedRow();
+					txtDate.setText(unTableau.getValueAt(ligne, 1).toString());
+					txtContenu.setText(unTableau.getValueAt(ligne, 2).toString());
+					cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 3).toString());
+					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 4).toString());
+					btEnregistrer.setText("Modifier");
+				}		
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 		initBoutons();
 		this.setVisible(true);
 	}
@@ -114,6 +168,7 @@ public class VueCommentaire extends JFrame implements ActionListener{
 			Main.rendreVisible(true);
 		}else if(e.getSource() == this.btAnnuler) {
 			this.txtContenu.setText("");
+			this.btEnregistrer.setText("Enregistrer");
 		}else if(e.getSource() == this.btEnregistrer) {
 			insertCommentaire();
 		}else if (e.getSource() == this.btFiltrer)
