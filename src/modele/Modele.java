@@ -429,8 +429,8 @@ public class Modele
 		if (resultSalarie == 1) {
 			return resultSalarie;
 		}
-		
 		// s'il n'ya pas d'erreur pour la suppression du salarié, on continue et on passe à la suppression de l'utilisateur
+		
 		// Utilisateur
 		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSalarie + ";";
 		int resultUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
@@ -441,14 +441,19 @@ public class Modele
 		//}
 	}
 	
-	public static void updateUtilisateurSalarie(Salarie unSalarie) {
+	public static int updateUtilisateurSalarie(Salarie unSalarie) {
 		// utilisateur
 		String requeteUtilisateur = "update utilisateur set username = '" + unSalarie.getUsername()
 		+ "', password = '" + unSalarie.getPassword() + "', email = '" + unSalarie.getEmail()
 		+ "', droits = '" + unSalarie.getDroits()
 		+ "' where idutilisateur = " + unSalarie.getIdUtilisateur() + ";";
 		
-		executerRequete(requeteUtilisateur);
+		int resultRequeteUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
+		// quitter s'il y'a une erreur et en informer
+		if (resultRequeteUtilisateur == 1) {
+			return resultRequeteUtilisateur;
+		}
+		// s'il n'ya pas d'erreur on continue
 		
 		// salarie
 		String requeteSalarie = "update salarie set nom = '" + unSalarie.getNom()
@@ -457,7 +462,11 @@ public class Modele
 		+ "', service = '" + unSalarie.getService() + "', sexe = '" + unSalarie.getSexe()
 		+ "' where idutilisateur = " + unSalarie.getIdUtilisateur() + ";";
 		
-		executerRequete(requeteSalarie);
+		int resultRequeteSalarie = executerRequeteResultShowError(requeteSalarie);
+		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
+		//if (resultSalarie == 1 || resultSalarie == 0) {
+		return resultRequeteSalarie;
+		//}
 	}
 	
 	

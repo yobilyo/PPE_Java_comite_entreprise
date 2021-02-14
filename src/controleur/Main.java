@@ -162,8 +162,8 @@ public class Main {
 		return Modele.deleteUtilisateurSalarie(idUtilisateurSalarie);
 	}
 	
-	public static void updateUtilisateurSalarie(Salarie unSalarie) {
-		Modele.updateUtilisateurSalarie(unSalarie);
+	public static int updateUtilisateurSalarie(Salarie unSalarie) {
+		return Modele.updateUtilisateurSalarie(unSalarie);
 	}
 	
 	/********************* CONTROLEUR UTILISATEUR SPONSOR ***************************/

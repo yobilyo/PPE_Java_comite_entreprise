@@ -473,11 +473,14 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				// update dans la base de données
 				Salarie unSalarie = new Salarie(idUtilisateurSalarie, username, mdp, email, droits, nom, prenom, tel, 
 						adresse, quotient_fam, service, sexe);
-				Main.updateUtilisateurSalarie(unSalarie);
-				JOptionPane.showMessageDialog(this,"Modification réussie !");
-				this.viderLesChampsSalarie();
-				txtUsernameSalarie.setBackground(Color.WHITE);
-				txtEmailSalarie.setBackground(Color.WHITE);
+				int resultUpdateSalarie = Main.updateUtilisateurSalarie(unSalarie);
+				if (resultUpdateSalarie == 0) {
+					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
+					JOptionPane.showMessageDialog(this,"Modification réussie !");
+					this.viderLesChampsSalarie();
+					txtUsernameSalarie.setBackground(Color.WHITE);
+					txtEmailSalarie.setBackground(Color.WHITE);
+				}
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
