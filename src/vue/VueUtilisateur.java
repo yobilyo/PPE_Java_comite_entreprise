@@ -517,11 +517,14 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				// update dans la base de données
 				Sponsor unSponsor = new Sponsor(idUtilisateurSpons, username, mdp, email, droits, societe, image_url, budget, 
 						tel, lien);
-				Main.updateUtilisateurSponsor(unSponsor);
-				JOptionPane.showMessageDialog(this,"Modification réussie !");
-				this.viderLesChampsSpons();
-				txtUserSpons.setBackground(Color.WHITE);
-				txtEmailSpons.setBackground(Color.WHITE);
+				int resultUpdateSponsor = Main.updateUtilisateurSponsor(unSponsor);
+				if (resultUpdateSponsor == 0) {
+					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
+					JOptionPane.showMessageDialog(this,"Modification réussie !");
+					this.viderLesChampsSpons();
+					txtUserSpons.setBackground(Color.WHITE);
+					txtEmailSpons.setBackground(Color.WHITE);
+				}
 			}else {
 				txtUserSpons.setBackground(Color.RED);
 				txtEmailSpons.setBackground(Color.RED);

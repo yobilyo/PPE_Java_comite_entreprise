@@ -180,8 +180,8 @@ public class Main {
 		return Modele.deleteUtilisateurSponsor(idUtilisateurSponsor);
 	}
 	
-	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
-		Modele.updateUtilisateurSponsor(unSponsor);
+	public static int updateUtilisateurSponsor(Sponsor unSponsor) {
+		return Modele.updateUtilisateurSponsor(unSponsor);
 	}
 
 	

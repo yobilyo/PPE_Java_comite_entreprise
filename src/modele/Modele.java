@@ -555,14 +555,19 @@ public class Modele
 		//}
 	}
 	
-	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
+	public static int updateUtilisateurSponsor(Sponsor unSponsor) {
 		// utilisateur
 		String requeteUtilisateur = "update utilisateur set username = '" + unSponsor.getUsername()
 		+ "', password = '" + unSponsor.getPassword() + "', email = '" + unSponsor.getEmail()
 		+ "', droits = '" + unSponsor.getDroits()
 		+ "' where idutilisateur = " + unSponsor.getIdUtilisateur() + ";";
 		
-		executerRequete(requeteUtilisateur);
+		int resultUpdateUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
+		// quitter s'il y'a une erreur et en informer
+		if (resultUpdateUtilisateur == 1) {
+			return resultUpdateUtilisateur;
+		}
+		// s'il n'y a pas d'erreur on continue
 		
 		// sponsor
 		String requeteSponsor = "update sponsor set societe = '" + unSponsor.getSociete()
@@ -570,7 +575,12 @@ public class Modele
 		+ ", tel = '" + unSponsor.getTel() + "', lien = '" + unSponsor.getLien()
 		+ "' where idutilisateur = " + unSponsor.getIdUtilisateur() + ";";
 		
-		executerRequete(requeteSponsor);
+		int resultUpdateSponsor = executerRequeteResultShowError(requeteSponsor);
+		// résultat de la requête
+		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
+		//if (resultUpdateSponsor == 1 || resultUpdateSponsor == 0) {
+		return resultUpdateSponsor;
+		//}
 	}
 	
 }
