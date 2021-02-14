@@ -640,7 +640,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		//recuperer les utilisateursSalariés de la bdd 
 		ArrayList<Salarie> lesUtilisateursSalaries = Main.selectAllUtilisateursSalaries(mot);
 		
-		//transofrmation des utilisateursSalariés en matrice de données 
+		//transformation des utilisateursSalariés en matrice de données 
 		Object donnees [][] = new Object [lesUtilisateursSalaries.size()][12];
 		int i = 0;
 		for (Salarie unSalarie : lesUtilisateursSalaries) {

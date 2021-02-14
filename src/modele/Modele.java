@@ -407,13 +407,31 @@ public class Modele
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
 				Salarie unSalarie = new Salarie (
-						// utilisateur
-						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("email"), desRes.getString("password"),  
-						desRes.getString("droits"),
-						// salarie (suivre l'ordre de la table salarie, pas de la vue utilisateur_salarie)
-						desRes.getString("nom"), desRes.getString("prenom"), desRes.getString("tel"), desRes.getString("adresse"),
-						desRes.getString("quotient_fam"), desRes.getString("service"), desRes.getString("sexe")
-						);
+					// ATTENTION !!
+				    //
+				    // notre view sql utilisateur_salarie a l'ordre:
+					// username/email/password
+					// alors que la table utilisateur a l'ordre:
+					// username/passowrd/email
+					// J'ai (billel) choisi de quand même utiliser la view sql car c'est + simple,
+					// et j'ai corrigé lors de l'instanciation d'un salarié l'ordre des variables
+					// (desRes.getString("password") puis desRes.getString("email"))
+					//
+					// utilisateur
+					desRes.getInt("idutilisateur"),
+					desRes.getString("username"),
+					desRes.getString("password"),
+					desRes.getString("email"),   
+					desRes.getString("droits"),
+					// salarie (suivre l'ordre de la table salarie, pas de la vue utilisateur_salarie)
+					desRes.getString("nom"),
+					desRes.getString("prenom"),
+					desRes.getString("tel"),
+					desRes.getString("adresse"),
+					desRes.getString("quotient_fam"),
+					desRes.getString("service"),
+					desRes.getString("sexe")
+				);
 				lesUtilisateursSalaries.add(unSalarie);
 			}
 			unStat.close();
@@ -530,13 +548,29 @@ public class Modele
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
 				Sponsor unSponsor = new Sponsor (
-						// utilisateur
-						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("email"), desRes.getString("password"),  
-						desRes.getString("droits"),
-						// sponsor (suivre l'ordre de la table sponsor, pas de la vue utilisateur_sponsor)
-						desRes.getString("societe"), desRes.getString("image_url"), desRes.getDouble("budget"), desRes.getString("tel"),
-						desRes.getString("lien")
-						);
+					// ATTENTION !!
+				    //
+				    // notre view sql utilisateur_sponsor a l'ordre:
+				    // username/email/password
+					// alors que la table utilisateur a l'ordre:
+					// username/passowrd/email
+					// J'ai (billel) choisi de quand même utiliser la view sql car c'est + simple,
+					// et j'ai corrigé lors de l'instanciation d'un salarié l'ordre des variables
+					// (desRes.getString("password") puis desRes.getString("email"))
+					//
+					// utilisateur
+					desRes.getInt("idutilisateur"),
+					desRes.getString("username"),
+					desRes.getString("password"),
+					desRes.getString("email"),
+					desRes.getString("droits"),
+					// sponsor (suivre l'ordre de la table sponsor, pas de la vue utilisateur_sponsor)
+					desRes.getString("societe"),
+					desRes.getString("image_url"),
+					desRes.getDouble("budget"),
+					desRes.getString("tel"),
+					desRes.getString("lien")
+				);
 				lesUtilisateursSponsors.add(unSponsor);
 			}
 			unStat.close();
