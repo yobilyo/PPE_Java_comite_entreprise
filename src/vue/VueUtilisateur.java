@@ -513,6 +513,8 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			budget = Double.parseDouble(this.txtBudgetSpons.getText());
 		} catch (NumberFormatException exp) {
 			JOptionPane.showMessageDialog(this, "Erreur de saisie de montant");
+			// s'il y'a une erreur de saisie de montant on arrête l'insertion
+			return;
 		}
 		String tel = this.txtTelSpons.getText();
 		String lien = this.txtLienSpons.getText();
