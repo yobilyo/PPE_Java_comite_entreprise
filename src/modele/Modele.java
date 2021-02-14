@@ -419,7 +419,7 @@ public class Modele
 		if (resultSalarieForeignKeys == 1) {
 			return resultSalarieForeignKeys;
 		}
-		// s'il n'ya pas d'erreur pour la suppression du salarié, on continue
+		// s'il n'ya pas d'erreur pour la suppression des possessions du salarié, on continue
 		
 		// on supprime le salarie dans la classe fille sql salarie en premier (car clé étrangère), puis on peut supprimer le salarié dans la classe mère utilisateur
 		// Salarie
@@ -518,6 +518,14 @@ public class Modele
 	}
 	
 	public static int deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+		// on supprime toutes les possessions du sponsor dans les autres tables
+		// avant de supprimer le salarie :
+		int resultSponsorForeignKeys = deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateurSponsor);
+		if (resultSponsorForeignKeys == 1) {
+			return resultSponsorForeignKeys;
+		}
+		// s'il n'ya pas d'erreur pour la suppression des possessions du sponsor, on continue
+		
 		// on supprime le sponsor dans la classe fille sql sponsor en premier (car clé étrangère), puis on peut supprimer le sponsor dans la classe mère utilisateur
 		// Sponsor
 		String requeteSponsor = "delete from sponsor where idutilisateur =" + idUtilisateurSponsor + ";";
