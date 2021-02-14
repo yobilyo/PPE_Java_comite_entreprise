@@ -24,6 +24,10 @@ public class Modele
 	// pour PC : 
 	private static Bdd uneBdd = new Bdd ("localhost","ce","root","");
 	
+	
+	/************* CONNEXION ********************/
+	
+	
 	public static Utilisateur verifConnexion (String email, String password) 
 	{
 		Utilisateur unUser = null; 
@@ -50,16 +54,9 @@ public class Modele
 		return unUser; 
 	}
 	
-													/************* ACTIVITE ********************/
 	
+	/************* REQUETE ********************/
 	
-	public static void insertActivite (Activite uneActivite) {
-		String requete = "insert into activite values (null, '" + uneActivite.getNom() + "','" + uneActivite.getLieu()
-		+"', " + "null, "   + "null, " +  uneActivite.getBudget() + ",'" + uneActivite.getDescription()+ "',"  + "null, "
-		 + "null, "+ uneActivite.getPrix() +", " + uneActivite.getNb_personnes() 
-		+", 1 );" ;
-		executerRequete(requete);
-		}
 	
 	//methode gÃ©nÃ©rique d'exÃ©cution de n'importe quelle requete nÃ©cessitant pas un retour de rÃ©sultats 
 	public static void executerRequete (String requete)
@@ -98,6 +95,19 @@ public class Modele
 			return 1;
 		}
 	}
+	
+	
+	/************* ACTIVITE ********************/
+	
+	
+	public static void insertActivite (Activite uneActivite) {
+		String requete = "insert into activite values (null, '" + uneActivite.getNom() + "','" + uneActivite.getLieu()
+		+"', " + "null, "   + "null, " +  uneActivite.getBudget() + ",'" + uneActivite.getDescription()+ "',"  + "null, "
+		 + "null, "+ uneActivite.getPrix() +", " + uneActivite.getNb_personnes() 
+		+", 1 );" ;
+		executerRequete(requete);
+		}
+
 	
 	public static ArrayList<Activite> selectAllActivites (String mot){
 		
@@ -144,45 +154,8 @@ public class Modele
 		+ "  where id_activite = " + uneActivite.getIdActivite() + " ;" ;
 		executerRequete(requete);		
 	}
+
 	
-	
-	
-													/************* UTILISATEUR ********************/
-	public static void insertUtilisateur(Utilisateur unUtilisateur) {
-		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
-		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
-		
-		executerRequete(requete);
-	}
-	
-	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
-		String requete ; 
-		if (mot.equals("")) {
-			requete ="select * from utilisateur ;" ;
-		}else {
-			requete ="select * from utilisateur where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
-		}
-		ArrayList<Utilisateur> lesUtilisateurs = new ArrayList<Utilisateur>();  
-		
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			ResultSet desRes = unStat.executeQuery(requete);
-			while (desRes.next()) {
-				Utilisateur unUtilisateur = new Utilisateur (
-						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("password"), desRes.getString("email"), 
-						desRes.getString("droits")
-						);
-				lesUtilisateurs.add(unUtilisateur);
-			}
-			unStat.close();
-			uneBdd.seDeconnecter();
-		}
-		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
-		}
-		return lesUtilisateurs ; 
-	}
 	/************* DON ********************/
 	
 	
@@ -241,15 +214,9 @@ public class Modele
 		+ "  where iddon = " + unDon.getIddon() + " ;" ;
 		executerRequete(requete);		
 	}
-	
-
-
-
 
 	
-	
-	
-								/************* COMMENTAIRE ********************/	
+	/************* COMMENTAIRE ********************/	
 	
 	
 	public static ArrayList<Commentaire> selectAllCommentaires(String mot) {
@@ -287,8 +254,46 @@ public class Modele
 		executerRequete(requete);
 	}
 	
+	
 	/************* UTILISATEUR ********************/
 
+	
+	public static void insertUtilisateur(Utilisateur unUtilisateur) {
+		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
+		+"', '" + unUtilisateur.getEmail()+ "', '" + unUtilisateur.getDroits() +"');";
+		
+		executerRequete(requete);
+	}
+	
+	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from utilisateur ;" ;
+		}else {
+			requete ="select * from utilisateur where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
+		}
+		ArrayList<Utilisateur> lesUtilisateurs = new ArrayList<Utilisateur>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Utilisateur unUtilisateur = new Utilisateur (
+						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("password"), desRes.getString("email"), 
+						desRes.getString("droits")
+						);
+				lesUtilisateurs.add(unUtilisateur);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		return lesUtilisateurs ; 
+	}
+	
 	public static Utilisateur selectFindUtilisateur(String username, String email, String droits) {
 		Utilisateur unUtilisateur = null;
 		
@@ -314,7 +319,45 @@ public class Modele
 		
 	}
 	
+	public static int deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
+		// Avant de supprimer l'utilisateur, on doit supprimer toutes ses possessions dans les
+		// autres tables où il a une clé étrangère:
+		
+		// Don
+		String requeteDons = "delete from don where idutilisateur = " + idUtilisateur + ";";
+		int resultDons = executerRequeteResultShowError(requeteDons);
+		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
+		if (resultDons == 1) return resultDons;
+		// s'il n'y a pas d'erreur on continue:
+		
+		// Participer
+		String requeteParticiper = "delete from participer where idutilisateur = " + idUtilisateur + ";";
+		int resultParticiper = executerRequeteResultShowError(requeteParticiper);
+		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
+		if (resultParticiper == 1) return resultParticiper;
+		// s'il n'y a pas d'erreur on continue:
+		
+		// Commentaire
+		String requeteCommentaire = "delete from commentaire where idutilisateur = " + idUtilisateur + ";";
+		int resultCommentaire = executerRequeteResultShowError(requeteCommentaire);
+		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
+		if (resultCommentaire == 1) return resultCommentaire;
+		// s'il n'y a pas d'erreur on continue:
+		
+		// Contact
+		String requeteContact = "delete from contact where idutilisateur = " + idUtilisateur + ";";
+		int resultContact = executerRequeteResultShowError(requeteContact);
+		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
+		//if (resultContact == 1) return resultContact;
+		// s'il n'y a pas d'erreur on continue:
+		// pour la dernière requête peu importe le résultat (1 ou 0), dans tous les cas
+		// on retourne le résultat de la dernière requête
+		return resultContact;
+	}
+	
+	
 	/************* UTILISATEUR SALARIE ********************/
+	
 	
 	public static void insertUtilisateurSalarie(Salarie unSalarie) {
 		// Utilisateur
@@ -370,6 +413,14 @@ public class Modele
 	}
 	
 	public static int deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+		// on supprime toutes les possessions du salarie dans les autres tables
+		// avant de supprimer le salarie :
+		int resultSalarieForeignKeys = deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateurSalarie);
+		if (resultSalarieForeignKeys == 1) {
+			return resultSalarieForeignKeys;
+		}
+		// s'il n'ya pas d'erreur pour la suppression du salarié, on continue
+		
 		// on supprime le salarie dans la classe fille sql salarie en premier (car clé étrangère), puis on peut supprimer le salarié dans la classe mère utilisateur
 		// Salarie
 		String requeteSalarie = "delete from salarie where idutilisateur =" + idUtilisateurSalarie + ";";
@@ -409,7 +460,9 @@ public class Modele
 		executerRequete(requeteSalarie);
 	}
 	
+	
 	/************* UTILISATEUR SPONSOR ********************/
+	
 	
 	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
 		// Utilisateur
@@ -504,56 +557,3 @@ public class Modele
 	}
 	
 }
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

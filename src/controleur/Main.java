@@ -144,6 +144,10 @@ public class Main {
 		return Modele.selectAllUtilisateurs(mot);
 	}
 	
+	public static int deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
+		return Modele.deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateur);
+	}
+	
 	/********************* CONTROLEUR UTILISATEUR SALARIE ***************************/
 	
 	public static void insertUtilisateurSalarie(Salarie unSalarie) {
