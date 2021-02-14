@@ -72,7 +72,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 	}
 	
