@@ -168,8 +168,8 @@ public class Main {
 	
 	/********************* CONTROLEUR UTILISATEUR SPONSOR ***************************/
 	
-	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
-		Modele.insertUtilisateurSponsor(unSponsor);
+	public static int insertUtilisateurSponsor(Sponsor unSponsor) {
+		return Modele.insertUtilisateurSponsor(unSponsor);
 	}
 
 	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {

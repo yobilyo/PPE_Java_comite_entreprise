@@ -487,12 +487,17 @@ public class Modele
 	/************* UTILISATEUR SPONSOR ********************/
 	
 	
-	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
+	public static int insertUtilisateurSponsor(Sponsor unSponsor) {
 		// Utilisateur
 		String requeteUtilisateur = "insert into utilisateur values (null, '" + unSponsor.getUsername() + "', '" + unSponsor.getPassword()
 		+"', '" + unSponsor.getEmail()+ "', '" + unSponsor.getDroits() +"');";
 		
-		executerRequete(requeteUtilisateur);
+		int resultInsertUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
+		// quitter s'il y'a une erreur et en informer
+		if (resultInsertUtilisateur == 1) {
+			return resultInsertUtilisateur;
+		}
+		// s'il n'ya pas d'erreur on continue
 		
 		//SelectWhere pour obtenir l'idutilisateur réel inséré:
 		int idUtilisateurInsere = Main.selectFindUtilisateur(unSponsor.getUsername(), unSponsor.getEmail(), unSponsor.getDroits()).getIdUtilisateur();
@@ -502,7 +507,11 @@ public class Modele
 		+ unSponsor.getImage_url() + "', '" + unSponsor.getBudget() + "', '" + unSponsor.getTel() + "', '"
 		+ unSponsor.getLien() + "');";
 		
-		executerRequete(requeteSponsor);
+		int resultInsertSponsor = executerRequeteResultShowError(requeteSponsor);
+		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
+		//if (resultSalarie == 1 || resultSalarie == 0) {
+		return resultInsertSponsor;
+		//}
 	}
 	
 	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {

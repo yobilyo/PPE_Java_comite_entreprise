@@ -430,6 +430,8 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			budget = Double.parseDouble(this.txtBudgetSpons.getText());
 		} catch (NumberFormatException exp) {
 			JOptionPane.showMessageDialog(this, "Erreur de saisie de montant");
+			// s'il y'a une erreur de saisie de montant on arrête l'insertion
+			return;
 		}
 		String tel = this.txtTelSpons.getText();
 		String lien = this.txtLienSpons.getText();
@@ -438,11 +440,14 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			if(!txtUserSpons.getText().equals("") || !txtEmailSpons.getText().equals("")) {
 				Sponsor unSponsor = new Sponsor(username, mdp, email, droits, societe, image_url, budget, 
 						tel, lien);
-				Main.insertUtilisateurSponsor(unSponsor);
-				JOptionPane.showMessageDialog(this,"Insertion réussie !");
-				this.viderLesChampsSpons();
-				txtUserSpons.setBackground(Color.WHITE);
-				txtEmailSpons.setBackground(Color.WHITE);
+				int resultInsertSponsor = Main.insertUtilisateurSponsor(unSponsor);
+				if (resultInsertSponsor == 0) {
+					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
+					JOptionPane.showMessageDialog(this,"Insertion réussie !");
+					this.viderLesChampsSpons();
+					txtUserSpons.setBackground(Color.WHITE);
+					txtEmailSpons.setBackground(Color.WHITE);
+				}
 			}else {
 				txtUserSpons.setBackground(Color.RED);
 				txtEmailSpons.setBackground(Color.RED);
