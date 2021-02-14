@@ -139,7 +139,9 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		}else if (e.getSource() == this.btEnregistrer && e.getActionCommand().equals("Enregistrer")) {
 			this.insertActivite();
 		}else if (e.getSource() == this.btAnnuler) {
+				this.btEnregistrer.setText("Enregistrer");
 			this.viderLesChamps();
+			
 		}else if (e.getSource()  == this.btEnregistrer && e.getActionCommand().equals("Modifier")) 
 		{
 			this.updateActivite();  

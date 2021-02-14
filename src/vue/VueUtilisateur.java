@@ -117,10 +117,10 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.panelAjoutSponsor.setBorder(LineBorder.createBlackLineBorder());
 		this.panelAjoutSalarie.setBorder(LineBorder.createBlackLineBorder());
 		
-		this.btEnregistrer.setBounds(50, 350, 140, 25);
-		this.add(this.btEnregistrer);
-		this.btAnnuler.setBounds(200, 350, 140, 25);
-		this.add(this.btAnnuler); 
+		this.btAnnuler.setBounds(50, 360, 140, 25);
+		this.add(this.btAnnuler);
+		this.btEnregistrer.setBounds(200, 360, 140, 25);
+		this.add(this.btEnregistrer); 
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 
