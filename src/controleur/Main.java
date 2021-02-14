@@ -154,8 +154,8 @@ public class Main {
 		return Modele.selectAllUtilisateursSalaries(mot);
 	}
 	
-	public static void deleteUtilisateurSalarie(int idUtilisateurSalarie) {
-		Modele.deleteUtilisateurSalarie(idUtilisateurSalarie);
+	public static int deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+		return Modele.deleteUtilisateurSalarie(idUtilisateurSalarie);
 	}
 	
 	public static void updateUtilisateurSalarie(Salarie unSalarie) {

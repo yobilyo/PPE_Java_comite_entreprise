@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import controleur.Activite;
 import controleur.Commentaire;
 import controleur.Don;
@@ -73,6 +75,29 @@ public class Modele
 			System.out.println("Erreur d'exécution de la requete : " + requete );
 		}
 	}
+	
+	public static int executerRequeteResultShowError (String requete)
+	{
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			unStat.execute(requete); 
+			unStat.close();
+			uneBdd.seDeconnecter();
+			// informer du résultat de la requête
+			return 0;
+		}
+		catch(SQLException exp) {
+			String errorMsg = "Erreur d'exécution de la requete :" + requete
+			+ "\n" + exp.getMessage();
+			System.out.println(errorMsg);
+			// montrer l'erreur sql à l'utilisateur s'il y'en a une
+			JOptionPane.showMessageDialog(null, errorMsg);
+			// informer du résultat de la requête
+			return 1;
+		}
+	}
+	
 	public static ArrayList<Activite> selectAllActivites (String mot){
 		
 		String requete ; 
@@ -343,17 +368,25 @@ public class Modele
 		return lesUtilisateursSalaries ; 
 	}
 	
-	public static void deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+	public static int deleteUtilisateurSalarie(int idUtilisateurSalarie) {
 		// on supprime le salarie dans la classe fille sql salarie en premier (car clé étrangère), puis on peut supprimer le salarié dans la classe mère utilisateur
 		// Salarie
 		String requeteSalarie = "delete from salarie where idutilisateur =" + idUtilisateurSalarie + ";";
+		int resultSalarie = executerRequeteResultShowError(requeteSalarie);
+		// quitter s'il y'a une erreur et en informer
+		if (resultSalarie == 1) {
+			return resultSalarie;
+		}
 		
-		executerRequete(requeteSalarie);
-		
+		// s'il n'ya pas d'erreur pour la suppression du salarié, on continue et on passe à la suppression de l'utilisateur
 		// Utilisateur
 		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSalarie + ";";
-		
-		executerRequete(requeteUtilisateur);
+		int resultUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
+		// résultat de la requête
+		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
+		//if (resultUtilisateur == 1 || resultUtilisateur == 0) {
+		return resultUtilisateur;
+		//}
 	}
 	
 	public static void updateUtilisateurSalarie(Salarie unSalarie) {
