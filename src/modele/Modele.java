@@ -297,7 +297,8 @@ public class Modele
 	public static Utilisateur selectFindUtilisateur(String username, String email, String droits) {
 		Utilisateur unUtilisateur = null;
 		
-		String requete = "select * from utilisateur where username like '%"+username+"%' and email like '%"+email+"%' and droits like '%"+droits+"%'; " ;
+		String requete = "select * from utilisateur where username like '%"+username+"%'"
+		+ " and email like '%"+email+"%' and droits like '%"+droits+"%'; " ;
 	
 		try {
 			uneBdd.seConnecter();
@@ -305,9 +306,12 @@ public class Modele
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
 				unUtilisateur = new Utilisateur (
-						desRes.getInt("idutilisateur"), desRes.getString("username"), desRes.getString("password"), desRes.getString("email"), 
-						desRes.getString("droits")
-						);
+					desRes.getInt("idutilisateur"),
+					desRes.getString("username"),
+					desRes.getString("password"),
+					desRes.getString("email"), 
+					desRes.getString("droits")
+				);
 			}
 			unStat.close();
 			uneBdd.seDeconnecter();
@@ -367,8 +371,10 @@ public class Modele
 	
 	public static int insertUtilisateurSalarie(Salarie unSalarie) {
 		// Utilisateur
-		String requeteUtilisateur = "insert into utilisateur values (null, '" + unSalarie.getUsername() + "', '" + unSalarie.getPassword()
-		+"', '" + unSalarie.getEmail()+ "', '" + unSalarie.getDroits() +"');";
+		String requeteUtilisateur = "insert into utilisateur values (null, '"
+		+ unSalarie.getUsername() + "', '" + unSalarie.getPassword() +"', '"
+		+ unSalarie.getEmail()+ "', '" + unSalarie.getDroits()
+		+ "');";
 		
 		int resultInsertUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
 		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
@@ -378,12 +384,16 @@ public class Modele
 		// s'il n'y a pas d'erreur on continue:
 		
 		//SelectWhere pour obtenir l'idutilisateur réel inséré:
-		int idUtilisateurInsere = Main.selectFindUtilisateur(unSalarie.getUsername(), unSalarie.getEmail(), unSalarie.getDroits()).getIdUtilisateur();
+		int idUtilisateurInsere = Main.selectFindUtilisateur(unSalarie.getUsername(),
+				unSalarie.getEmail(), unSalarie.getDroits()).getIdUtilisateur();
 		
 		// Salarie
-		String requeteSalarie = "insert into salarie values(" + idUtilisateurInsere + ", '" + unSalarie.getNom() + "', '"
-		+ unSalarie.getPrenom() + "', '" + unSalarie.getTel() + "', '" + unSalarie.getAdresse() + "', '"
-		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '" + unSalarie.getSexe() + "');";
+		String requeteSalarie = "insert into salarie values(" + idUtilisateurInsere + ", '" 
+		+ unSalarie.getNom() + "', '" + unSalarie.getPrenom() + "', '"
+		+ unSalarie.getTel() + "', '" + unSalarie.getAdresse() + "', '"
+		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '"
+		+ unSalarie.getSexe()
+		+ "');";
 		
 		int resultInsertSalarie = executerRequeteResultShowError(requeteSalarie);
 		// pour la dernière requête peu importe le résultat (1 ou 0), dans tous les cas
