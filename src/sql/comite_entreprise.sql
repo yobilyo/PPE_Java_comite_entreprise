@@ -42,9 +42,9 @@ CREATE TABLE activite(
 
 CREATE TABLE utilisateur(
         idutilisateur Int  Auto_increment  NOT NULL ,
-        username      Varchar (20),
-        password      Varchar (20),
-        email         Varchar (40),
+        username      Varchar (30),
+        password      Varchar (30),
+        email         Varchar (80),
 		droits        Enum("salarie", "admin", "sponsor") NOT NULL,
 		PRIMARY KEY (idutilisateur)
 );
@@ -54,10 +54,10 @@ CREATE TABLE utilisateur(
 
 CREATE TABLE salarie(
         idutilisateur Int NOT NULL ,
-        nom           Varchar (20),
-        prenom        Varchar (20),
+        nom           Varchar (40),
+        prenom        Varchar (40),
         tel           Varchar (15),
-        adresse       Varchar (80),
+        adresse       Varchar (100),
         quotient_fam  Enum ("1","2","3","4","5"),
         service       Enum ("comptabilite","developpeur","commercial","ressources_humaines"),
         sexe          Enum ("homme","femme"),
@@ -69,8 +69,8 @@ CREATE TABLE salarie(
 
 CREATE TABLE sponsor(
         idutilisateur Int NOT NULL ,
-        societe       Varchar (25),
-		image_url	  Varchar (100),
+        societe       Varchar (100),
+		image_url	  Varchar (200),
         budget        Float,
         tel           Varchar (15),
 		lien	    Varchar (200),
