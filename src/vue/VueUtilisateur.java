@@ -408,6 +408,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this,"Insertion réussie !");
 					// actualiser/vider les données du panelAjoutSalarie
 					this.viderLesChampsSalarie();
+					this.btEnregistrer.setText("Enregistrer");
 					txtUsernameSalarie.setBackground(Color.WHITE);
 					txtEmailSalarie.setBackground(Color.WHITE);
 					// actualiser/regénérer les données du panelListerSalarie
@@ -453,6 +454,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this,"Insertion réussie !");
 					// actualiser/vider les données du panelAjoutSponsor
 					this.viderLesChampsSpons();
+					this.btEnregistrer.setText("Enregistrer");
 					txtUserSpons.setBackground(Color.WHITE);
 					txtEmailSpons.setBackground(Color.WHITE);
 					// actualiser/regénérer les données du panelListerSponsor
@@ -497,6 +499,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this,"Modification réussie !");
 					// actualiser/vider les données du panelAjoutSalarie
 					this.viderLesChampsSalarie();
+					this.btEnregistrer.setText("Enregistrer");
 					txtUserSpons.setBackground(Color.WHITE);
 					txtEmailSpons.setBackground(Color.WHITE);
 					// actualiser/regénérer les données du panelListerSalarie
@@ -546,6 +549,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					JOptionPane.showMessageDialog(this,"Modification réussie !");
 					// actualiser/vider les données du panelAjoutSponsor
 					this.viderLesChampsSpons();
+					this.btEnregistrer.setText("Enregistrer");
 					txtUserSpons.setBackground(Color.WHITE);
 					txtEmailSpons.setBackground(Color.WHITE);
 					// actualiser/regénérer les données du panelListerSponsor
@@ -817,13 +821,13 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			//System.out.println(this.isSalarie);
 			if (this.isSalarie == true) {
 				this.viderLesChampsSalarie();
-				// après avoir vidé tous les champs, on reset aussi le bouton Enregistrer : le bouton Modifier redevient Enregistrer
-				this.btEnregistrer.setText("Enregistrer");
+				this.btEnregistrer.setText("Enregistrer"); // après avoir vidé tous les champs, on reset aussi le bouton Enregistrer : le bouton Modifier redevient Enregistrer
+				
 			}
 			else {
 				this.viderLesChampsSpons();
-				// après avoir vidé tous les champs, on reset aussi le bouton Enregistrer : le bouton Modifier redevient Enregistrer
-				this.btEnregistrer.setText("Enregistrer");
+				this.btEnregistrer.setText("Enregistrer"); // après avoir vidé tous les champs, on reset aussi le bouton Enregistrer : le bouton Modifier redevient Enregistrer
+				
 			}
 
 		}else if(e.getSource() == this.btSponsor) {
