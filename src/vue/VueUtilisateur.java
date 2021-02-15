@@ -182,7 +182,9 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 						if (resultDeleteSalarie == 0) {
 							//s'il n'y a pas d'erreur, on supprime dans le tableau JTable et on affiche succès
 							//suppression dans la table d'affichage 
-							unTableauSalarie.deleteLigne(ligne);
+							//unTableauSalarie.deleteLigne(ligne);
+							// actualiser/regénérer les données du panelListerSalarie
+							refreshPanelListerSalarie("");
 							JOptionPane.showMessageDialog(null, "Suppression réussie");
 						}
 
@@ -250,7 +252,9 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 						if (resultDeleteSponsor == 0) {
 							//s'il n'y a pas d'erreur, on supprime dans le tableau JTable et on affiche succès
 							//suppression dans la table d'affichage 
-							unTableauSponsor.deleteLigne(ligne);
+							//unTableauSponsor.deleteLigne(ligne);
+							// actualiser/regénérer les données du panelListerSponsor
+							refreshPanelListerSponsor("");
 							JOptionPane.showMessageDialog(null, "Suppression réussie");
 						}
 					}
@@ -402,9 +406,12 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				if (resultInsertSalarie == 0) {
 					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
 					JOptionPane.showMessageDialog(this,"Insertion réussie !");
+					// actualiser/vider les données du panelAjoutSalarie
 					this.viderLesChampsSalarie();
 					txtUsernameSalarie.setBackground(Color.WHITE);
 					txtEmailSalarie.setBackground(Color.WHITE);
+					// actualiser/regénérer les données du panelListerSalarie
+					this.refreshPanelListerSalarie("");
 				}
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
@@ -444,9 +451,12 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				if (resultInsertSponsor == 0) {
 					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
 					JOptionPane.showMessageDialog(this,"Insertion réussie !");
+					// actualiser/vider les données du panelAjoutSponsor
 					this.viderLesChampsSpons();
 					txtUserSpons.setBackground(Color.WHITE);
 					txtEmailSpons.setBackground(Color.WHITE);
+					// actualiser/regénérer les données du panelListerSponsor
+					this.refreshPanelListerSponsor("");
 				}
 			}else {
 				txtUserSpons.setBackground(Color.RED);
@@ -485,9 +495,12 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				if (resultUpdateSalarie == 0) {
 					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
 					JOptionPane.showMessageDialog(this,"Modification réussie !");
+					// actualiser/vider les données du panelAjoutSalarie
 					this.viderLesChampsSalarie();
-					txtUsernameSalarie.setBackground(Color.WHITE);
-					txtEmailSalarie.setBackground(Color.WHITE);
+					txtUserSpons.setBackground(Color.WHITE);
+					txtEmailSpons.setBackground(Color.WHITE);
+					// actualiser/regénérer les données du panelListerSalarie
+					this.refreshPanelListerSalarie("");
 				}
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
@@ -531,9 +544,12 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				if (resultUpdateSponsor == 0) {
 					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
 					JOptionPane.showMessageDialog(this,"Modification réussie !");
+					// actualiser/vider les données du panelAjoutSponsor
 					this.viderLesChampsSpons();
 					txtUserSpons.setBackground(Color.WHITE);
 					txtEmailSpons.setBackground(Color.WHITE);
+					// actualiser/regénérer les données du panelListerSponsor
+					this.refreshPanelListerSponsor("");
 				}
 			}else {
 				txtUserSpons.setBackground(Color.RED);
@@ -619,7 +635,6 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 	}
 	
 	public void remplirPanelListerSalarie(String mot) {
-		//TODO
 		//remplir le panel Lister Salarie
 		this.panelListerSalarie.removeAll();
 		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
@@ -629,6 +644,31 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.unTableauSalarie = new Tableau (donnees, entetes); 
 		this.uneTableSalarie = new JTable(this.unTableauSalarie); 
 		
+		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
+		//this.panelListerSalarie.setBounds(350, 80, 530, 300);
+		this.uneScrollSalarie.setBounds(20, 20, this.panelListerSalarie.getWidth() - 40, this.panelListerSalarie.getHeight() - 40);
+		this.panelListerSalarie.add(this.uneScrollSalarie);
+	}
+	
+	public void refreshPanelListerSalarie(String mot) {
+		//remplir le panel Lister Salarie
+		this.panelListerSalarie.removeAll();
+		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
+			"Nom", "Prénom", "Téléphone", "Adresse", "Quotient Familial", "Service", "Sexe" }; // sponsor
+		Object donnees [][] = this.getDonneesSalarie (mot) ;
+		
+		this.unTableauSalarie = new Tableau (donnees, entetes);
+		
+		// pour refresh la JTable tout en gardant les mêmes adresses mémoire
+		// de la JTable et Jscroll (afin de conserver les actionListener)
+		// on update uniquement la JTable sans la réinstancier
+		this.uneTableSalarie.removeAll();
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
+		JTable laNouvelleTable = new JTable(this.unTableauSalarie);
+		this.uneTableSalarie.setModel(laNouvelleTable.getModel());
+		
+		// instanciation d'une nouvelle JScrollPane
 		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
 		//this.panelListerSalarie.setBounds(350, 80, 530, 300);
 		this.uneScrollSalarie.setBounds(20, 20, this.panelListerSalarie.getWidth() - 40, this.panelListerSalarie.getHeight() - 40);
@@ -676,7 +716,6 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 	}
 	
 	public void remplirPanelListerSponsor(String mot) {
-		//TODO
 		//remplir le panel Lister Sponsor
 		this.panelListerSponsor.removeAll();
 		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
@@ -686,6 +725,31 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.unTableauSponsor = new Tableau (donnees, entetes); 
 		this.uneTableSponsor = new JTable(this.unTableauSponsor); 
 		
+		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
+		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
+		this.uneScrollSponsor.setBounds(20, 20, this.panelListerSponsor.getWidth() - 40, this.panelListerSponsor.getHeight() - 40);
+		this.panelListerSponsor.add(this.uneScrollSponsor);
+	}
+	
+	public void refreshPanelListerSponsor(String mot) {
+		//remplir le panel Lister Sponsor
+		this.panelListerSponsor.removeAll();
+		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
+			"Société", "Image (URL)", "Budget", "Téléphone", "Lien" }; // sponsor
+		Object donnees [][] = this.getDonneesSponsor (mot) ;
+		
+		this.unTableauSponsor = new Tableau (donnees, entetes); 
+		
+		// pour refresh la JTable tout en gardant les mêmes adresses mémoire
+		// de la JTable et Jscroll (afin de conserver les actionListener)
+		// on update uniquement la JTable sans la réinstancier
+		this.uneTableSponsor.removeAll();
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
+		JTable laNouvelleTable = new JTable(this.unTableauSponsor);
+		this.uneTableSponsor.setModel(laNouvelleTable.getModel());
+		
+		// instanciation d'une nouvelle JScrollPane
 		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
 		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
 		this.uneScrollSponsor.setBounds(20, 20, this.panelListerSponsor.getWidth() - 40, this.panelListerSponsor.getHeight() - 40);
@@ -776,8 +840,8 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			this.panelListerSponsor.setVisible(false);
 		}else if (e.getSource() == this.btFiltrer)
 		{
-			this.remplirPanelListerSalarie(this.txtFiltrer.getText());
-			this.remplirPanelListerSponsor(this.txtFiltrer.getText());			
+			this.refreshPanelListerSalarie(this.txtFiltrer.getText());
+			this.refreshPanelListerSponsor(this.txtFiltrer.getText());			
 		}
 	}
 	
@@ -788,11 +852,4 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		txtUsernameSalarie.setBounds(150, 0, 150, 25);
 		this.panelAjoutSalarie.add(this.txtUsernameSalarie);
 	 */
-	
-	
-	
-	
-	
-	
-	
 }
