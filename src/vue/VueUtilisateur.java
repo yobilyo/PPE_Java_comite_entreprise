@@ -844,8 +844,11 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			this.panelListerSponsor.setVisible(false);
 		}else if (e.getSource() == this.btFiltrer)
 		{
-			this.refreshPanelListerSalarie(this.txtFiltrer.getText());
-			this.refreshPanelListerSponsor(this.txtFiltrer.getText());			
+			if (this.isSalarie == true) {
+				this.refreshPanelListerSalarie(this.txtFiltrer.getText());
+			} else {
+				this.refreshPanelListerSponsor(this.txtFiltrer.getText());
+			}
 		}
 	}
 	
