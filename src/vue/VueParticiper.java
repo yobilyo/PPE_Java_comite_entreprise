@@ -33,7 +33,7 @@ public class VueParticiper extends JFrame implements ActionListener {
 	private Tableau unTableau ;
 	
 	public VueParticiper() {
-		this.setBounds(100, 100, Main.WIDTH, Main.HEIGHT);
+		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
 		this.setTitle("Gestion des participations");
 		
 		// TEST !
@@ -46,16 +46,16 @@ public class VueParticiper extends JFrame implements ActionListener {
 		this.getContentPane().setBackground(new Color (206,214, 224   ));
 		
 		//installer le bouton retour 
-		this.btRetour.setBounds(Main.WIDTH -170, Main.HEIGHT -80, 140, 30);
+		this.btRetour.setBounds(Main.getWidth() -170, Main.getHeight() -80, 140, 30);
 		this.add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
 		initBoutons();
 		
-		this.btFiltrer.setBounds(Main.WIDTH /2 - 80, 20, 100, 20);
+		this.btFiltrer.setBounds(Main.getWidth() /2 - 80, 20, 100, 20);
 		this.add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(Main.WIDTH / 2 + 40, 20 , 100, 20);
+		this.txtFiltrer.setBounds(Main.getWidth() / 2 + 40, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
 		this.setVisible(true);
