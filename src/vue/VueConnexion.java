@@ -39,6 +39,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	private JButton btCommentaires = new JButton("Commentaires"); 
 	private JButton btDons = new JButton("Dons"); 
 	private JButton btUtilisateur = new JButton("Utilisateurs"); 
+	private JButton btParticiper = new JButton("Participer"); 
 	//private JButton btContact = new JButton("Nous contacter"); 
 
 	private JButton btSeDeconnecter = new JButton("Se déconnecter"); 
@@ -53,6 +54,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		
 		this.getContentPane().setBackground(new Color (206,214, 224 ));
 		
+		//construction du panel Connexion
 		this.panelConnexion.setLayout(new GridLayout(3, 2, 3, 3));
 		this.panelConnexion.setBounds(340, 60, 300, 140);
 		this.panelConnexion.setBackground(new Color (206,214, 224 ));
@@ -68,7 +70,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		monLogo.setBounds(20, 60, 300, 150); 
 		this.add(monLogo);
 		
-		//rendre les boutons ecoutables 
+		//rendre les boutons ecoutables du panel Connexion
 		this.btAnnuler.addActionListener(this);
 		this.btSeConnecter.addActionListener(this);
 		
@@ -79,11 +81,12 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.add(this.panelConnexion);
 		
 		//construction du panel Menu 
-		this.panelMenu.setLayout(new GridLayout(2, 2, 2, 2));
+		this.panelMenu.setLayout(new GridLayout(3, 2, 2, 2));
 		this.panelMenu.setBounds(340, 60, 300, 140);
 		this.panelMenu.setBackground(new Color (206,214, 224  ));
 		
 		this.panelMenu.add(this.btActivites); 
+		this.panelMenu.add(this.btParticiper);
 		this.panelMenu.add(this.btCommentaires); 
 		this.panelMenu.add(this.btDons); 
 		this.panelMenu.add(this.btUtilisateur);
@@ -91,21 +94,22 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.panelMenu.setVisible(false);
 		this.add(this.panelMenu);
 		
-		//rendre les boutons ecoutables du menu 
-		this.btCommentaires.addActionListener(this);
+		//rendre les boutons ecoutables du panelMenu 
 		this.btActivites.addActionListener(this);
+		this.btParticiper.addActionListener(this);	
+		this.btCommentaires.addActionListener(this);
 		this.btDons.addActionListener(this);
 		this.btUtilisateur.addActionListener(this);
-		this.btSeDeconnecter.addActionListener(this);
 		
-		
-		//construction du pannel pour le bouton quitter
+		//construction du pannelQuitter pour le bouton quitter
 		this.panelQuitter.setBounds(340, 200, 300, 60);
 		this.panelQuitter.setBackground(new Color(206,214, 224  ));
 		this.panelQuitter.add(btSeDeconnecter);
 		this.panelQuitter.setVisible(false);
-		this.add(panelQuitter); 
+		this.add(panelQuitter);
 		
+		// rendre les boutons écoutables du panelQuitter
+		this.btSeDeconnecter.addActionListener(this);
 		
 		initBoutons();
 		
@@ -125,6 +129,10 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.btActivites.setForeground(new Color(255, 255, 255));
 		this.btActivites.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 		
+		this.btParticiper.setBackground(new Color(52, 58, 64));
+		this.btParticiper.setForeground(new Color(255, 255, 255));
+		this.btParticiper.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+		
 		this.btCommentaires.setBackground(new Color(52, 58, 64));
 		this.btCommentaires.setForeground(new Color(255, 255, 255));
 		this.btCommentaires.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
@@ -136,7 +144,6 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.btUtilisateur.setBackground(new Color(52, 58, 64));
 		this.btUtilisateur.setForeground(new Color(255, 255, 255));
 		this.btUtilisateur.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
 		
 		this.btSeDeconnecter.setBackground(new Color(31, 61, 128));
 		this.btSeDeconnecter.setForeground(new Color(255, 255, 255));
@@ -165,14 +172,17 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 			this.setVisible(false);
 			//on instancie la vue Activite 
 			Main.instancierVueActivite();
+		}else if (e.getSource() == this.btParticiper) {
+			//on rend invisible la vue connexion 
+			this.setVisible(false);
+			//on instancie la vue Participer 
+			Main.instancierParticiper();
 		}else if (e.getSource() == this.btCommentaires) {
 			this.setVisible(false);
 			Main.instancierVueCommentaire();
 		}else if (e.getSource() == this.btDons) {
 			this.setVisible(false);
-			
 			Main.instancierVueDon();
-			
 		}else if (e.getSource() == this.btUtilisateur) {
 			this.setVisible(false);
 			Main.instancierVueUtilisateur();

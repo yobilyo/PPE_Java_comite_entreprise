@@ -13,6 +13,7 @@ import modele.Modele;
 
 import vue.VueConnexion;
 import vue.VueDon;
+import vue.VueParticiper;
 import vue.VueUtilisateur;
 import vue.VueActivite;
 import vue.VueCommentaire;
@@ -24,16 +25,12 @@ public class Main {
 	public final static int WIDTH = 1200;
 	public final static int HEIGHT = 500;  
 	
-	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;
-
+	public static VueParticiper uneVueParticiper;
 	public static VueCommentaire uneVueCommentaire;
-
 	public static VueDon uneVueDon;
-
-
-	
+	public static VueUtilisateur uneVueUtilisateur;
 	
 	public static void main(String[] args) {
 		//lancement plus propre
@@ -69,28 +66,27 @@ public class Main {
 		uneVueConnexion = new VueConnexion();
 	}
 	
-	public static void instancierVueUtilisateur() {
-		uneVueUtilisateur = new VueUtilisateur();
-	}
-	
 	public static void instancierVueActivite() {
 		uneVueActivite = new VueActivite();
 	}
 
+	public static void instancierParticiper() {
+		uneVueParticiper = new VueParticiper();
+	}
+	
 	public static void instancierVueCommentaire() {
 		uneVueCommentaire = new VueCommentaire();
 	}
-
 	
 	public static void instancierVueDon() {
 		uneVueDon = new VueDon();
 	}
 	
-
-
+	public static void instancierVueUtilisateur() {
+		uneVueUtilisateur = new VueUtilisateur();
+	}
 	
 	/********************* CONTROLEUR ACTIVITE ***************************/
-	
 	
 	public static void insertActivite(Activite uneActivite) {
 		Modele.insertActivite(uneActivite);
@@ -107,6 +103,10 @@ public class Main {
 		
 	}
 
+	/********************* CONTROLEUR PARTICIPER ***************************/
+	
+	
+	
 	/********************* CONTROLEUR COMMENTAIRE ***************************/
 	
 	
@@ -183,7 +183,6 @@ public class Main {
 	public static int updateUtilisateurSponsor(Sponsor unSponsor) {
 		return Modele.updateUtilisateurSponsor(unSponsor);
 	}
-
 	
 	/************************* CONNEXION *************************/
 	public static Utilisateur verifConnexion(String email, String mdp) {

@@ -127,9 +127,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.btFiltrer.setBackground(new Color(52, 58, 64));
 		this.btFiltrer.setForeground(new Color(255, 255, 255));
 		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-	
-	
-}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
