@@ -35,7 +35,11 @@ public class VueParticiper extends JFrame implements ActionListener {
 	public VueParticiper() {
 		this.setBounds(100, 100, Main.WIDTH, Main.HEIGHT);
 		this.setTitle("Gestion des participations");
-		this.setResizable(false);
+		
+		// TEST !
+		this.setResizable(true);
+		// TEST !
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(null);
 		
