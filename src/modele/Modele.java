@@ -366,6 +366,35 @@ public class Modele
 	}
 	
 	
+	/************* UTILISATEUR CONNECTE EN COURS ********************/
+	
+	
+	public static Utilisateur selectUtilisateurConnecte(int idUtilisateurConnecte) {
+		Utilisateur unUser = null;
+		String requete = "select * from utilisateur where idutilisateur = " + idUtilisateurConnecte + ";";
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet unRes = unStat.executeQuery(requete); 
+			
+			if (unRes.next()) {
+				unUser = new Utilisateur (
+						unRes.getInt("idutilisateur"), unRes.getString("username"),
+						unRes.getString("email"), unRes.getString("password"),  unRes.getString("droits")
+						);
+			}
+			unRes.close();
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch (SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		
+		return unUser;
+	}
+	
 	/************* UTILISATEUR SALARIE ********************/
 	
 	

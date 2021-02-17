@@ -22,8 +22,12 @@ import vue.VueCommentaire;
 public class Main {
 
 	//Taille des Jpanels
-	public final static int WIDTH = 1200;
-	public final static int HEIGHT = 500;  
+	private final static int WIDTH = 1200;
+	private final static int HEIGHT = 500;  
+	
+	// on stocke l'idUtilisateurConnecte et on l'actualise au cours du programme
+	// -1 : par défaut aucun utilisateur n'est connecté
+	private static int idUtilisateurConnecte = -1;
 	
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;
@@ -45,10 +49,40 @@ public class Main {
 			}
 		});
 	}
+	
+	public static int getWidth() {
+		return Main.WIDTH;
+	}
+	
+	public static int getHeight() {
+		return Main.HEIGHT;
+	}
+	
+	/******************* GESTION DE LA CONNEXION EN COURS **************************/
+	
+	public static int getIdUtilisateurConnecte() {
+		return Main.idUtilisateurConnecte;
+	}
+	
+	public static void setIdUtilisateurConnecte(int idUtilisateurConnecte) {
+		// Lors de la connexion on enregistre l'idUtilisateurConnecté
+		Main.idUtilisateurConnecte = idUtilisateurConnecte;
+	}
+	
+	public static void disableIdUtilisateurConnecte() {
+		// Lors de la déconnexion on reset l'idutilisateur connecté sur -1
+		Main.idUtilisateurConnecte = -1;
+	}
 
 	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
 	public static void rendreVisible(boolean action) {
 		uneVueConnexion.setVisible(action);
+	}
+	
+	// nous permet d'obtenir les droits de l'utilisateur connecte
+	public static String getDroitsUtilisateurConnecte() {
+		String droitsUtilisateurConnecte = Main.selectUtilisateurConnecte(Main.idUtilisateurConnecte).getDroits();
+		return droitsUtilisateurConnecte;
 	}
 	
 	/******************* STYLISATION ***********************************/
@@ -105,7 +139,7 @@ public class Main {
 
 	/********************* CONTROLEUR PARTICIPER ***************************/
 	
-	
+	// TODO insert, delete, selectAll, update
 	
 	/********************* CONTROLEUR COMMENTAIRE ***************************/
 	
@@ -146,6 +180,12 @@ public class Main {
 	
 	public static int deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
 		return Modele.deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateur);
+	}
+	
+	/********************* CONTROLEUR UTILISATEUR CONNECTE EN COURS ***************************/
+	
+	public static Utilisateur selectUtilisateurConnecte(int idUtilisateurConnecte) {
+		return Modele.selectUtilisateurConnecte(idUtilisateurConnecte);
 	}
 	
 	/********************* CONTROLEUR UTILISATEUR SALARIE ***************************/

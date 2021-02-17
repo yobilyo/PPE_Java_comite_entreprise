@@ -29,9 +29,6 @@ import controleur.Utilisateur;
 
 public class VueUtilisateur extends JFrame implements ActionListener {
 	
-//	private final static int WIDTH = 900;
-//	private final static int HEIGHT = 500;
-	
 	private static VueConnexion uneVueConnexion; 
 	
 	private JPanel panelAjoutSalarie = new JPanel();
@@ -92,7 +89,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 	
 	
 	public VueUtilisateur() {
-		this.setBounds(100, 100, Main.WIDTH, Main.HEIGHT);
+		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
 		this.setTitle("Gestion des utilisateurs");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,7 +98,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.getContentPane().setBackground(new Color (206,214, 224  ));
 		
 		//installer le bouton retour 
-		this.btRetour.setBounds(Main.WIDTH -170, Main.HEIGHT -80, 140, 30);
+		this.btRetour.setBounds(Main.getWidth() -170, Main.getHeight() -80, 140, 30);
 		getContentPane().add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
@@ -613,10 +610,10 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.btFiltrer.setForeground(new Color(255, 255, 255));
 		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 		
-		this.btFiltrer.setBounds(Main.WIDTH /2 - 200, 20, 100, 20);
+		this.btFiltrer.setBounds(Main.getWidth() /2 - 200, 20, 100, 20);
 		this.add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(Main.WIDTH / 2 - 80, 20 , 100, 20);
+		this.txtFiltrer.setBounds(Main.getWidth() / 2 - 80, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
 		this.btSalarie.setBackground(new Color(52, 58, 64));
