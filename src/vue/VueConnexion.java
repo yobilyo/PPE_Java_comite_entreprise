@@ -156,6 +156,11 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		else if (e.getSource() == this.btSeDeconnecter) {
 			int retour = JOptionPane.showConfirmDialog(this, "Voulez-vous revenir au menu principal ?", "Se déconnecter", JOptionPane.YES_NO_OPTION);
 			if (retour == 0) {
+				// l'user vient de se déconnecter, donc on désactive l'idutilisateur connecté
+				// on le remet à -1
+				Main.disableIdUtilisateurConnecte();
+				System.out.println("id déconnecté : " + Main.getIdUtilisateurConnecte());
+				
 				this.panelConnexion.setVisible(true);
 				this.panelMenu.setVisible(false);
 				this.panelQuitter.setVisible(false);
@@ -187,6 +192,10 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		if (unUser == null) {
 			JOptionPane.showMessageDialog(this, "Erreur de connexion, vérifiez vos identifiants");
 		}else {
+			// on stocke l'idUtilisateur qui s'est connecté
+			Main.setIdUtilisateurConnecte(unUser.getIdUtilisateur());
+			System.out.println("id connecté: " + Main.getIdUtilisateurConnecte());
+			
 			JOptionPane.showMessageDialog(this, "Bienvenue " + unUser.getUsername()+"  "+unUser.getEmail());
 			// Ouverture du menu général 
 			this.panelConnexion.setVisible(false);
