@@ -21,8 +21,8 @@ import vue.VueCommentaire;
 public class Main {
 
 	//Taille des Jpanels
-	public final static int WIDTH = 1200;
-	public final static int HEIGHT = 500;  
+	private final static int WIDTH = 1200;
+	private final static int HEIGHT = 500;  
 	
 	// on stocke l'idUtilisateurConnecte et on l'actualise au cours du programme
 	// -1 : par défaut aucun utilisateur n'est connecté
@@ -51,6 +51,14 @@ public class Main {
 			//	new VueActivite();
 			}
 		});
+	}
+	
+	public static int getWidth() {
+		return Main.WIDTH;
+	}
+	
+	public static int getHeight() {
+		return Main.HEIGHT;
 	}
 	
 	/******************* GESTION DE LA CONNEXION EN COURS **************************/
@@ -107,16 +115,11 @@ public class Main {
 		uneVueCommentaire = new VueCommentaire();
 	}
 
-	
 	public static void instancierVueDon() {
 		uneVueDon = new VueDon();
 	}
-	
 
-
-	
 	/********************* CONTROLEUR ACTIVITE ***************************/
-	
 	
 	public static void insertActivite(Activite uneActivite) {
 		Modele.insertActivite(uneActivite);

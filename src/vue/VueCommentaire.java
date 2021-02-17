@@ -99,10 +99,10 @@ public class VueCommentaire extends JFrame implements ActionListener{
 		this.btAnnuler.addActionListener(this);
 		this.btEnregistrer.addActionListener(this);
 		
-		this.btFiltrer.setBounds(Main.WIDTH /2 - 200, 20, 100, 20);
+		this.btFiltrer.setBounds(Main.getWidth() /2 - 200, 20, 100, 20);
 		this.add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(Main.WIDTH / 2 - 80, 20 , 100, 20);
+		this.txtFiltrer.setBounds(Main.getWidth() / 2 - 80, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
 		this.uneTable.addMouseListener(new MouseListener() {
