@@ -159,7 +159,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 				// l'user vient de se déconnecter, donc on désactive l'idutilisateur connecté
 				// on le remet à -1
 				Main.disableIdUtilisateurConnecte();
-				System.out.println("id déconnecté : " + Main.getIdUtilisateurConnecte());
+				System.out.println("idutilisateur déconnecté : " + Main.getIdUtilisateurConnecte());
 				
 				this.panelConnexion.setVisible(true);
 				this.panelMenu.setVisible(false);
@@ -194,7 +194,8 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		}else {
 			// on stocke l'idUtilisateur qui s'est connecté
 			Main.setIdUtilisateurConnecte(unUser.getIdUtilisateur());
-			System.out.println("id connecté: " + Main.getIdUtilisateurConnecte());
+			System.out.println("idutilisateur connecté: " + Main.getIdUtilisateurConnecte());
+			System.out.println(Main.getDroitsUtilisateurConnecte());
 			
 			JOptionPane.showMessageDialog(this, "Bienvenue " + unUser.getUsername()+"  "+unUser.getEmail());
 			// Ouverture du menu général 
