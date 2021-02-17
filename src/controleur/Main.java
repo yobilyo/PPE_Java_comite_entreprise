@@ -3,8 +3,10 @@ package controleur;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableCellRenderer;
@@ -13,6 +15,7 @@ import modele.Modele;
 
 import vue.VueConnexion;
 import vue.VueDon;
+import vue.VueParticiper;
 import vue.VueUtilisateur;
 import vue.VueActivite;
 import vue.VueCommentaire;
@@ -28,16 +31,12 @@ public class Main {
 	// -1 : par défaut aucun utilisateur n'est connecté
 	private static int idUtilisateurConnecte = -1;
 	
-	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;
-
+	public static VueParticiper uneVueParticiper;
 	public static VueCommentaire uneVueCommentaire;
-
 	public static VueDon uneVueDon;
-
-
-	
+	public static VueUtilisateur uneVueUtilisateur;
 	
 	public static void main(String[] args) {
 		//lancement plus propre
@@ -97,28 +96,44 @@ public class Main {
 		uneTable.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
 	
+	public static void styleBoutonBleu(JButton myButton) {
+		myButton.setBackground(new Color(31, 61, 128));
+		myButton.setForeground(new Color(255, 255, 255));
+		myButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	}
+	
+	public static void styleBoutonDark(JButton myButton) {
+		myButton.setBackground(new Color(52, 58, 64));
+		myButton.setForeground(new Color(255, 255, 255));
+		myButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
+	}
+	
 	/********************** INSTANCTIATIONS *********************/
 	
 	public static void instancierVueConnexion() {
 		uneVueConnexion = new VueConnexion();
 	}
 	
-	public static void instancierVueUtilisateur() {
-		uneVueUtilisateur = new VueUtilisateur();
-	}
-	
 	public static void instancierVueActivite() {
 		uneVueActivite = new VueActivite();
 	}
 
+	public static void instancierParticiper() {
+		uneVueParticiper = new VueParticiper();
+	}
+	
 	public static void instancierVueCommentaire() {
 		uneVueCommentaire = new VueCommentaire();
 	}
-
+	
 	public static void instancierVueDon() {
 		uneVueDon = new VueDon();
 	}
-
+	
+	public static void instancierVueUtilisateur() {
+		uneVueUtilisateur = new VueUtilisateur();
+	}
+	
 	/********************* CONTROLEUR ACTIVITE ***************************/
 	
 	public static void insertActivite(Activite uneActivite) {
@@ -136,6 +151,10 @@ public class Main {
 		
 	}
 
+	/********************* CONTROLEUR PARTICIPER ***************************/
+	
+	// TODO insert, delete, selectAll, update
+	
 	/********************* CONTROLEUR COMMENTAIRE ***************************/
 	
 	
@@ -218,7 +237,6 @@ public class Main {
 	public static int updateUtilisateurSponsor(Sponsor unSponsor) {
 		return Modele.updateUtilisateurSponsor(unSponsor);
 	}
-
 	
 	/************************* CONNEXION *************************/
 	public static Utilisateur verifConnexion(String email, String mdp) {

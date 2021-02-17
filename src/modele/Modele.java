@@ -436,7 +436,11 @@ public class Modele
 		if (mot.equals("")) {
 			requete ="select * from utilisateur_salarie ;" ;
 		}else {
-			requete ="select * from utilisateur_salarie where username like '%"+mot+"%' or email like '%"+mot+"%'; " ;
+			requete ="select * from utilisateur_salarie where username like '%"+mot+"%'"
+					+ " or email like '%"+mot+"%'"
+					+ " or prenom like '%"+mot+"%'"
+					+ " or tel like '%"+mot+"%'"
+					+ "; " ;
 		}
 		ArrayList<Salarie> lesUtilisateursSalaries = new ArrayList<Salarie>();  
 		
