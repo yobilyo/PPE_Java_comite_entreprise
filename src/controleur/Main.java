@@ -21,8 +21,8 @@ import vue.VueCommentaire;
 public class Main {
 
 	//Taille des Jpanels
-	public final static int WIDTH = 1200;
-	public final static int HEIGHT = 500;  
+	private static int WIDTH = 1200;
+	private static int HEIGHT = 500;  
 	
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueConnexion uneVueConnexion;
@@ -47,6 +47,22 @@ public class Main {
 			//	new VueActivite();
 			}
 		});
+	}
+	
+	public static int getWidth() {
+		return Main.WIDTH;
+	}
+	
+	public static int getHeight() {
+		return Main.HEIGHT;
+	}
+	
+	public static void setWidth(int width) {
+		Main.WIDTH = width;
+	}
+	
+	public static void setHeight(int height) {
+		Main.HEIGHT = height;
 	}
 
 	//méthode static qui permet de rendre le panneauConnexion visible / invisible 
