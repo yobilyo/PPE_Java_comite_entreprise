@@ -11,6 +11,7 @@ import controleur.Activite;
 import controleur.Commentaire;
 import controleur.Don;
 import controleur.Main;
+import controleur.Participation;
 import controleur.Salarie;
 import controleur.Sponsor;
 import controleur.Utilisateur;
@@ -253,6 +254,8 @@ public class Modele
 		 + ");";
 		executerRequete(requete);
 	}
+	
+	
 	
 	
 	/************* UTILISATEUR ********************/
@@ -682,5 +685,57 @@ public class Modele
 		return resultUpdateSponsor;
 		//}
 	}
+	
+	/************************ PARTICIPATION ************************************/
+	
+	
+	public static ArrayList<Participation> selectAllParticipation(String mot) {
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from participer ;" ;
+		}else {
+			requete ="select * from participer where date_inscription like '%"+mot+"%'; " ;
+		}
+		ArrayList<Participation> lesParticipations = new ArrayList<Participation>();  
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Participation uneParticipation = new Participation (
+						desRes.getString("date_inscription"), desRes.getInt("id_activite"), 
+						desRes.getInt("idutilisateur")
+						);
+				lesParticipations.add(uneParticipation);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete );
+		}
+		return lesParticipations ; 
+	}
+
+	public static void insertParticipation(Participation uneParticipation) {
+		String requete = "insert into participer values ('" + uneParticipation.getIdUtilisateur() + "', '" + uneParticipation.getIdActivite() + "', '" + uneParticipation.getDateParticipation() + "' "
+		 + ");";
+		executerRequete(requete);
+	}
+	
+	public static void deleteParticipation (int idutilisateur, int id_activite)
+	{
+		String requete =" delete from participer where idutilisateur = " + idutilisateur +" and id_activite = " + id_activite + " ; " ;
+		executerRequete(requete);
+	}
+
+	public static void updateParticipation(Participation uneParticipation) {
+		String requete ="update participer set date_inscription = '" + uneParticipation.getDateParticipation() + "', idutilisateur = '" + uneParticipation.getIdUtilisateur()
+		+"', id_activite = " + uneParticipation.getIdActivite() + "  where id_activite = " + uneParticipation.getIdActivite() + " and idutilisateur = " + uneParticipation.getIdUtilisateur()  + " ;" ;
+		executerRequete(requete);		
+	}
+
+	
+	
 	
 }

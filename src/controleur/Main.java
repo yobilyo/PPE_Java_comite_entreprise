@@ -155,6 +155,19 @@ public class Main {
 	
 	// TODO insert, delete, selectAll, update
 	
+	public static void insertParticipation(Participation uneParticipation) {
+		Modele.insertParticipation(uneParticipation);
+	}
+	public static void deleteParticipation (int idutilisateur, int id_activite){
+		Modele.deleteParticipation(idutilisateur, id_activite);
+	}
+	public static ArrayList<Participation> selectAllParticipation(String mot) {
+		return Modele.selectAllParticipation(mot);
+	}
+	public static void updateParticipation(Participation uneParticipation) {
+		Modele.updateParticipation(uneParticipation);
+	}
+	
 	/********************* CONTROLEUR COMMENTAIRE ***************************/
 	
 	
