@@ -126,9 +126,9 @@ public class VueParticiper extends JFrame implements ActionListener{
 					}
 				}else if (e.getClickCount() ==1) {
 					int ligne = uneTable.getSelectedRow();
-					txtDate.setText(unTableau.getValueAt(ligne, 1).toString());
 					cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 0).toString());
-					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 2).toString());
+					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 1).toString());
+					txtDate.setText(unTableau.getValueAt(ligne, 2).toString());
 					btEnregistrer.setText("Modifier");
 				}		
 			}
