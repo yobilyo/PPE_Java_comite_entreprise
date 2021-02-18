@@ -703,9 +703,10 @@ public class Modele
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
 				Participation uneParticipation = new Participation (
-						desRes.getString("date_inscription"), desRes.getInt("id_activite"), 
-						desRes.getInt("idutilisateur")
-						);
+						desRes.getInt("idutilisateur"),
+						desRes.getInt("id_activite"),
+						desRes.getString("date_inscription")
+				);
 				lesParticipations.add(uneParticipation);
 			}
 			unStat.close();
@@ -718,7 +719,9 @@ public class Modele
 	}
 
 	public static void insertParticipation(Participation uneParticipation) {
-		String requete = "insert into participer values ('" + uneParticipation.getIdUtilisateur() + "', '" + uneParticipation.getIdActivite() + "', '" + uneParticipation.getDateParticipation() + "' "
+		String requete = "insert into participer values ('" + uneParticipation.getIdUtilisateur()
+		+ "', '" + uneParticipation.getIdActivite() + "', '" + uneParticipation.getDateParticipation()
+		+ "' "
 		 + ");";
 		executerRequete(requete);
 	}

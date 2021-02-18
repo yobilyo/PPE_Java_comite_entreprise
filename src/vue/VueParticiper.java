@@ -1,20 +1,16 @@
 package vue;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,16 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import controleur.Activite;
-import controleur.Commentaire;
 import controleur.Main;
 import controleur.Participation;
-import controleur.StretchIcon;
 import controleur.Tableau;
 import controleur.Utilisateur;
-import vue.VueActivite.ButtonEditor;
 
 public class VueParticiper extends JFrame implements ActionListener{
 	private final static int WIDTH = 900;
@@ -134,9 +126,9 @@ public class VueParticiper extends JFrame implements ActionListener{
 					}
 				}else if (e.getClickCount() ==1) {
 					int ligne = uneTable.getSelectedRow();
-					txtDate.setText(unTableau.getValueAt(ligne, 2).toString());
-					cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 1).toString());
-					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 3).toString());
+					txtDate.setText(unTableau.getValueAt(ligne, 1).toString());
+					cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 0).toString());
+					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 2).toString());
 					btEnregistrer.setText("Modifier");
 				}		
 			}
@@ -303,7 +295,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 //		}
 	
 		if(! this.txtDate.getText().equals("")){
-			Participation uneParticipation = new Participation(dateComment, idActivite, idUtilisateur);
+			Participation uneParticipation = new Participation(idUtilisateur, idActivite, dateComment);
 			Main.insertParticipation(uneParticipation);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();

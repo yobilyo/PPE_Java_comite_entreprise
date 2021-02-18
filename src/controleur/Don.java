@@ -1,7 +1,5 @@
 package controleur;
 
-import java.util.Date;
-
 public class Don {
 	private int iddon, idutilisateur, id_tresorerie;
 	private String appreciation;

@@ -25,7 +25,6 @@ import controleur.Main;
 import controleur.Salarie;
 import controleur.Sponsor;
 import controleur.Tableau;
-import controleur.Utilisateur;
 
 public class VueUtilisateur extends JFrame implements ActionListener {
 	
