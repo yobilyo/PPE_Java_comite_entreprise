@@ -249,7 +249,13 @@ public class Main {
 		return Modele.updateUtilisateurSponsor(unSponsor);
 	}
 	
-	/************************* CONNEXION *************************/
+	/********************* CONTROLEUR TRESORERIE ***************************/
+	
+	public static ArrayList<Tresorerie> selectAllTresoreries(String mot) {
+		return Modele.selectAllTresoreries(mot);
+	}
+	
+	/************************* CONNEXION **********************************/
 	public static Utilisateur verifConnexion(String email, String mdp) {
 		return Modele.verifConnexion(email, mdp);
 	}
