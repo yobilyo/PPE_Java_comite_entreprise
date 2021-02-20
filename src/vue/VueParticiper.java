@@ -179,34 +179,20 @@ public class VueParticiper extends JFrame implements ActionListener{
 			this.cbxActivite.addItem(uneActivite.getIdActivite() + " - " + uneActivite.getNom()); 
 		}
 	}
-	public void remplirCBXUtilisateurs()
-	{
+	public void remplirCBXUtilisateurs() {
 		ArrayList<Utilisateur> lesUtilisateurs = Main.selectAllUtilisateurs("");
 		this.cbxUtilisateur.removeAllItems();
-		for (Utilisateur unUtilisateur : lesUtilisateurs)
-		{
+		for (Utilisateur unUtilisateur : lesUtilisateurs) {
 			this.cbxUtilisateur.addItem(unUtilisateur.getIdUtilisateur()+" - "+unUtilisateur.getUsername());
 		}
 	}
+	
 	private void initBoutons() {
-		this.btAnnuler.setBackground(new Color(52, 58, 64));
-		this.btAnnuler.setForeground(new Color(255, 255, 255));
-		this.btAnnuler.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-	
-		this.btEnregistrer.setBackground(new Color(52, 58, 64));
-		this.btEnregistrer.setForeground(new Color(255, 255, 255));
-		this.btEnregistrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-	
-		this.btRetour.setBackground(new Color(31, 61, 128));
-		this.btRetour.setForeground(new Color(255, 255, 255));
-		this.btRetour.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btFiltrer.setBackground(new Color(52, 58, 64));
-		this.btFiltrer.setForeground(new Color(255, 255, 255));
-		this.btFiltrer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-	
-	
-}
+		Main.styleBoutonDark(this.btAnnuler);
+		Main.styleBoutonDark(this.btEnregistrer);
+		Main.styleBoutonBleu(this.btRetour);
+		Main.styleBoutonDark(this.btFiltrer);
+	}
 	
 	public void initPanelLister() {
 		//construire le panel Lister 

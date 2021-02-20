@@ -116,40 +116,15 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	}
 
 	public void initBoutons() {
-		this.btSeConnecter.setBackground(new Color(31, 61, 128));
-		this.btSeConnecter.setForeground(new Color(255, 255, 255));
-		this.btSeConnecter.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btAnnuler.setBackground(new Color(31, 61, 128));
-		this.btAnnuler.setForeground(new Color(255, 255, 255));
-		this.btAnnuler.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btActivites.setBackground(new Color(52, 58, 64));
-		this.btActivites.setForeground(new Color(255, 255, 255));
-		this.btActivites.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btParticiper.setBackground(new Color(52, 58, 64));
-		this.btParticiper.setForeground(new Color(255, 255, 255));
-		this.btParticiper.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btCommentaires.setBackground(new Color(52, 58, 64));
-		this.btCommentaires.setForeground(new Color(255, 255, 255));
-		this.btCommentaires.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btDons.setBackground(new Color(52, 58, 64));
-		this.btDons.setForeground(new Color(255, 255, 255));
-		this.btDons.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btUtilisateur.setBackground(new Color(52, 58, 64));
-		this.btUtilisateur.setForeground(new Color(255, 255, 255));
-		this.btUtilisateur.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
-		this.btSeDeconnecter.setBackground(new Color(31, 61, 128));
-		this.btSeDeconnecter.setForeground(new Color(255, 255, 255));
-		this.btSeDeconnecter.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
-		
+		Main.styleBoutonBleu(this.btSeConnecter);
+		Main.styleBoutonBleu(this.btAnnuler);
+		Main.styleBoutonDark(this.btActivites);
+		Main.styleBoutonDark(this.btParticiper);
+		Main.styleBoutonDark(this.btCommentaires);
+		Main.styleBoutonDark(this.btDons);
+		Main.styleBoutonDark(this.btUtilisateur);
+		Main.styleBoutonBleu(this.btSeDeconnecter);
 	}
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
