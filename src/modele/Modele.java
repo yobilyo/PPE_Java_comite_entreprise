@@ -14,6 +14,7 @@ import controleur.Main;
 import controleur.Participation;
 import controleur.Salarie;
 import controleur.Sponsor;
+import controleur.Tresorerie;
 import controleur.Utilisateur;
 
 
@@ -737,8 +738,37 @@ public class Modele
 		+"', id_activite = " + uneParticipation.getIdActivite() + "  where id_activite = " + uneParticipation.getIdActivite() + " and idutilisateur = " + uneParticipation.getIdUtilisateur()  + " ;" ;
 		executerRequete(requete);		
 	}
+	
+	/**********************TRESORERIE**************************************************/
+
 
 	
+	
+	public static float selectAllTresoreries() {
+		String requete ="select * from tresorerie;" ;
+		
+	Tresorerie uneTresorerie = null;
+	
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				uneTresorerie = new Tresorerie(
+					desRes.getInt("id_tresorerie"),
+					desRes.getFloat("fonds")
+				);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
+		}
+		return uneTresorerie.getFonds(); 
+	}
 	
 	
 }
