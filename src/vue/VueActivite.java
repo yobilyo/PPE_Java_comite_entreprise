@@ -207,11 +207,21 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			return;
 		}
 		
+		
+		/*Activite uneActivite = new Activite(nom, lieu, imageUrl, lien, budget, description,
+				ddactiviteDebut, ddactiviteFin,	prix, nbPersonnes, idTresorerie);
+			Main.insertActivite(uneActivite);
+			JOptionPane.showMessageDialog(this,"Insertion réussie !");
+			this.viderLesChamps();*/
+		
+		
 		try {
 			if (nbPersonnes >=0) {
 				int numLigne = uneTable.getSelectedRow(); 
 				int idActivite = Integer.parseInt(unTableau.getValueAt(numLigne, 0).toString ());
-				Activite uneActivite = new Activite(nom, lieu, imageUrl, lien, budget, description,
+				// pour le update on utilise le constructeur qui a l'id_activite (pour l'insert
+				// champ vide car = null)
+				Activite uneActivite = new Activite(idActivite, nom, lieu, imageUrl, lien, budget, description,
 						ddactiviteDebut, ddactiviteFin,	prix, nbPersonnes, idTresorerie);
 				//update dans la base de donnÃ©es 
 				Main.updateActivite(uneActivite);
@@ -219,6 +229,9 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 				//modifiaction dans l'affichage tableau 
 				//Object ligne[] = {uneActivite.getIdActivite(), nom, lieu, budget, description, prix, nbPersonnes+""};
 				//this.unTableau.updateLigne(numLigne, ligne);
+				
+				
+				
 				
 				JOptionPane.showMessageDialog(this,"Modification réussie !");
 				this.btEnregistrer.setText("Enregistrer");

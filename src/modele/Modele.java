@@ -85,6 +85,7 @@ public class Modele
 			unStat.close();
 			uneBdd.seDeconnecter();
 			// informer du résultat de la requête
+			System.out.print("0");
 			return 0;
 		}
 		catch(SQLException exp) {
@@ -94,6 +95,7 @@ public class Modele
 			// montrer l'erreur sql à l'utilisateur s'il y'en a une
 			JOptionPane.showMessageDialog(null, errorMsg);
 			// informer du résultat de la requête
+			System.out.print("1");
 			return 1;
 		}
 	}
@@ -175,7 +177,7 @@ public class Modele
 		+ ", nb_personnes= " + uneActivite.getNb_personnes()
 		+ ", id_tresorerie = " + uneActivite.getIdTresorerie()
 		+ " where id_activite = " + uneActivite.getIdActivite() + " ;" ;
-		executerRequete(requete);		
+		executerRequeteResultShowError(requete);	
 	}
 
 	
