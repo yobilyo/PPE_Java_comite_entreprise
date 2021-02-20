@@ -121,10 +121,10 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 
-		this.btFiltrer.setBounds(Main.getWidth() /2 - 80, 20, 100, 20);
+		this.btFiltrer.setBounds(Main.getWidth() /2 - 200, 20, 100, 20);
 		this.add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(Main.getWidth() / 2 + 40, 20 , 100, 20);
+		this.txtFiltrer.setBounds(Main.getWidth() / 2 - 80, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
 	
@@ -298,10 +298,10 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.panelLister.setBackground(new Color (206,214, 224  ));
 		this.panelLister.setLayout(null);
 
-		this.panelLister.setBounds(350, 80, 730, 300);
+		this.panelLister.setBounds(365, 80, this.getWidth() - 400, this.getHeight() - 170);
 		//this.panelLister.setBorder(new LineBorder(Color.blue));
 		
-		this.uneScroll.setBounds(010, 10, 710, 280);
+		this.uneScroll.setBounds(20, 20, this.panelLister.getWidth() - 40, this.panelLister.getHeight() - 40);
 		this.panelLister.add(this.uneScroll);
 		
 		

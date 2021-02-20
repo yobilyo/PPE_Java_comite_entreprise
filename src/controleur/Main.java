@@ -22,8 +22,8 @@ import vue.VueCommentaire;
 public class Main {
 
 	//Taille des Jpanels
-	private final static int WIDTH = 1200;
-	private final static int HEIGHT = 500;  
+	private final static int WIDTH = 1366;
+	private final static int HEIGHT = 768;  
 	
 	// on stocke l'idUtilisateurConnecte et on l'actualise au cours du programme
 	// -1 : par défaut aucun utilisateur n'est connecté
