@@ -198,9 +198,17 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		String mdp = new String (this.txtMdp.getPassword()); 
 		
 		Utilisateur unUser = Main.verifConnexion(email, mdp); 
+
 		if (unUser == null) {
 			JOptionPane.showMessageDialog(this, "Erreur de connexion, vérifiez vos identifiants");
-		}else {
+		} else if (!unUser.getDroits().equals("admin")) {
+			System.out.println("utilisateur non autorisé : id " + unUser.getIdUtilisateur()
+			+ " " + unUser.getDroits());
+			String msg = "Ce logiciel est réservé uniquement aux administrateurs pour gérer"
+			+ " la base de données.\nVous n'êtes pas administrateur, veuillez utiliser le"
+			+ " site internet du comité d'entreprise pour gérer vos activités personnelles.";
+			JOptionPane.showMessageDialog(this, msg);
+		} else {
 			// on stocke l'idUtilisateur qui s'est connecté
 			Main.setIdUtilisateurConnecte(unUser.getIdUtilisateur());
 			System.out.println("idutilisateur connecté: " + Main.getIdUtilisateurConnecte());
@@ -213,7 +221,6 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 			this.panelQuitter.setVisible(true);
 			this.txtEmail.setText("");
 			this.txtMdp.setText("");
-			
 		}
 	}
 
