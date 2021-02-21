@@ -172,6 +172,7 @@ public class VueCommentaire extends JFrame implements ActionListener{
 	
 	public void remplirCBXActivite() {
 		ArrayList<Activite>lesActivites = Main.selectAllActivites("");
+		this.cbxActivite.removeAllItems();
 		for (Activite uneActivite : lesActivites) {
 			this.cbxActivite.addItem(uneActivite.getIdActivite() + " - " + uneActivite.getNom()); 
 		}
