@@ -353,6 +353,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.uneTable.setModel(laNouvelleTable.getModel());
 		
 		//ajout du btDelete à la JTable
+		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
 		this.btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
 		this.uneTable.getColumn("Opérations").setCellRenderer(new BoutonJTable());
 		this.uneTable.getColumn("Opérations").setCellEditor(new ButtonEditor(new JCheckBox()));
