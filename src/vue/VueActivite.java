@@ -69,9 +69,14 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	
 	//Construction de la partie Tableau
 	private JPanel panelLister = new JPanel(); 
-	private JTable uneTable ; 
+	// on instancie une seule fois la JTable à l'avance,
+	// puis on va juste refresh le model à chaque fois
+	private JTable uneTable = new JTable(); 
 	private JScrollPane uneScroll ; 
-	private Tableau unTableau ;
+	//private Tableau unTableau ;
+	private DefaultTableModel unTableauDefault;
+	//ajout d'une détection du refresh pour éviter de le refaire
+	private boolean isRefreshed;
 	
 	public VueActivite() {
 		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
@@ -134,6 +139,8 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.setVisible(true);
 		
 		initBoutons();
+		
+		isRefreshed = false; // par défaut
 	}
 
 	public void remplircbxTresorerie() {
@@ -218,7 +225,8 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		try {
 			if (nbPersonnes >=0) {
 				int numLigne = uneTable.getSelectedRow(); 
-				int idActivite = Integer.parseInt(unTableau.getValueAt(numLigne, 0).toString ());
+				System.out.println("b");
+				int idActivite = Integer.parseInt(unTableauDefault.getValueAt(numLigne, 0).toString ());
 				// pour le update on utilise le constructeur qui a l'id_activite (pour l'insert
 				// champ vide car = null)
 				Activite uneActivite = new Activite(idActivite, nom, lieu, imageUrl, lien, budget, description,
@@ -322,38 +330,64 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	}
 	
 	public void remplirPanelLister(String mot) {
+		//isRefreshed = false;
+		
 		this.panelLister.removeAll();
 		String entetes [] = {"IdActivite", "Nom", "Lieu", "Image (URL)", "Lien", "Budget",
 		"Description", "Date de Début", "Date de Fin", "Prix", "Nb de Personnes",
 		"Id Trésorerie", "Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
-		this.unTableau = new Tableau (donnees, entetes); 
-		this.uneTable = new JTable(this.unTableau); 
-		this.uneScroll = new JScrollPane(this.uneTable); 
+		//this.unTableau = new Tableau (donnees, entetes); 
+		this.unTableauDefault = new DefaultTableModel(donnees, entetes);
+		//this.uneTable = new JTable(this.unTableau); 
+
+		//DefaultTableModel model = new DefaultTableModel(donnees, entetes);
+		//this.uneTable.setModel(this.unTableau);
+		// pour refresh la JTable tout en gardant les mêmes adresses mémoire
+		// de la JTable et Jscroll (afin de conserver les actionListener)
+		// on update uniquement la JTable sans la réinstancier
+		this.uneTable.removeAll();
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
+		JTable laNouvelleTable = new JTable(this.unTableauDefault);
+		this.uneTable.setModel(laNouvelleTable.getModel());
 		
-		DefaultTableModel model = new DefaultTableModel(donnees, entetes);
-		this.uneTable.setModel(model);
+		//ajout du btDelete à la JTable
+		this.btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
 		this.uneTable.getColumn("Opérations").setCellRenderer(new BoutonJTable());
 		this.uneTable.getColumn("Opérations").setCellEditor(new ButtonEditor(new JCheckBox()));
-		this.btDelete.addActionListener(new ActionListener() {
+		
+		System.out.println("c0");
+		this.btDelete.removeActionListener(this);
+		this.btDelete.addActionListener(new ActionListener() {	
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int ligne = uneTable.getSelectedRow();
-				System.out.println(ligne);
-				int idActivite = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
-				int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette activité ?", "Suppression", JOptionPane.YES_NO_OPTION); 
-				if (retour == 0) {
-					//suppression dans la base 
-					Main.deleteActivite(idActivite);
-					//suppression dans la table d'affichage 
-					unTableau.deleteLigne(ligne);
-					JOptionPane.showMessageDialog(null, "Suppression réussie");
-				}
+				//if (isRefreshed == false) {
+					System.out.println("ligne du tableau :" + ligne);
+					int idActivite = Integer.parseInt(unTableauDefault.getValueAt(ligne, 0).toString()); 
+					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette activité ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+					if (retour == 0) {
+						//suppression dans la base 
+						Main.deleteActivite(idActivite);
+						//suppression dans la table d'affichage 
+						//unTableauDefault.deleteLigne(ligne);
+						remplirPanelLister("");
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
+					}
+					//isRefreshed = true;
+				//}
 			}
 		});
+		System.out.println("c00");
+		
+		this.uneScroll = new JScrollPane(this.uneTable); 
+		
 		Main.styleTableau(this.uneTable);
 		initPanelLister();
+		
+		isRefreshed = true;
 	}
 	
 	
@@ -387,7 +421,10 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		//recuperer les pilotes de la bdd 
 		ArrayList<Activite> lesActivites = Main.selectAllActivites(mot); 
 		//transofrmation des pilotes en matrice de donnÃ©es 
-		Object donnees [][] = new Object [lesActivites.size()][12];
+		
+		int length = 13; // 12 SQL rows + 1 Opération(BtDelete)
+		
+		Object donnees [][] = new Object [lesActivites.size()][length];
 		int i = 0 ; 
 		for (Activite uneActivite : lesActivites) {
 			donnees[i][0] = uneActivite.getIdActivite()+""; 
@@ -429,17 +466,18 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 
 		}else if (e.getClickCount() ==1) {
 			int ligne = uneTable.getSelectedRow();
-			txtNomAct.setText(unTableau.getValueAt(ligne, 1).toString());
-			txtLieu.setText(unTableau.getValueAt(ligne, 2).toString());
-			txtImageUrl.setText(unTableau.getValueAt(ligne, 3).toString());
-			txtLien.setText(unTableau.getValueAt(ligne, 4).toString());
-			txtBudget.setText(unTableau.getValueAt(ligne, 5).toString());
-			txtDescription.setText(unTableau.getValueAt(ligne, 6).toString());
-			txtDateDebut.setText(unTableau.getValueAt(ligne, 7).toString());
-			txtDateFin.setText(unTableau.getValueAt(ligne, 8).toString());
-			txtPrix.setText(unTableau.getValueAt(ligne, 9).toString());
-			txtNbPersonnes.setText(unTableau.getValueAt(ligne, 10).toString());
-			cbxTresorerie.setSelectedItem(unTableau.getValueAt(ligne, 11).toString());
+			System.out.println("a");
+			txtNomAct.setText(unTableauDefault.getValueAt(ligne, 1).toString());
+			txtLieu.setText(unTableauDefault.getValueAt(ligne, 2).toString());
+			txtImageUrl.setText(unTableauDefault.getValueAt(ligne, 3).toString());
+			txtLien.setText(unTableauDefault.getValueAt(ligne, 4).toString());
+			txtBudget.setText(unTableauDefault.getValueAt(ligne, 5).toString());
+			txtDescription.setText(unTableauDefault.getValueAt(ligne, 6).toString());
+			txtDateDebut.setText(unTableauDefault.getValueAt(ligne, 7).toString());
+			txtDateFin.setText(unTableauDefault.getValueAt(ligne, 8).toString());
+			txtPrix.setText(unTableauDefault.getValueAt(ligne, 9).toString());
+			txtNbPersonnes.setText(unTableauDefault.getValueAt(ligne, 10).toString());
+			cbxTresorerie.setSelectedItem(unTableauDefault.getValueAt(ligne, 11).toString());
 			btEnregistrer.setText("Modifier");
 		}		
 	}
