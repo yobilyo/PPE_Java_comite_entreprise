@@ -28,8 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import controleur.Activite;
 import controleur.Main;
 import controleur.StretchIcon;
-import controleur.Tableau;
-import controleur.Tresorerie;
+//import controleur.Tresorerie;
 
 public class VueActivite extends JFrame implements ActionListener, MouseListener{
 	
@@ -65,7 +64,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	
 	private JTextField txtPrix= new JTextField();
 	private JTextField txtNbPersonnes = new JTextField();
-	private JComboBox<String> cbxTresorerie = new JComboBox<String>();
+	//private JComboBox<String> cbxTresorerie = new JComboBox<String>();
 	
 	//Construction de la partie Tableau
 	private JPanel panelLister = new JPanel(); 
@@ -114,14 +113,14 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.panelAjout.add(this.txtPrix);
 		this.panelAjout.add(new JLabel("Nb de personnes de l'activité :")); 
 		this.panelAjout.add(this.txtNbPersonnes);
-		this.panelAjout.add(new JLabel("Trésorerie :")); 
-		this.panelAjout.add(this.cbxTresorerie);
+		//this.panelAjout.add(new JLabel("Trésorerie :")); 
+		//this.panelAjout.add(this.cbxTresorerie);
 		this.panelAjout.add(this.btAnnuler); 
 		this.panelAjout.add(this.btEnregistrer);
 		this.add(this.panelAjout);
 		
 		//remplir les cbx Tresorerie
-		this.remplircbxTresorerie();
+		//this.remplircbxTresorerie();
 		
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
@@ -143,14 +142,14 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		isRefreshed = false; // par défaut
 	}
 
-	public void remplircbxTresorerie() {
+	/*public void remplircbxTresorerie() {
 		this.cbxTresorerie.removeAllItems();
 		
 		ArrayList<Tresorerie>lesTresoreries = Main.selectAllTresoreries("");
 		for (Tresorerie uneTresorerie : lesTresoreries) {
 			this.cbxTresorerie.addItem(uneTresorerie.getIdTresorerie() + ""); 
 		}
-	}
+	}*/
 	
 	private void initBoutons() {
 		Main.styleBoutonDark(this.btAnnuler);
@@ -187,13 +186,14 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		String dateFin = this.txtDateFin.getText();
 		float prix;	
 		int nbPersonnes;
-		int idTresorerie;
+		//int idTresorerie;
+		int idTresorerie = 1;
 		
 		try {
 			nbPersonnes = Integer.parseInt(this.txtNbPersonnes.getText());
 			budget = Float.parseFloat(this.txtBudget.getText());
 			prix = Float.parseFloat(this.txtPrix.getText());
-			idTresorerie = Integer.parseInt(this.cbxTresorerie.getSelectedItem().toString());
+			//idTresorerie = Integer.parseInt(this.cbxTresorerie.getSelectedItem().toString());
 		}
 		catch (NumberFormatException exp) {
 			JOptionPane.showMessageDialog(this,"Attention au format du nombre d'heures  !");
@@ -212,15 +212,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			JOptionPane.showMessageDialog(this,"Attention au format des dates (impossible "
 			+ " de convertir le texte date en format Date Java, erreur de format de date.");
 			return;
-		}
-		
-		
-		/*Activite uneActivite = new Activite(nom, lieu, imageUrl, lien, budget, description,
-				ddactiviteDebut, ddactiviteFin,	prix, nbPersonnes, idTresorerie);
-			Main.insertActivite(uneActivite);
-			JOptionPane.showMessageDialog(this,"Insertion réussie !");
-			this.viderLesChamps();*/
-		
+		}	
 		
 		try {
 			if (nbPersonnes >=0) {
@@ -237,9 +229,6 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 				//modifiaction dans l'affichage tableau 
 				//Object ligne[] = {uneActivite.getIdActivite(), nom, lieu, budget, description, prix, nbPersonnes+""};
 				//this.unTableau.updateLigne(numLigne, ligne);
-				
-				
-				
 				
 				JOptionPane.showMessageDialog(this,"Modification réussie !");
 				this.btEnregistrer.setText("Enregistrer");
@@ -263,13 +252,14 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		String dateFin = this.txtDateFin.getText();
 		float prix;	
 		int nbPersonnes;
-		int idTresorerie;
+		//int idTresorerie;
+		int idTresorerie = 1;
 
 		try {
 			budget = Float.parseFloat(this.txtBudget.getText());
 			prix = Float.parseFloat(this.txtPrix.getText());
 			nbPersonnes = Integer.parseInt(this.txtNbPersonnes.getText());
-			idTresorerie = Integer.parseInt(this.cbxTresorerie.getSelectedItem().toString());
+			//idTresorerie = Integer.parseInt(this.cbxTresorerie.getSelectedItem().toString());
 		} catch (NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(this,"Attention au format des nombres !");
 			// annuler l'opération s'il y'a une erreur sur ces champs
@@ -458,7 +448,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		this.txtDateFin.setText("");
 		this.txtPrix.setText("");
 		this.txtNbPersonnes.setText("");
-		this.cbxTresorerie.setSelectedIndex(0);
+		//this.cbxTresorerie.setSelectedIndex(0);
 	}
 	
 	@Override
@@ -478,7 +468,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			txtDateFin.setText(unTableauDefault.getValueAt(ligne, 8).toString());
 			txtPrix.setText(unTableauDefault.getValueAt(ligne, 9).toString());
 			txtNbPersonnes.setText(unTableauDefault.getValueAt(ligne, 10).toString());
-			cbxTresorerie.setSelectedItem(unTableauDefault.getValueAt(ligne, 11).toString());
+			//cbxTresorerie.setSelectedItem(unTableauDefault.getValueAt(ligne, 11).toString());
 			btEnregistrer.setText("Modifier");
 		}		
 	}
