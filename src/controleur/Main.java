@@ -203,8 +203,8 @@ public class Main {
 		return Modele.selectAllUtilisateurs(mot);
 	}
 	
-	public static int deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
-		return Modele.deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateur);
+	public static void deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
+		Modele.deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateur);
 	}
 	
 	/********************* CONTROLEUR UTILISATEUR CONNECTE EN COURS ***************************/
@@ -215,38 +215,38 @@ public class Main {
 	
 	/********************* CONTROLEUR UTILISATEUR SALARIE ***************************/
 	
-	public static int insertUtilisateurSalarie(Salarie unSalarie) {
-		return Modele.insertUtilisateurSalarie(unSalarie);
+	public static void insertUtilisateurSalarie(Salarie unSalarie) {
+		Modele.insertUtilisateurSalarie(unSalarie);
 	}
 
 	public static ArrayList<Salarie> selectAllUtilisateursSalaries(String mot) {
 		return Modele.selectAllUtilisateursSalaries(mot);
 	}
 	
-	public static int deleteUtilisateurSalarie(int idUtilisateurSalarie) {
-		return Modele.deleteUtilisateurSalarie(idUtilisateurSalarie);
+	public static void deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+		Modele.deleteUtilisateurSalarie(idUtilisateurSalarie);
 	}
 	
-	public static int updateUtilisateurSalarie(Salarie unSalarie) {
-		return Modele.updateUtilisateurSalarie(unSalarie);
+	public static void updateUtilisateurSalarie(Salarie unSalarie) {
+		Modele.updateUtilisateurSalarie(unSalarie);
 	}
 	
 	/********************* CONTROLEUR UTILISATEUR SPONSOR ***************************/
 	
-	public static int insertUtilisateurSponsor(Sponsor unSponsor) {
-		return Modele.insertUtilisateurSponsor(unSponsor);
+	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
+		Modele.insertUtilisateurSponsor(unSponsor);
 	}
 
 	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {
 		return Modele.selectAllUtilisateursSponsors(mot);
 	}
 	
-	public static int deleteUtilisateurSponsor(int idUtilisateurSponsor) {
-		return Modele.deleteUtilisateurSponsor(idUtilisateurSponsor);
+	public static void deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+		Modele.deleteUtilisateurSponsor(idUtilisateurSponsor);
 	}
 	
-	public static int updateUtilisateurSponsor(Sponsor unSponsor) {
-		return Modele.updateUtilisateurSponsor(unSponsor);
+	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
+		Modele.updateUtilisateurSponsor(unSponsor);
 	}
 	
 	/************************* CONNEXION *************************/

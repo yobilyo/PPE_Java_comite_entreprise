@@ -72,31 +72,11 @@ public class Modele
 		catch(SQLException exp) {
 			System.out.println("Erreur d'exécution de la requete : " + requete
 			+ "\n" + exp.getMessage());
-		}
-	}
-	
-	public static int executerRequeteResultShowError (String requete)
-	{
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			unStat.execute(requete); 
-			unStat.close();
-			uneBdd.seDeconnecter();
-			// informer du résultat de la requête
-			return 0;
-		}
-		catch(SQLException exp) {
-			String errorMsg = "Erreur d'exécution de la requete :" + requete
-			+ "\n" + exp.getMessage();
-			System.out.println(errorMsg);
 			// montrer l'erreur sql à l'utilisateur s'il y'en a une
-			JOptionPane.showMessageDialog(null, errorMsg);
-			// informer du résultat de la requête
-			return 1;
+			//String errorMsg = "Erreur d'exécution de la requete :" + requete + "\n" + exp.getMessage();
+			//JOptionPane.showMessageDialog(null, errorMsg);
 		}
-	}
-	
+	}	
 	
 	/************* ACTIVITE ********************/
 	
@@ -326,46 +306,21 @@ public class Modele
 		
 	}
 	
-	public static int deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
+	public static void deleteUtilisateurForeignKeyConstraintsWhere(int idUtilisateur) {
 		// Avant de supprimer l'utilisateur, on doit supprimer toutes ses possessions dans les
 		// autres tables où il a une clé étrangère:
 		
-		// Don
 		String requeteDons = "delete from don where idutilisateur = " + idUtilisateur + ";";
-		int resultDons = executerRequeteResultShowError(requeteDons);
-		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultDons == 1) {
-			return resultDons;
-		}
-		// s'il n'y a pas d'erreur on continue:
+		executerRequete(requeteDons);
 		
-		// Participer
 		String requeteParticiper = "delete from participer where idutilisateur = " + idUtilisateur + ";";
-		int resultParticiper = executerRequeteResultShowError(requeteParticiper);
-		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultParticiper == 1) {
-			return resultParticiper;
-		}
-		// s'il n'y a pas d'erreur on continue:
+		executerRequete(requeteParticiper);
 		
-		// Commentaire
 		String requeteCommentaire = "delete from commentaire where idutilisateur = " + idUtilisateur + ";";
-		int resultCommentaire = executerRequeteResultShowError(requeteCommentaire);
-		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultCommentaire == 1) {
-			return resultCommentaire;
-		}
-		// s'il n'y a pas d'erreur on continue:
+		executerRequete(requeteCommentaire);
 		
-		// Contact
 		String requeteContact = "delete from contact where idutilisateur = " + idUtilisateur + ";";
-		int resultContact = executerRequeteResultShowError(requeteContact);
-		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		//if (resultContact == 1) return resultContact;
-		// s'il n'y a pas d'erreur on continue:
-		// pour la dernière requête peu importe le résultat (1 ou 0), dans tous les cas
-		// on retourne le résultat de la dernière requête
-		return resultContact;
+		executerRequete(requeteContact);
 	}
 	
 	
@@ -401,19 +356,13 @@ public class Modele
 	/************* UTILISATEUR SALARIE ********************/
 	
 	
-	public static int insertUtilisateurSalarie(Salarie unSalarie) {
+	public static void insertUtilisateurSalarie(Salarie unSalarie) {
 		// Utilisateur
 		String requeteUtilisateur = "insert into utilisateur values (null, '"
 		+ unSalarie.getUsername() + "', '" + unSalarie.getPassword() +"', '"
 		+ unSalarie.getEmail()+ "', '" + unSalarie.getDroits()
 		+ "');";
-		
-		int resultInsertUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
-		// s'il y'a une erreur on s'arrête là et on ne fait pas les requêtes de la suite
-		if (resultInsertUtilisateur == 1) {
-			return resultInsertUtilisateur;
-		}
-		// s'il n'y a pas d'erreur on continue:
+		executerRequete(requeteUtilisateur);
 		
 		//SelectWhere pour obtenir l'idutilisateur réel inséré:
 		int idUtilisateurInsere = Main.selectFindUtilisateur(unSalarie.getUsername(),
@@ -426,11 +375,7 @@ public class Modele
 		+ unSalarie.getQuotient_fam() + "', '" + unSalarie.getService() + "', '"
 		+ unSalarie.getSexe()
 		+ "');";
-		
-		int resultInsertSalarie = executerRequeteResultShowError(requeteSalarie);
-		// pour la dernière requête peu importe le résultat (1 ou 0), dans tous les cas
-		// on retourne le résultat de la dernière requête
-		return resultInsertSalarie;
+		executerRequete(requeteSalarie);
 	}
 	
 	public static ArrayList<Salarie> selectAllUtilisateursSalaries(String mot) {
@@ -490,48 +435,27 @@ public class Modele
 		return lesUtilisateursSalaries ; 
 	}
 	
-	public static int deleteUtilisateurSalarie(int idUtilisateurSalarie) {
+	public static void deleteUtilisateurSalarie(int idUtilisateurSalarie) {
 		// on supprime toutes les possessions du salarie dans les autres tables
-		// avant de supprimer le salarie :
-		int resultSalarieForeignKeys = deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateurSalarie);
-		if (resultSalarieForeignKeys == 1) {
-			return resultSalarieForeignKeys;
-		}
-		// s'il n'ya pas d'erreur pour la suppression des possessions du salarié, on continue
+		deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateurSalarie);
 		
 		// on supprime le salarie dans la classe fille sql salarie en premier (car clé étrangère), puis on peut supprimer le salarié dans la classe mère utilisateur
 		// Salarie
 		String requeteSalarie = "delete from salarie where idutilisateur =" + idUtilisateurSalarie + ";";
-		int resultSalarie = executerRequeteResultShowError(requeteSalarie);
-		// quitter s'il y'a une erreur et en informer
-		if (resultSalarie == 1) {
-			return resultSalarie;
-		}
-		// s'il n'ya pas d'erreur pour la suppression du salarié, on continue et on passe à la suppression de l'utilisateur
+		executerRequete(requeteSalarie);
 		
 		// Utilisateur
 		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSalarie + ";";
-		int resultUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
-		// résultat de la requête
-		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
-		//if (resultUtilisateur == 1 || resultUtilisateur == 0) {
-		return resultUtilisateur;
-		//}
+		executerRequete(requeteUtilisateur);
 	}
 	
-	public static int updateUtilisateurSalarie(Salarie unSalarie) {
+	public static void updateUtilisateurSalarie(Salarie unSalarie) {
 		// utilisateur
 		String requeteUtilisateur = "update utilisateur set username = '" + unSalarie.getUsername()
 		+ "', password = '" + unSalarie.getPassword() + "', email = '" + unSalarie.getEmail()
 		+ "', droits = '" + unSalarie.getDroits()
 		+ "' where idutilisateur = " + unSalarie.getIdUtilisateur() + ";";
-		
-		int resultRequeteUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
-		// quitter s'il y'a une erreur et en informer
-		if (resultRequeteUtilisateur == 1) {
-			return resultRequeteUtilisateur;
-		}
-		// s'il n'ya pas d'erreur on continue
+		executerRequete(requeteUtilisateur);
 		
 		// salarie
 		String requeteSalarie = "update salarie set nom = '" + unSalarie.getNom()
@@ -539,29 +463,17 @@ public class Modele
 		+ "', adresse = '" + unSalarie.getAdresse() + "', quotient_fam = '" + unSalarie.getQuotient_fam()
 		+ "', service = '" + unSalarie.getService() + "', sexe = '" + unSalarie.getSexe()
 		+ "' where idutilisateur = " + unSalarie.getIdUtilisateur() + ";";
-		
-		int resultRequeteSalarie = executerRequeteResultShowError(requeteSalarie);
-		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
-		//if (resultSalarie == 1 || resultSalarie == 0) {
-		return resultRequeteSalarie;
-		//}
+		executerRequete(requeteSalarie);
 	}
 	
 	
 	/************* UTILISATEUR SPONSOR ********************/
 	
-	
-	public static int insertUtilisateurSponsor(Sponsor unSponsor) {
+	public static void insertUtilisateurSponsor(Sponsor unSponsor) {
 		// Utilisateur
 		String requeteUtilisateur = "insert into utilisateur values (null, '" + unSponsor.getUsername() + "', '" + unSponsor.getPassword()
 		+"', '" + unSponsor.getEmail()+ "', '" + unSponsor.getDroits() +"');";
-		
-		int resultInsertUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
-		// quitter s'il y'a une erreur et en informer
-		if (resultInsertUtilisateur == 1) {
-			return resultInsertUtilisateur;
-		}
-		// s'il n'ya pas d'erreur on continue
+		executerRequete(requeteUtilisateur);
 		
 		//SelectWhere pour obtenir l'idutilisateur réel inséré:
 		int idUtilisateurInsere = Main.selectFindUtilisateur(unSponsor.getUsername(), unSponsor.getEmail(), unSponsor.getDroits()).getIdUtilisateur();
@@ -570,12 +482,7 @@ public class Modele
 		String requeteSponsor = "insert into sponsor values(" + idUtilisateurInsere + ", '" + unSponsor.getSociete() + "', '"
 		+ unSponsor.getImage_url() + "', '" + unSponsor.getBudget() + "', '" + unSponsor.getTel() + "', '"
 		+ unSponsor.getLien() + "');";
-		
-		int resultInsertSponsor = executerRequeteResultShowError(requeteSponsor);
-		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
-		//if (resultSalarie == 1 || resultSalarie == 0) {
-		return resultInsertSponsor;
-		//}
+		executerRequete(requeteSponsor);
 	}
 	
 	public static ArrayList<Sponsor> selectAllUtilisateursSponsors(String mot) {
@@ -629,61 +536,34 @@ public class Modele
 		return lesUtilisateursSponsors ; 
 	}
 	
-	public static int deleteUtilisateurSponsor(int idUtilisateurSponsor) {
+	public static void deleteUtilisateurSponsor(int idUtilisateurSponsor) {
 		// on supprime toutes les possessions du sponsor dans les autres tables
-		// avant de supprimer le salarie :
-		int resultSponsorForeignKeys = deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateurSponsor);
-		if (resultSponsorForeignKeys == 1) {
-			return resultSponsorForeignKeys;
-		}
-		// s'il n'ya pas d'erreur pour la suppression des possessions du sponsor, on continue
+		deleteUtilisateurForeignKeyConstraintsWhere(idUtilisateurSponsor);
 		
 		// on supprime le sponsor dans la classe fille sql sponsor en premier (car clé étrangère), puis on peut supprimer le sponsor dans la classe mère utilisateur
 		// Sponsor
 		String requeteSponsor = "delete from sponsor where idutilisateur =" + idUtilisateurSponsor + ";";
-		int resultSponsor = executerRequeteResultShowError(requeteSponsor);
-		// quitter s'il y'a une erreur et en informer
-		if (resultSponsor == 1) {
-			return resultSponsor;
-		}
+		executerRequete(requeteSponsor);
 		
-		// s'il n'ya pas d'erreur pour la suppression du sponsor, on continue et on passe à la suppression de l'utilisateur
 		// Utilisateur
 		String requeteUtilisateur = "delete from utilisateur where idutilisateur =" + idUtilisateurSponsor + ";";
-		int resultUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
-		// résultat de la requête
-		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
-		//if (resultUtilisateur == 1 || resultUtilisateur == 0) {
-		return resultUtilisateur;
-		//}
+		executerRequete(requeteUtilisateur);
 	}
 	
-	public static int updateUtilisateurSponsor(Sponsor unSponsor) {
+	public static void updateUtilisateurSponsor(Sponsor unSponsor) {
 		// utilisateur
 		String requeteUtilisateur = "update utilisateur set username = '" + unSponsor.getUsername()
 		+ "', password = '" + unSponsor.getPassword() + "', email = '" + unSponsor.getEmail()
 		+ "', droits = '" + unSponsor.getDroits()
 		+ "' where idutilisateur = " + unSponsor.getIdUtilisateur() + ";";
-		
-		int resultUpdateUtilisateur = executerRequeteResultShowError(requeteUtilisateur);
-		// quitter s'il y'a une erreur et en informer
-		if (resultUpdateUtilisateur == 1) {
-			return resultUpdateUtilisateur;
-		}
-		// s'il n'y a pas d'erreur on continue
+		executerRequete(requeteUtilisateur);
 		
 		// sponsor
 		String requeteSponsor = "update sponsor set societe = '" + unSponsor.getSociete()
 		+ "', image_url = '" + unSponsor.getImage_url() + "', budget = " + unSponsor.getBudget()
 		+ ", tel = '" + unSponsor.getTel() + "', lien = '" + unSponsor.getLien()
 		+ "' where idutilisateur = " + unSponsor.getIdUtilisateur() + ";";
-		
-		int resultUpdateSponsor = executerRequeteResultShowError(requeteSponsor);
-		// résultat de la requête
-		// qu'il y'ait une erreur ou non, dans tous les cas on retourne le résultat final de la dernière requête (ici delete utilisateur)
-		//if (resultUpdateSponsor == 1 || resultUpdateSponsor == 0) {
-		return resultUpdateSponsor;
-		//}
+		executerRequete(requeteSponsor);
 	}
 	
 	/************************ PARTICIPATION ************************************/

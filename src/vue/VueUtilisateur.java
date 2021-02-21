@@ -174,18 +174,14 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Salarié ?", "Suppression", JOptionPane.YES_NO_OPTION); 
 					if (retour == 0) {
 						//suppression dans la base 
-						int resultDeleteSalarie = Main.deleteUtilisateurSalarie(idUtilisateurSalarie);
-						if (resultDeleteSalarie == 0) {
-							//s'il n'y a pas d'erreur, on supprime dans le tableau JTable et on affiche succès
-							//suppression dans la table d'affichage 
-							//unTableauSalarie.deleteLigne(ligne);
-							// actualiser/regénérer les données du panelListerSalarie
-							refreshPanelListerSalarie("");
-							JOptionPane.showMessageDialog(null, "Suppression réussie");
-						}
-
+						Main.deleteUtilisateurSalarie(idUtilisateurSalarie);
+						//suppression dans la table d'affichage 
+						//unTableauSalarie.deleteLigne(ligne);
+						// actualiser/regénérer les données du panelListerSalarie
+						refreshPanelListerSalarie("");
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
 					}
-				}else if (e.getClickCount() == 1) {
+				} else if (e.getClickCount() == 1) {
 					//modifier
 					int ligne = uneTableSalarie.getSelectedRow();
 					// utilisateur
@@ -244,17 +240,14 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Sponsor ?", "Suppression", JOptionPane.YES_NO_OPTION); 
 					if (retour == 0) {
 						//suppression dans la base 
-						int resultDeleteSponsor = Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
-						if (resultDeleteSponsor == 0) {
-							//s'il n'y a pas d'erreur, on supprime dans le tableau JTable et on affiche succès
-							//suppression dans la table d'affichage 
-							//unTableauSponsor.deleteLigne(ligne);
-							// actualiser/regénérer les données du panelListerSponsor
-							refreshPanelListerSponsor("");
-							JOptionPane.showMessageDialog(null, "Suppression réussie");
-						}
+						Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
+						//suppression dans la table d'affichage 
+						//unTableauSponsor.deleteLigne(ligne);
+						// actualiser/regénérer les données du panelListerSponsor
+						refreshPanelListerSponsor("");
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
 					}
-				}else if (e.getClickCount() == 1) {
+				} else if (e.getClickCount() == 1) {
 					//modifier
 					int ligne = uneTableSponsor.getSelectedRow();
 					// utilisateur
@@ -398,18 +391,15 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			if(!txtUsernameSalarie.getText().equals("") || !txtEmailSalarie.getText().equals("")) {
 				Salarie unSalarie = new Salarie(username, mdp, email, droits, nom, prenom, tel, 
 						adresse, quotient_fam, service, sexe);
-				int resultInsertSalarie = Main.insertUtilisateurSalarie(unSalarie);
-				if (resultInsertSalarie == 0) {
-					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
-					JOptionPane.showMessageDialog(this,"Insertion réussie !");
-					// actualiser/vider les données du panelAjoutSalarie
-					this.viderLesChampsSalarie();
-					this.btEnregistrer.setText("Enregistrer");
-					txtUsernameSalarie.setBackground(Color.WHITE);
-					txtEmailSalarie.setBackground(Color.WHITE);
-					// actualiser/regénérer les données du panelListerSalarie
-					this.refreshPanelListerSalarie("");
-				}
+				Main.insertUtilisateurSalarie(unSalarie);
+				JOptionPane.showMessageDialog(this,"Insertion réussie !");
+				// actualiser/vider les données du panelAjoutSalarie
+				this.viderLesChampsSalarie();
+				this.btEnregistrer.setText("Enregistrer");
+				txtUsernameSalarie.setBackground(Color.WHITE);
+				txtEmailSalarie.setBackground(Color.WHITE);
+				// actualiser/regénérer les données du panelListerSalarie
+				this.refreshPanelListerSalarie("");
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
@@ -444,19 +434,16 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			if(!txtUserSpons.getText().equals("") || !txtEmailSpons.getText().equals("")) {
 				Sponsor unSponsor = new Sponsor(username, mdp, email, droits, societe, image_url, budget, 
 						tel, lien);
-				int resultInsertSponsor = Main.insertUtilisateurSponsor(unSponsor);
-				if (resultInsertSponsor == 0) {
-					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
-					JOptionPane.showMessageDialog(this,"Insertion réussie !");
-					// actualiser/vider les données du panelAjoutSponsor
-					this.viderLesChampsSpons();
-					this.btEnregistrer.setText("Enregistrer");
-					txtUserSpons.setBackground(Color.WHITE);
-					txtEmailSpons.setBackground(Color.WHITE);
-					// actualiser/regénérer les données du panelListerSponsor
-					this.refreshPanelListerSponsor("");
-				}
-			}else {
+				Main.insertUtilisateurSponsor(unSponsor);
+				JOptionPane.showMessageDialog(this,"Insertion réussie !");
+				// actualiser/vider les données du panelAjoutSponsor
+				this.viderLesChampsSpons();
+				this.btEnregistrer.setText("Enregistrer");
+				txtUserSpons.setBackground(Color.WHITE);
+				txtEmailSpons.setBackground(Color.WHITE);
+				// actualiser/regénérer les données du panelListerSponsor
+				this.refreshPanelListerSponsor("");
+			} else {
 				txtUserSpons.setBackground(Color.RED);
 				txtEmailSpons.setBackground(Color.RED);
 				JOptionPane.showMessageDialog(this,"Erreur d'insertion vérifier les champs !");
@@ -489,19 +476,16 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				// update dans la base de données
 				Salarie unSalarie = new Salarie(idUtilisateurSalarie, username, mdp, email, droits, nom, prenom, tel, 
 						adresse, quotient_fam, service, sexe);
-				int resultUpdateSalarie = Main.updateUtilisateurSalarie(unSalarie);
-				if (resultUpdateSalarie == 0) {
-					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
-					JOptionPane.showMessageDialog(this,"Modification réussie !");
-					// actualiser/vider les données du panelAjoutSalarie
-					this.viderLesChampsSalarie();
-					this.btEnregistrer.setText("Enregistrer");
-					txtUserSpons.setBackground(Color.WHITE);
-					txtEmailSpons.setBackground(Color.WHITE);
-					// actualiser/regénérer les données du panelListerSalarie
-					this.refreshPanelListerSalarie("");
-				}
-			}else {
+				Main.updateUtilisateurSalarie(unSalarie);
+				JOptionPane.showMessageDialog(this,"Modification réussie !");
+				// actualiser/vider les données du panelAjoutSalarie
+				this.viderLesChampsSalarie();
+				this.btEnregistrer.setText("Enregistrer");
+				txtUserSpons.setBackground(Color.WHITE);
+				txtEmailSpons.setBackground(Color.WHITE);
+				// actualiser/regénérer les données du panelListerSalarie
+				this.refreshPanelListerSalarie("");
+			} else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
 				JOptionPane.showMessageDialog(this,"Erreur de modification, vérifier les champs !");
@@ -539,19 +523,16 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				// update dans la base de données
 				Sponsor unSponsor = new Sponsor(idUtilisateurSpons, username, mdp, email, droits, societe, image_url, budget, 
 						tel, lien);
-				int resultUpdateSponsor = Main.updateUtilisateurSponsor(unSponsor);
-				if (resultUpdateSponsor == 0) {
-					//s'il n'y a pas d'erreur, on met à jour le tableau JTable et on affiche succès
-					JOptionPane.showMessageDialog(this,"Modification réussie !");
-					// actualiser/vider les données du panelAjoutSponsor
-					this.viderLesChampsSpons();
-					this.btEnregistrer.setText("Enregistrer");
-					txtUserSpons.setBackground(Color.WHITE);
-					txtEmailSpons.setBackground(Color.WHITE);
-					// actualiser/regénérer les données du panelListerSponsor
-					this.refreshPanelListerSponsor("");
-				}
-			}else {
+				Main.updateUtilisateurSponsor(unSponsor);
+				JOptionPane.showMessageDialog(this,"Modification réussie !");
+				// actualiser/vider les données du panelAjoutSponsor
+				this.viderLesChampsSpons();
+				this.btEnregistrer.setText("Enregistrer");
+				txtUserSpons.setBackground(Color.WHITE);
+				txtEmailSpons.setBackground(Color.WHITE);
+				// actualiser/regénérer les données du panelListerSponsor
+				this.refreshPanelListerSponsor("");
+			} else {
 				txtUserSpons.setBackground(Color.RED);
 				txtEmailSpons.setBackground(Color.RED);
 				JOptionPane.showMessageDialog(this,"Erreur de modification, vérifier les champs !");
