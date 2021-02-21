@@ -774,30 +774,26 @@ public class Modele
 		+"', id_activite = " + uneParticipation.getIdActivite() + "  where id_activite = " + uneParticipation.getIdActivite() + " and idutilisateur = " + uneParticipation.getIdUtilisateur()  + " ;" ;
 		executerRequete(requete);		
 	}
+	
+	/**********************TRESORERIE**************************************************/
+
 
 	/************************ TRESORERIE***** ************************************/
 	
-	public static ArrayList<Tresorerie> selectAllTresoreries(String mot) {
-		String requete ; 
-		if (mot.equals("")) {
-			requete ="select * from tresorerie;" ;
-		}else {
-			requete ="select * from tresorerie where id_tresorerie like '%"+mot+"%'"
-			+ " or fonds like '%"+mot+"%'"
-			+ " ; ";
-		}
-		ArrayList<Tresorerie> lesTresoreries = new ArrayList<Tresorerie>();  
+	public static float selectFonds() {
+		String requete ="select * from tresorerie;" ;
+		
+	Tresorerie uneTresorerie = null;
 		
 		try {
 			uneBdd.seConnecter();
 			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
-				Tresorerie uneTresorerie = new Tresorerie(
+				uneTresorerie = new Tresorerie(
 					desRes.getInt("id_tresorerie"),
 					desRes.getFloat("fonds")
 				);
-				lesTresoreries.add(uneTresorerie);
 			}
 			unStat.close();
 			uneBdd.seDeconnecter();
@@ -806,7 +802,7 @@ public class Modele
 			System.out.println("Erreur d'exécution de la requete : " + requete
 			+ "\n" + exp.getMessage());
 		}
-		return lesTresoreries; 
+		return uneTresorerie.getFonds(); 
 	}
 	
 }

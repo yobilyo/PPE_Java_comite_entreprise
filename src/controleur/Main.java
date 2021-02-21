@@ -14,6 +14,7 @@ import modele.Modele;
 import vue.VueConnexion;
 import vue.VueDon;
 import vue.VueParticiper;
+import vue.VueTresorerie;
 import vue.VueUtilisateur;
 import vue.VueActivite;
 import vue.VueCommentaire;
@@ -35,6 +36,7 @@ public class Main {
 	public static VueCommentaire uneVueCommentaire;
 	public static VueDon uneVueDon;
 	public static VueUtilisateur uneVueUtilisateur;
+	public static VueTresorerie uneVueTresorerie;
 	
 	public static void main(String[] args) {
 		//lancement plus propre
@@ -126,6 +128,10 @@ public class Main {
 	
 	public static void instancierVueDon() {
 		uneVueDon = new VueDon();
+	}
+	
+	public static void instancierVueTresorerie() {
+		uneVueTresorerie = new VueTresorerie();
 	}
 	
 	public static void instancierVueUtilisateur() {
@@ -251,11 +257,13 @@ public class Main {
 	
 	/********************* CONTROLEUR TRESORERIE ***************************/
 	
-	public static ArrayList<Tresorerie> selectAllTresoreries(String mot) {
-		return Modele.selectAllTresoreries(mot);
+	public static float selectFonds()
+	{
+		return Modele.selectFonds();
 	}
 	
-	/************************* CONNEXION **********************************/
+	/************************* CONNEXION *************************/
+	
 	public static Utilisateur verifConnexion(String email, String mdp) {
 		return Modele.verifConnexion(email, mdp);
 	}

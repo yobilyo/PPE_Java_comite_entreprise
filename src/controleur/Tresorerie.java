@@ -34,4 +34,5 @@ public class Tresorerie {
 	public void setFonds(float fonds) {
 		this.fonds = fonds;
 	}
+
 }
