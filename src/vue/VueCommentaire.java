@@ -126,14 +126,8 @@ public class VueCommentaire extends JFrame implements ActionListener{
 						unTableau.deleteLigne(ligne);
 						JOptionPane.showMessageDialog(null, "Suppression réussie");
 					}
-				}else if (e.getClickCount() ==1) {
-					int ligne = uneTable.getSelectedRow();
-					txtDate.setText(unTableau.getValueAt(ligne, 1).toString());
-					txtContenu.setText(unTableau.getValueAt(ligne, 2).toString());
-					cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 3).toString());
-					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 4).toString());
-					btEnregistrer.setText("Modifier");
-				}		
+				}
+						
 			}
 			
 			@Override
@@ -178,6 +172,7 @@ public class VueCommentaire extends JFrame implements ActionListener{
 	
 	public void remplirCBXActivite() {
 		ArrayList<Activite>lesActivites = Main.selectAllActivites("");
+		this.cbxActivite.removeAllItems();
 		for (Activite uneActivite : lesActivites) {
 			this.cbxActivite.addItem(uneActivite.getIdActivite() + " - " + uneActivite.getNom()); 
 		}

@@ -3,39 +3,65 @@ package controleur;
 import java.util.Date;
 
 public class Activite {
-	private int idActivite, nb_personnes;
-	private String nom, lieu, image_url, lien, description;
-	private float budget, prix ;
+	private int idActivite;
+	private String nom, lieu, image_url, lien;
+	private float budget;
+	private String description;
 	private Date date_debut, date_fin;
-	
+	private float prix ;
+	private int nb_personnes, idTresorerie;
 	
 	public Activite() {
+		super();
+		this.idActivite = 0;
+		this.nom = "";
+		this.lieu = "";
+		this.image_url = "";
+		this.lien = "";
+		this.budget = 0;
+		this.description = "";
+		this.date_debut = new Date();
+		this.date_fin = new Date();
+		this.prix = 0;
+		this.nb_personnes = 0;
+		this.idTresorerie = 0;
 	}
-	
 
-	public Activite(int idActivite,  String nom, String lieu,  float budget, String description, float prix,   int nb_personnes) {
+	public Activite(int idActivite,  String nom, String lieu, String image_url, String lien,
+			float budget, String description, Date date_debut, Date date_fin, float prix,
+			int nb_personnes, int idTresorerie) {
 		super();
 		this.idActivite = idActivite;
-		this.nb_personnes = nb_personnes;
 		this.nom = nom;
 		this.lieu = lieu;
-		this.description = description;
+		this.image_url = image_url;
+		this.lien = lien;
 		this.budget = budget;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
 		this.prix = prix;
+		this.nb_personnes = nb_personnes;
+		this.idTresorerie = idTresorerie;
 	}
 
-	
-	public Activite(String nom, String lieu, float budget, String description,  float prix, int nb_personnes) {
+	public Activite(String nom, String lieu, String image_url, String lien,
+			float budget, String description, Date date_debut, Date date_fin, float prix,
+			int nb_personnes, int idTresorerie) {
 		super();
-		this.nb_personnes = nb_personnes;
+		this.idActivite = 0;
 		this.nom = nom;
 		this.lieu = lieu;
-		this.description = description;
+		this.image_url = image_url;
+		this.lien = lien;
 		this.budget = budget;
+		this.description = description;
+		this.date_debut = date_debut;
+		this.date_fin = date_fin;
 		this.prix = prix;
+		this.nb_personnes = nb_personnes;
+		this.idTresorerie = idTresorerie;
 	}
-
-
 
 	public int getIdActivite() {
 		return idActivite;
@@ -85,6 +111,12 @@ public class Activite {
 	public void setBudget(float budget) {
 		this.budget = budget;
 	}
+	public int getIdTresorerie() {
+		return idTresorerie;
+	}
+	public void setIdTresorerie(int idTresorerie) {
+		this.idTresorerie = idTresorerie;
+	}
 	public float getPrix() {
 		return prix;
 	}
@@ -103,7 +135,5 @@ public class Activite {
 	public void setDate_fin(Date date_fin) {
 		this.date_fin = date_fin;
 	}
-	
-	
 	
 }

@@ -14,6 +14,7 @@ import modele.Modele;
 import vue.VueConnexion;
 import vue.VueDon;
 import vue.VueParticiper;
+import vue.VueTresorerie;
 import vue.VueUtilisateur;
 import vue.VueActivite;
 import vue.VueCommentaire;
@@ -22,8 +23,8 @@ import vue.VueCommentaire;
 public class Main {
 
 	//Taille des Jpanels
-	private final static int WIDTH = 1200;
-	private final static int HEIGHT = 500;  
+	private final static int WIDTH = 1366;
+	private final static int HEIGHT = 768;  
 	
 	// on stocke l'idUtilisateurConnecte et on l'actualise au cours du programme
 	// -1 : par défaut aucun utilisateur n'est connecté
@@ -35,6 +36,7 @@ public class Main {
 	public static VueCommentaire uneVueCommentaire;
 	public static VueDon uneVueDon;
 	public static VueUtilisateur uneVueUtilisateur;
+	public static VueTresorerie uneVueTresorerie;
 	
 	public static void main(String[] args) {
 		//lancement plus propre
@@ -126,6 +128,10 @@ public class Main {
 	
 	public static void instancierVueDon() {
 		uneVueDon = new VueDon();
+	}
+	
+	public static void instancierVueTresorerie() {
+		uneVueTresorerie = new VueTresorerie();
 	}
 	
 	public static void instancierVueUtilisateur() {
@@ -249,7 +255,15 @@ public class Main {
 		Modele.updateUtilisateurSponsor(unSponsor);
 	}
 	
+	/********************* CONTROLEUR TRESORERIE ***************************/
+	
+	public static float selectFonds()
+	{
+		return Modele.selectFonds();
+	}
+	
 	/************************* CONNEXION *************************/
+	
 	public static Utilisateur verifConnexion(String email, String mdp) {
 		return Modele.verifConnexion(email, mdp);
 	}

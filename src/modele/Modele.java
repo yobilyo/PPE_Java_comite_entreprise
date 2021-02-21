@@ -14,6 +14,7 @@ import controleur.Main;
 import controleur.Participation;
 import controleur.Salarie;
 import controleur.Sponsor;
+import controleur.Tresorerie;
 import controleur.Utilisateur;
 
 
@@ -76,19 +77,21 @@ public class Modele
 			//String errorMsg = "Erreur d'exécution de la requete :" + requete + "\n" + exp.getMessage();
 			//JOptionPane.showMessageDialog(null, errorMsg);
 		}
-	}	
+	}
 	
 	/************* ACTIVITE ********************/
 	
 	
 	public static void insertActivite (Activite uneActivite) {
-		String requete = "insert into activite values (null, '" + uneActivite.getNom() + "','" + uneActivite.getLieu()
-		+"', " + "null, "   + "null, " +  uneActivite.getBudget() + ",'" + uneActivite.getDescription()+ "',"  + "null, "
-		 + "null, "+ uneActivite.getPrix() +", " + uneActivite.getNb_personnes() 
-		+", 1 );" ;
+		String requete = "insert into activite values (null, '" + uneActivite.getNom() + "', '"
+		+ uneActivite.getLieu() + "', '" + uneActivite.getImage_url() + "', '"
+		+ uneActivite.getLien() + "', " + uneActivite.getBudget() + ", '"
+		+ uneActivite.getDescription()+ "', '"  + uneActivite.getDate_debut() + "', '"
+		+ uneActivite.getDate_fin() + "', " + uneActivite.getPrix() + ", "
+		+ uneActivite.getNb_personnes() + ", " + uneActivite.getIdTresorerie()
+		+ ");";
 		executerRequete(requete);
-		}
-
+	}
 	
 	public static ArrayList<Activite> selectAllActivites (String mot){
 		
@@ -108,32 +111,58 @@ public class Modele
 			ResultSet desRes = unStat.executeQuery(requete);
 			while (desRes.next()) {
 				Activite uneActivite = new Activite (
-						desRes.getInt("id_activite"), desRes.getString("nom"), desRes.getString("lieu"), desRes.getFloat("budget"), 
-						desRes.getString("description"), desRes.getFloat("prix"), desRes.getInt("nb_personnes")
-						);
+					desRes.getInt("id_activite"),
+					desRes.getString("nom"), 
+					desRes.getString("lieu"),
+					desRes.getString("image_url"),
+					desRes.getString("lien"),
+					desRes.getFloat("budget"), 
+					desRes.getString("description"),
+					desRes.getDate("date_debut"),
+					desRes.getDate("date_fin"),
+					desRes.getFloat("prix"),
+					desRes.getInt("nb_personnes"),
+					desRes.getInt("id_tresorerie")
+				);
 				lesActivites.add(uneActivite);
 			}
 			unStat.close();
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		return lesActivites ; 
 	}
 
 	public static void deleteActivite (int idActivite)
 	{
+		// suppression des possessions dans les tables étrangères d'abord
+		String requeteCom =" delete from commentaire where id_activite = " + idActivite +" ; " ;
+		executerRequete(requeteCom);
+		
+		String requetePart =" delete from participer where id_activite = " + idActivite +" ; " ;
+		executerRequete(requetePart);
+		
 		String requete =" delete from activite where id_activite = " + idActivite +" ; " ;
 		executerRequete(requete);
 	}
 
 	public static void updateActivite(Activite uneActivite) {
-		String requete ="update activite set nom = '" + uneActivite.getNom() + "', lieu = '" + uneActivite.getLieu()
-		+"', budget = " + uneActivite.getBudget() + ", description = '" + uneActivite.getDescription()
-		+ "', prix = " + uneActivite.getPrix() +", nb_personnes= " + uneActivite.getNb_personnes() 
-		+ "  where id_activite = " + uneActivite.getIdActivite() + " ;" ;
-		executerRequete(requete);		
+		String requete ="update activite set nom = '" + uneActivite.getNom()
+		+ "', lieu = '" + uneActivite.getLieu()
+		+ "', image_url = '" + uneActivite.getImage_url()
+		+ "', lien = '" + uneActivite.getImage_url()
+		+ "', budget = " + uneActivite.getBudget()
+		+ ", description = '" + uneActivite.getDescription()
+		+ "', date_debut = '" + uneActivite.getDate_debut()
+		+ "', date_fin = '" + uneActivite.getDate_fin()
+		+ "', prix = " + uneActivite.getPrix()
+		+ ", nb_personnes= " + uneActivite.getNb_personnes()
+		+ ", id_tresorerie = " + uneActivite.getIdTresorerie()
+		+ " where id_activite = " + uneActivite.getIdActivite() + " ;" ;
+		executerRequete(requete);	
 	}
 
 	
@@ -177,7 +206,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		return lesDons ; 
 	}
@@ -223,7 +253,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		return lesCommentaires ; 
 	}
@@ -236,10 +267,8 @@ public class Modele
 	}
 	
 	
-	
-	
 	/************* UTILISATEUR ********************/
-
+	
 	
 	public static void insertUtilisateur(Utilisateur unUtilisateur) {
 		String requete = "insert into utilisateur values (null, '" + unUtilisateur.getUsername() + "', '" + unUtilisateur.getPassword()
@@ -272,7 +301,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		return lesUtilisateurs ; 
 	}
@@ -300,7 +330,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		return unUtilisateur; 
 		
@@ -347,7 +378,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch (SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		
 		return unUser;
@@ -429,7 +461,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		
 		return lesUtilisateursSalaries ; 
@@ -530,7 +563,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		
 		return lesUtilisateursSponsors ; 
@@ -593,7 +627,8 @@ public class Modele
 			uneBdd.seDeconnecter();
 		}
 		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete );
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
 		}
 		return lesParticipations ; 
 	}
@@ -617,8 +652,35 @@ public class Modele
 		+"', id_activite = " + uneParticipation.getIdActivite() + "  where id_activite = " + uneParticipation.getIdActivite() + " and idutilisateur = " + uneParticipation.getIdUtilisateur()  + " ;" ;
 		executerRequete(requete);		
 	}
+	
+	/**********************TRESORERIE**************************************************/
 
+
+	/************************ TRESORERIE***** ************************************/
 	
-	
+	public static float selectFonds() {
+		String requete ="select * from tresorerie;" ;
+		
+	Tresorerie uneTresorerie = null;
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				uneTresorerie = new Tresorerie(
+					desRes.getInt("id_tresorerie"),
+					desRes.getFloat("fonds")
+				);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
+		}
+		return uneTresorerie.getFonds(); 
+	}
 	
 }

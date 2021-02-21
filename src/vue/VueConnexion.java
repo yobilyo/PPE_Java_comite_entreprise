@@ -39,6 +39,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	private JButton btDons = new JButton("Dons"); 
 	private JButton btUtilisateur = new JButton("Utilisateurs"); 
 	private JButton btParticiper = new JButton("Participer"); 
+	private JButton btTresorerie = new JButton("Trésorerie");
 	//private JButton btContact = new JButton("Nous contacter"); 
 
 	private JButton btSeDeconnecter = new JButton("Se déconnecter"); 
@@ -89,6 +90,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.panelMenu.add(this.btCommentaires); 
 		this.panelMenu.add(this.btDons); 
 		this.panelMenu.add(this.btUtilisateur);
+		this.panelMenu.add(this.btTresorerie);
 		
 		this.panelMenu.setVisible(false);
 		this.add(this.panelMenu);
@@ -99,6 +101,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		this.btCommentaires.addActionListener(this);
 		this.btDons.addActionListener(this);
 		this.btUtilisateur.addActionListener(this);
+		this.btTresorerie.addActionListener(this);
 		
 		//construction du pannelQuitter pour le bouton quitter
 		this.panelQuitter.setBounds(340, 200, 300, 60);
@@ -124,6 +127,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		Main.styleBoutonDark(this.btDons);
 		Main.styleBoutonDark(this.btUtilisateur);
 		Main.styleBoutonBleu(this.btSeDeconnecter);
+		Main.styleBoutonDark(this.btTresorerie);
 	}
 	
 	@Override
@@ -165,6 +169,9 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		}else if (e.getSource() == this.btUtilisateur) {
 			this.setVisible(false);
 			Main.instancierVueUtilisateur();
+		}else if (e.getSource() == this.btTresorerie) {
+			this.setVisible(false);
+			Main.instancierVueTresorerie();
 		}
 	}
 	

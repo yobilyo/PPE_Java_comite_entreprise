@@ -240,6 +240,30 @@ public class VueParticiper extends JFrame implements ActionListener{
 		
 	}
 	
+	public void updateParticipation() {
+		String idActivite = this.cbxActivite.getSelectedItem().toString();
+		String idUtilisateur = this.cbxUtilisateur.getSelectedItem().toString();
+		String dateParticipation = this.txtDate.getText();
+
+			int numLigne = uneTable.getSelectedRow(); 
+			int idActivite1 = Integer.parseInt(unTableau.getValueAt(numLigne,1 ).toString ());
+			int idUtilisateur1 = Integer.parseInt(unTableau.getValueAt(numLigne, 0).toString ());
+			Participation uneParticipation = new Participation (idUtilisateur1, idActivite1, dateParticipation);
+			//update dans la base de donnÃ©es 
+			Main.updateParticipation(uneParticipation);
+			
+			//modifiaction dans l'affichage tableau 
+			Object ligne[] = {uneParticipation.getIdUtilisateur(), uneParticipation.getIdActivite(), dateParticipation+""};
+			this.unTableau.updateLigne(numLigne, ligne);
+			
+			JOptionPane.showMessageDialog(this,"Modification réussie !");
+			this.viderLesChamps();
+
+		
+	}
+	
+	
+	
 	
 	public void insertParticipation() {
 		//String contenu = this.txtContenu.getText();
