@@ -160,6 +160,13 @@ public class Modele
 
 	public static void deleteActivite (int idActivite)
 	{
+		// suppression des possessions dans les tables étrangères d'abord
+		String requeteCom =" delete from commentaire where id_activite = " + idActivite +" ; " ;
+		executerRequete(requeteCom);
+		
+		String requetePart =" delete from participer where id_activite = " + idActivite +" ; " ;
+		executerRequete(requetePart);
+		
 		String requete =" delete from activite where id_activite = " + idActivite +" ; " ;
 		executerRequete(requete);
 	}
