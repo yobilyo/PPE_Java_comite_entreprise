@@ -229,6 +229,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 				//modifiaction dans l'affichage tableau 
 				//Object ligne[] = {uneActivite.getIdActivite(), nom, lieu, budget, description, prix, nbPersonnes+""};
 				//this.unTableau.updateLigne(numLigne, ligne);
+				remplirPanelLister("");
 				
 				JOptionPane.showMessageDialog(this,"Modification réussie !");
 				this.btEnregistrer.setText("Enregistrer");
@@ -300,6 +301,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 				ddactiviteDebut, ddactiviteFin,	prix, nbPersonnes, idTresorerie);
 			Main.insertActivite(uneActivite);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
+			remplirPanelLister("");
 			this.viderLesChamps();
 		}
 	}
