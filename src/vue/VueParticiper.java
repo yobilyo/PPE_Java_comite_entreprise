@@ -65,17 +65,17 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.setTitle("Gestion des participations :");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(null);
+		getContentPane().setLayout(null);
 		
 		this.getContentPane().setBackground(new Color (206,214, 224));
 		
 		//installer le bouton retour 
 		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
-		this.add(this.btRetour); 
+		getContentPane().add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
 		//construction du panel Ajout
-		this.panelAjout.setBounds(40, 100, 300, 250);
+		this.panelAjout.setBounds(10, 98, 215, 250);
 		this.panelAjout.setBackground(new Color (206,214, 224  ));
 		this.panelAjout.setLayout(new GridLayout(5,2, 4, 4));
 		this.panelAjout.add(new JLabel("Date d'inscription :")); 
@@ -89,17 +89,17 @@ public class VueParticiper extends JFrame implements ActionListener{
 		remplirCBXUtilisateurs();
 		remplirPanelLister("");
 		
-		this.add(panelAjout);
+		getContentPane().add(panelAjout);
 		this.panelAjout.add(btAnnuler);
 		this.panelAjout.add(btEnregistrer);
 		this.btAnnuler.addActionListener(this);
 		this.btEnregistrer.addActionListener(this);
 		
-		this.btFiltrer.setBounds(Main.getWidth() /2 - 200, 20, 100, 20);
-		this.add(btFiltrer);
+		this.btFiltrer.setBounds(299, 50, 100, 20);
+		getContentPane().add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(Main.getWidth() / 2 - 80, 20 , 100, 20);
-		this.add(txtFiltrer);
+		this.txtFiltrer.setBounds(409, 51 , 100, 20);
+		getContentPane().add(txtFiltrer);
 		
 		this.uneTable.addMouseListener(new MouseListener() {
 			
@@ -199,18 +199,21 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.panelLister.setBackground(new Color (206,214, 224));
 		this.panelLister.setLayout(null);
 
-		this.panelLister.setBounds(350, 80, 530, 300);
+		this.panelLister.setBounds(235, 80, 651, 300);
 		
-		this.uneScroll.setBounds(010, 10, 510, 280);
+		this.uneScroll.setBounds(0, 10, 651, 280);
 		this.panelLister.add(this.uneScroll);
 		
 		
-		this.add(this.panelLister); 
+		getContentPane().add(this.panelLister); 
 	}
 	
 	public void remplirPanelLister(String mot) {
 		this.panelLister.removeAll();
-		String entetes [] = {"IdUtilisateur", "IdActivite", "DateInscription" };
+		String entetes [] = {"IdUtilisateur", "IdActivite", 
+							"Username", "Email", "Nom", "Prenom",
+							"Tel","Adresse","Service","Activite", 
+							"Date inscription","Lieu", "Description"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		this.unTableau = new Tableau (donnees, entetes); 
 		this.uneTable = new JTable(this.unTableau); 
@@ -223,12 +226,22 @@ public class VueParticiper extends JFrame implements ActionListener{
 		//recuperer les pilotes de la bdd 
 		ArrayList<Participation> lesParticipations = Main.selectAllParticipation(mot); 
 		//transofrmation des pilotes en matrice de données 
-		Object donnees [][] = new Object [lesParticipations.size()][3];
+		Object donnees [][] = new Object [lesParticipations.size()][13];
 		int i = 0 ; 
 		for (Participation uneParticipation : lesParticipations) {
 			donnees[i][0] = uneParticipation.getIdUtilisateur()+""; 
 			donnees[i][1] = uneParticipation.getIdActivite(); 
-			donnees[i][2] = uneParticipation.getDateParticipation()
+			donnees[i][2] = uneParticipation.getUsername(); 
+			donnees[i][3] = uneParticipation.getEmail(); 
+			donnees[i][4] = uneParticipation.getNom(); 
+			donnees[i][5] = uneParticipation.getPrenom(); 
+			donnees[i][6] = uneParticipation.getTel(); 
+			donnees[i][7] = uneParticipation.getAdresse(); 
+			donnees[i][8] = uneParticipation.getService();
+			donnees[i][9] = uneParticipation.getNom_activite(); 
+			donnees[i][10] = uneParticipation.getDate_inscription();
+			donnees[i][11] = uneParticipation.getLieu();
+			donnees[i][12] = uneParticipation.getDescription()
 					+ ""; 
 			i++; 
 		}

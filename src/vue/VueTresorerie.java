@@ -64,11 +64,18 @@ public class VueTresorerie extends JFrame implements ActionListener{
 		//monLogo.setBounds(20, 60, 300, 150); 
 		this.panelTresorerie.add(monLogo);
 		
+		initBoutons();
+		
 	}
 
 	//"Notre tresorerie dispose actuellement de : " + fonds +""
 	
 	
+	private void initBoutons() {
+		Main.styleBoutonBleu(this.btRetour);
+		
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btRetour) {

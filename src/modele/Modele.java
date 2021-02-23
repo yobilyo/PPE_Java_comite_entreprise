@@ -602,13 +602,16 @@ public class Modele
 	
 	/************************ PARTICIPATION ************************************/
 	
+	//prendre la vue utilisateur_salarie_activite_participer 
+	// avec idutilisateur, id_activite, username, email, nom, prenom, tel, adresse, service, nom_activite, date_inscription, lieu, description
+	
 	
 	public static ArrayList<Participation> selectAllParticipation(String mot) {
 		String requete ; 
 		if (mot.equals("")) {
-			requete ="select * from participer ;" ;
+			requete ="select * from utilisateur_salarie_activite_participer ;" ;
 		}else {
-			requete ="select * from participer where date_inscription like '%"+mot+"%'; " ;
+			requete ="select * from utilisateur_salarie_activite_participer where date_inscription like '%"+mot+"%'; " ;
 		}
 		ArrayList<Participation> lesParticipations = new ArrayList<Participation>();  
 		try {
@@ -619,7 +622,17 @@ public class Modele
 				Participation uneParticipation = new Participation (
 						desRes.getInt("idutilisateur"),
 						desRes.getInt("id_activite"),
-						desRes.getString("date_inscription")
+						desRes.getString("username"),
+						desRes.getString("email"),
+						desRes.getString("nom"),
+						desRes.getString("prenom"),
+						desRes.getString("tel"),
+						desRes.getString("adresse"),
+						desRes.getString("service"),
+						desRes.getString("nom_activite"),
+						desRes.getString("date_inscription"),
+						desRes.getString("lieu"),
+						desRes.getString("description")
 				);
 				lesParticipations.add(uneParticipation);
 			}
@@ -635,7 +648,7 @@ public class Modele
 
 	public static void insertParticipation(Participation uneParticipation) {
 		String requete = "insert into participer values ('" + uneParticipation.getIdUtilisateur()
-		+ "', '" + uneParticipation.getIdActivite() + "', '" + uneParticipation.getDateParticipation()
+		+ "', '" + uneParticipation.getIdActivite() + "', '" + uneParticipation.getDate_inscription()
 		+ "' "
 		 + ");";
 		executerRequete(requete);
@@ -648,15 +661,13 @@ public class Modele
 	}
 
 	public static void updateParticipation(Participation uneParticipation) {
-		String requete ="update participer set date_inscription = '" + uneParticipation.getDateParticipation() + "', idutilisateur = '" + uneParticipation.getIdUtilisateur()
+		String requete ="update participer set date_inscription = '" + uneParticipation.getDate_inscription() + "', idutilisateur = '" + uneParticipation.getIdUtilisateur()
 		+"', id_activite = " + uneParticipation.getIdActivite() + "  where id_activite = " + uneParticipation.getIdActivite() + " and idutilisateur = " + uneParticipation.getIdUtilisateur()  + " ;" ;
 		executerRequete(requete);		
 	}
 	
 	/**********************TRESORERIE**************************************************/
 
-
-	/************************ TRESORERIE***** ************************************/
 	
 	public static float selectFonds() {
 		String requete ="select * from tresorerie;" ;
