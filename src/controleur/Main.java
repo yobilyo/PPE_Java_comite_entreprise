@@ -108,6 +108,24 @@ public class Main {
 		myButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 16));
 	}
 	
+	/********************** MANIPULATIONS DE TEXTES *********************/
+	
+	public static String genererCbxTextFromId(String id, String nom) {
+		String cbxText = id + " - " + nom;
+		// exemple: 
+		// AVANT :   "1" (id)
+		//           "Parc Asterix" (nom)
+		// APRES :   "1 - Parc Asterix"
+		return cbxText;
+	}
+	
+	public static String extraireIdFromCbxText(String idCbxText) {
+		// exemple: 
+		// AVANT :   "1 - Parc Asterix"
+		// APRES :   "1"
+		return idCbxText.substring(0, 1);
+	}
+	
 	/********************** INSTANCTIATIONS *********************/
 	
 	public static void instancierVueConnexion() {
@@ -165,11 +183,11 @@ public class Main {
 	public static void deleteParticipation (int idutilisateur, int id_activite){
 		Modele.deleteParticipation(idutilisateur, id_activite);
 	}
-	public static ArrayList<Participation> selectAllParticipation(String mot) {
-		return Modele.selectAllParticipation(mot);
+	public static ArrayList<Participation> selectAllParticipations(String mot) {
+		return Modele.selectAllParticipations(mot);
 	}
-	public static void updateParticipation(Participation uneParticipation) {
-		Modele.updateParticipation(uneParticipation);
+	public static void updateParticipation(Participation uneParticipation, int idUtilisateurOld, int idActiviteOld) {
+		Modele.updateParticipation(uneParticipation, idUtilisateurOld, idActiviteOld);
 	}
 	
 	/********************* CONTROLEUR COMMENTAIRE ***************************/

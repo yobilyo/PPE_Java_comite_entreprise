@@ -27,10 +27,7 @@ import controleur.Tableau;
 import controleur.Utilisateur;
 
 public class VueParticiper extends JFrame implements ActionListener{
-	private final static int WIDTH = 900;
-	private final static int HEIGHT = 500;
 
-	
 	private static VueConnexion uneVueConnexion; 
 	
 	private JPanel panelAjout = new JPanel();
@@ -61,7 +58,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 	
 	public VueParticiper() {
 		super();
-		this.setBounds(100, 100, WIDTH, HEIGHT);
+		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
 		this.setTitle("Gestion des participations :");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,12 +67,12 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.getContentPane().setBackground(new Color (206,214, 224));
 		
 		//installer le bouton retour 
-		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
+		this.btRetour.setBounds(Main.getWidth() -170, Main.getHeight() -80, 140, 30);
 		getContentPane().add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
 		//construction du panel Ajout
-		this.panelAjout.setBounds(10, 98, 215, 250);
+		this.panelAjout.setBounds(40, 100, 300, 250);
 		this.panelAjout.setBackground(new Color (206,214, 224  ));
 		this.panelAjout.setLayout(new GridLayout(5,2, 4, 4));
 		this.panelAjout.add(new JLabel("Date d'inscription :")); 
@@ -126,9 +123,30 @@ public class VueParticiper extends JFrame implements ActionListener{
 					}
 				}else if (e.getClickCount() ==1) {
 					int ligne = uneTable.getSelectedRow();
-					cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 0).toString());
-					cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 1).toString());
-					txtDate.setText(unTableau.getValueAt(ligne, 2).toString());
+					
+					//cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 0).toString());
+					//System.out.println(unTableau.getValueAt(ligne, 0).toString());
+					// idutilisateur est une clé étrangère dans la table participer, elle ne
+					// peut pas et ne doit pas être modifiée
+					cbxUtilisateur.setEnabled(false);
+					// mais on affiche quand meme l'utilisateur
+					String idUtilisateur = uneTable.getValueAt(ligne, 0).toString();
+					String username = uneTable.getValueAt(ligne, 2).toString();
+					String cbxTextUtilisateur = Main.genererCbxTextFromId(idUtilisateur, username);
+					cbxUtilisateur.setSelectedItem(cbxTextUtilisateur);
+					
+					//cbxActivite.setSelectedItem(unTableau.getValueAt(ligne, 1).toString());
+					//System.out.println(unTableau.getValueAt(ligne, 1).toString());
+					cbxActivite.setEnabled(false);
+					String idActivite = uneTable.getValueAt(ligne, 0).toString();
+					String nomActivite = uneTable.getValueAt(ligne, 9).toString();
+					String cbxTextActivite = Main.genererCbxTextFromId(idActivite, nomActivite);
+					cbxActivite.setSelectedItem(cbxTextActivite);
+					
+					// maintenant que participer est une view sql, la date
+					// est passée de la position 2 à la position 10 dans les données
+					txtDate.setText(unTableau.getValueAt(ligne, 10).toString());
+					
 					btEnregistrer.setText("Modifier");
 				}		
 			}
@@ -163,10 +181,16 @@ public class VueParticiper extends JFrame implements ActionListener{
 			this.dispose();
 			Main.rendreVisible(true);
 		}else if(e.getSource() == this.btAnnuler) {
+			//on réactive les cbx
+			this.cbxUtilisateur.setEnabled(true);
+			this.cbxActivite.setEnabled(true);
+			this.viderLesChamps();
 			
 			this.btEnregistrer.setText("Enregistrer");
-		}else if(e.getSource() == this.btEnregistrer) {
+		}else if(e.getSource() == this.btEnregistrer && e.getActionCommand().equals("Enregistrer")) {
 			insertParticipation();
+		}else if(e.getSource() == this.btEnregistrer && e.getActionCommand().equals("Modifier")) {
+			updateParticipation();
 		}else if (e.getSource() == this.btFiltrer)
 		{
 			this.remplirPanelLister(this.txtFiltrer.getText());
@@ -183,7 +207,10 @@ public class VueParticiper extends JFrame implements ActionListener{
 		ArrayList<Utilisateur> lesUtilisateurs = Main.selectAllUtilisateurs("");
 		this.cbxUtilisateur.removeAllItems();
 		for (Utilisateur unUtilisateur : lesUtilisateurs) {
-			this.cbxUtilisateur.addItem(unUtilisateur.getIdUtilisateur()+" - "+unUtilisateur.getUsername());
+			// les sponsors ne peuvent pas participer à des activités, uniquement les salarie et admins
+			if (!unUtilisateur.getDroits().equals("sponsor")) {
+				this.cbxUtilisateur.addItem(unUtilisateur.getIdUtilisateur()+" - "+unUtilisateur.getUsername());
+			}
 		}
 	}
 	
@@ -199,9 +226,9 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.panelLister.setBackground(new Color (206,214, 224));
 		this.panelLister.setLayout(null);
 
-		this.panelLister.setBounds(235, 80, 651, 300);
+		this.panelLister.setBounds(365, 80, this.getWidth() - 400, this.getHeight() - 170);
 		
-		this.uneScroll.setBounds(0, 10, 651, 280);
+		this.uneScroll.setBounds(20, 20, this.panelLister.getWidth() - 40, this.panelLister.getHeight() - 40);
 		this.panelLister.add(this.uneScroll);
 		
 		
@@ -224,7 +251,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 	
 	public Object [] [] getDonnees(String mot) {
 		//recuperer les pilotes de la bdd 
-		ArrayList<Participation> lesParticipations = Main.selectAllParticipation(mot); 
+		ArrayList<Participation> lesParticipations = Main.selectAllParticipations(mot); 
 		//transofrmation des pilotes en matrice de donnÃ©es 
 		Object donnees [][] = new Object [lesParticipations.size()][13];
 		int i = 0 ; 
@@ -250,33 +277,50 @@ public class VueParticiper extends JFrame implements ActionListener{
 
 	
 	public void viderLesChamps() {
-		
+		this.txtDate.setText("");
+		this.cbxUtilisateur.setSelectedIndex(0);
+		this.cbxActivite.setSelectedIndex(0);
 	}
 	
 	public void updateParticipation() {
-		String idActivite = this.cbxActivite.getSelectedItem().toString();
-		String idUtilisateur = this.cbxUtilisateur.getSelectedItem().toString();
-		String dateParticipation = this.txtDate.getText();
-
-			int numLigne = uneTable.getSelectedRow(); 
-			int idActivite1 = Integer.parseInt(unTableau.getValueAt(numLigne,1 ).toString ());
-			int idUtilisateur1 = Integer.parseInt(unTableau.getValueAt(numLigne, 0).toString ());
-			Participation uneParticipation = new Participation (idUtilisateur1, idActivite1, dateParticipation);
-			//update dans la base de donnÃ©es 
-			Main.updateParticipation(uneParticipation);
-			
-			//modifiaction dans l'affichage tableau 
-			Object ligne[] = {uneParticipation.getIdUtilisateur(), uneParticipation.getIdActivite(), dateParticipation+""};
-			this.unTableau.updateLigne(numLigne, ligne);
-			
-			JOptionPane.showMessageDialog(this,"Modification réussie !");
-			this.viderLesChamps();
-
+		/*String idActiviteBox = this.cbxActivite.getSelectedItem().toString();
+		System.out.println(idActiviteBox);
+		String idActiviteNum = Main.extraireIdFromCbxText(idActiviteBox);
+		int idActivite = Integer.parseInt(idActiviteNum);
+		System.out.println(idActivite);
 		
+		String idUtilisateurBox = this.cbxUtilisateur.getSelectedItem().toString();
+		System.out.println(idUtilisateurBox);
+		String idUtilisateurNum = Main.extraireIdFromCbxText(idUtilisateurBox);
+		int idUtilisateur = Integer.parseInt(idUtilisateurNum);
+		System.out.println(idUtilisateur);*/
+		
+		// récupération de la nouvelle date
+		String dateParticipation = this.txtDate.getText();
+		
+		// récupération de l'ancien idUtilisateur et ancien idActivite
+		int ligne = uneTable.getSelectedRow();
+		int idUtilisateurOld = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
+		int idActiviteOld = Integer.parseInt(unTableau.getValueAt(ligne, 1).toString()); 
+		
+		// création de la nouvelle participation
+		// idutlisateur et id_activite sont des clés étrangères dans la table sql participer
+		// donc on ne peut pas et on ne doit pas les modifier
+		Participation uneParticipation = new Participation (idUtilisateurOld, idActiviteOld, dateParticipation);
+		
+		//update dans la base de donnÃ©es 
+		Main.updateParticipation(uneParticipation, idUtilisateurOld, idActiviteOld);
+		
+		//modifiaction dans l'affichage tableau 
+		/*Object ligne[] = {uneParticipation.getIdUtilisateur(), uneParticipation.getIdActivite(), dateParticipation+""};
+		this.unTableau.updateLigne(numLigne, ligne);*/
+		//TODO à remplacer par une recréation du tableau
+		
+		JOptionPane.showMessageDialog(this,"Modification réussie !");
+		this.viderLesChamps();
+		// on vide aussi le bouton "Modifier" => "Enregistrer"
+		this.btEnregistrer.setText("Enregistrer");
 	}
-	
-	
-	
 	
 	public void insertParticipation() {
 		//String contenu = this.txtContenu.getText();

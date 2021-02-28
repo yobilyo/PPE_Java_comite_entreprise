@@ -606,7 +606,7 @@ public class Modele
 	// avec idutilisateur, id_activite, username, email, nom, prenom, tel, adresse, service, nom_activite, date_inscription, lieu, description
 	
 	
-	public static ArrayList<Participation> selectAllParticipation(String mot) {
+	public static ArrayList<Participation> selectAllParticipations(String mot) {
 		String requete ; 
 		if (mot.equals("")) {
 			requete ="select * from utilisateur_salarie_activite_participer ;" ;
@@ -660,9 +660,15 @@ public class Modele
 		executerRequete(requete);
 	}
 
-	public static void updateParticipation(Participation uneParticipation) {
-		String requete ="update participer set date_inscription = '" + uneParticipation.getDate_inscription() + "', idutilisateur = '" + uneParticipation.getIdUtilisateur()
-		+"', id_activite = " + uneParticipation.getIdActivite() + "  where id_activite = " + uneParticipation.getIdActivite() + " and idutilisateur = " + uneParticipation.getIdUtilisateur()  + " ;" ;
+	public static void updateParticipation(Participation uneParticipation,
+			int idUtilisateurOld, int idActiviteOld) {
+		// idutilisateur et id_activite sont des clés étrangères dans la table participer,
+		// on ne peut pas et on ne doit pas les modifier
+		String requete ="update participer set date_inscription = '"
+		+ uneParticipation.getDate_inscription() + "' "
+		+ " where id_activite = " + idActiviteOld
+		+ " and idutilisateur = " + idUtilisateurOld
+		+ " ;" ;
 		executerRequete(requete);		
 	}
 	
