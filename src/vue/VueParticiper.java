@@ -200,7 +200,9 @@ public class VueParticiper extends JFrame implements ActionListener{
 	public void remplirCBXActivite() {
 		ArrayList<Activite>lesActivites = Main.selectAllActivites("");
 		for (Activite uneActivite : lesActivites) {
-			this.cbxActivite.addItem(uneActivite.getIdActivite() + " - " + uneActivite.getNom()); 
+			String cbxTextActivite = Main.genererCbxTextFromId(
+					Integer.toString(uneActivite.getIdActivite()), uneActivite.getNom());
+			this.cbxActivite.addItem(cbxTextActivite); 
 		}
 	}
 	public void remplirCBXUtilisateurs() {
@@ -209,7 +211,9 @@ public class VueParticiper extends JFrame implements ActionListener{
 		for (Utilisateur unUtilisateur : lesUtilisateurs) {
 			// les sponsors ne peuvent pas participer à des activités, uniquement les salarie et admins
 			if (!unUtilisateur.getDroits().equals("sponsor")) {
-				this.cbxUtilisateur.addItem(unUtilisateur.getIdUtilisateur()+" - "+unUtilisateur.getUsername());
+				String cbxTextUtilisateur = Main.genererCbxTextFromId(
+						Integer.toString(unUtilisateur.getIdUtilisateur()), unUtilisateur.getUsername());
+				this.cbxUtilisateur.addItem(cbxTextUtilisateur);
 			}
 		}
 	}

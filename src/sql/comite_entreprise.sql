@@ -264,8 +264,10 @@ create view utilisateur_sponsor_don as (
 		s.budget, 
 		s.tel,
 		s.lien,
+		d.datedon,
         d.montant,
-        d.appreciation
+        d.appreciation,
+		d.id_tresorerie
 
     from utilisateur u, sponsor s, don d
     where u.idutilisateur = s.idutilisateur 

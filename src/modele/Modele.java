@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import controleur.Activite;
 import controleur.Commentaire;
 import controleur.Don;
@@ -177,12 +175,14 @@ public class Modele
 
 
 	public static ArrayList<Don> selectAllDons (String mot){
+		// on prend la view sql utilisateur_sponsor_don pour afficher l'username et la société
+		// du sponsor dans le panelLister dans VueDon.java
 		
 		String requete ; 
 		if (mot.equals("")) {
-			requete ="select * from don ;" ;
+			requete ="select * from utilisateur_sponsor_don ;" ;
 		}else {
-			requete ="select * from don where appreciation like '%"+mot+"%'" + " or montant like '%"+mot+"%'"
+			requete ="select * from utilisateur_sponsor_don where appreciation like '%"+mot+"%'" + " or montant like '%"+mot+"%'"
 					+ " or iddon like '%"+mot+"%' or datedon like '%" + mot + "%' ; " ;
 		}
 		ArrayList<Don> lesDons = new ArrayList<Don>();  
@@ -198,7 +198,9 @@ public class Modele
 						desRes.getInt("id_tresorerie"), 
 						desRes.getString("appreciation"), 
 						desRes.getFloat("montant"), 
-						desRes.getString("datedon")
+						desRes.getString("datedon"),
+						desRes.getString("username"),
+						desRes.getString("societe")
 						);
 				lesDons.add(unDon);
 			}

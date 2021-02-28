@@ -4,13 +4,21 @@ public class Don {
 	private int iddon, idutilisateur, id_tresorerie;
 	private String appreciation;
 	private Float montant;
-	private String datedon;
+	private String datedon, username, societe;
 	
 	public Don() {
-		
+		super();
+		this.idutilisateur = 0;
+		this.id_tresorerie = 0;
+		this.appreciation = "";
+		this.montant = (float) 0;
+		this.datedon = "";
+		this.username = "";
+		this.societe = "";
 	}
 	
-	public Don(int iddon, int idutilisateur, int id_tresorerie, String appreciation, Float montant, String datedon) {
+	public Don(int iddon, int idutilisateur, int id_tresorerie, String appreciation, Float montant, String datedon,
+			String username, String societe) {
 		super();
 		this.iddon = iddon;
 		this.idutilisateur = idutilisateur;
@@ -18,15 +26,36 @@ public class Don {
 		this.appreciation = appreciation;
 		this.montant = montant;
 		this.datedon = datedon;
+		this.username = username;
+		this.societe = societe;
 	}
 	
-	public Don(int idutilisateur, int id_tresorerie, String appreciation, Float montant, String datedon) {
+	public Don(int idutilisateur, int id_tresorerie, String appreciation, Float montant, String datedon,
+			String username, String societe) {
 		super();
 		this.idutilisateur = idutilisateur;
 		this.id_tresorerie = id_tresorerie;
 		this.appreciation = appreciation;
 		this.montant = montant;
 		this.datedon = datedon;
+		this.username = username;
+		this.societe = societe;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getSociete() {
+		return societe;
+	}
+
+	public void setSociete(String societe) {
+		this.societe = societe;
 	}
 
 	public int getIddon() {
@@ -77,6 +106,4 @@ public class Don {
 		this.datedon = datedon;
 	}
 	
-	
 }
-

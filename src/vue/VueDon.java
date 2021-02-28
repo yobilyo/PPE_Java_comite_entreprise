@@ -45,13 +45,13 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	//Créer date et l'afficher
 	private JLabel labDate = new JLabel();
 	private SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
-	private Date dateComment = new Date();
-	private JTextField txtDateDon = new JTextField(sFormat.format(dateComment).toString());
+	private Date dateDon = new Date();
+	private JTextField txtDateDon = new JTextField(sFormat.format(dateDon).toString());
 	
 	private JTextField txtMontant = new JTextField(); 
 	private JTextField txtAppreciation = new JTextField(); 
-	private JTextField txtidutilisateur = new JTextField(); 
-	private JTextField txtid_tresorerie = new JTextField();
+	//private JTextField txtidutilisateur = new JTextField(); 
+	//private JTextField txtid_tresorerie = new JTextField();
 	private JComboBox<String> cbxUtilisateur = new JComboBox<String>();
 	//private JTextField txtTresorerie = new JTextField("1"); 
 	
@@ -119,7 +119,12 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		ArrayList<Utilisateur> lesUtilisateurs = Main.selectAllUtilisateurs("");
 		this.cbxUtilisateur.removeAllItems();
 		for (Utilisateur unUtilisateur : lesUtilisateurs) {
-			this.cbxUtilisateur.addItem(unUtilisateur.getIdUtilisateur()+" - "+unUtilisateur.getUsername());
+			// uniquement les sponsors peuvent faire des dons, pas les salariés ni les admins
+			if (unUtilisateur.getDroits().equals("sponsor")) {
+				String cbxTextUtilisateur = Main.genererCbxTextFromId(
+						Integer.toString(unUtilisateur.getIdUtilisateur()), unUtilisateur.getUsername());
+				this.cbxUtilisateur.addItem(cbxTextUtilisateur);
+			}
 		}
 	}
 
@@ -138,7 +143,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		}else if (e.getSource() == this.btEnregistrer && e.getActionCommand().equals("Enregistrer")) {
 			this.insertDon();
 		}else if (e.getSource() == this.btAnnuler) {
+			// si on ne modifie pas on peut réactiver le cbxUtilisateur pour les insertions
+			this.cbxUtilisateur.setEnabled(true);
 			this.viderLesChamps();
+			this.btEnregistrer.setText("Enregistrer");
 		}else if (e.getSource()  == this.btEnregistrer && e.getActionCommand().equals("Modifier")) 
 		{
 			this.updateDon();  
@@ -151,8 +159,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	public void updateDon() {
 		String datedon = this.txtDateDon.getText(); 
 		float montant = 0;
-		String appreciation = this.txtAppreciation.getText(); 
-		int idutilisateur = 0;
+		String appreciation = this.txtAppreciation.getText();
+		// récupération de l'ancien idUtilisateur
+		int ligne = uneTable.getSelectedRow();
+		int idUtilisateurOld = Integer.parseInt(unTableau.getValueAt(ligne, 4).toString()); 
 		int id_tresorerie = 1;
 		
 		try {
@@ -165,13 +175,14 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		if (montant >=0 ) {
 			int numLigne = uneTable.getSelectedRow(); 
 			int iddon = Integer.parseInt(unTableau.getValueAt(numLigne, 0).toString ());
-			Don unDon = new Don(iddon ,idutilisateur, id_tresorerie, appreciation, montant, datedon);
+			Don unDon = new Don(iddon , idUtilisateurOld, id_tresorerie, appreciation, montant, datedon, "", "");
 			//update dans la base de donnÃ©es 
 			Main.updateDon(unDon);
 			
 			//modifiaction dans l'affichage tableau 
-			Object ligne[] = {unDon.getIddon(), datedon, montant, appreciation, idutilisateur, id_tresorerie+""};
-			this.unTableau.updateLigne(numLigne, ligne);
+			/*Object ligne[] = {unDon.getIddon(), datedon, montant, appreciation, idutilisateur, id_tresorerie+""};
+			this.unTableau.updateLigne(numLigne, ligne);*/
+			// TODO remplacer par la méthode de recréation d'un nouveau tableau
 			
 			JOptionPane.showMessageDialog(this,"Modification réussie !");
 			this.viderLesChamps();
@@ -210,7 +221,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		
 	
 		if(montant >= 1) {
-			Don unDon = new Don(idUtilisateur, id_tresorerie, appreciation, montant, datedon);
+			Don unDon = new Don(idUtilisateur, id_tresorerie, appreciation, montant, datedon, "", "");
 			Main.insertDon(unDon);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
@@ -237,7 +248,8 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	
 	public void remplirPanelLister(String mot) {
 		this.panelLister.removeAll();
-		String entetes [] = {"ID Don", "Date don", "Montant", "Appreciation", "ID Utilisateur", "ID Tresorerie"};
+		String entetes [] = {"ID Don", "Date don", "Montant", "Appreciation", "ID Utilisateur",
+				"Nom d'utilisateur", "Société"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		this.unTableau = new Tableau (donnees, entetes); 
 		this.uneTable = new JTable(this.unTableau); 
@@ -262,23 +274,22 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			donnees[i][2] = unDon.getMontant(); 
 			donnees[i][3] = unDon.getAppreciation(); 
 			donnees[i][4] = unDon.getIdutilisateur(); 
-			donnees[i][5] = unDon.getId_tresorerie() + ""; 
+			donnees[i][5] = unDon.getUsername(); 
+			donnees[i][6] = unDon.getSociete();
 			i++; 
 		}
 				
 		return donnees;
 	}
 
-	
 	public void viderLesChamps() {
 		this.txtDateDon.setText("");
 		this.txtMontant.setText("");
 		this.txtAppreciation.setText("");
-		this.txtidutilisateur.setText("");
-		this.txtid_tresorerie.setText("");
+		//this.txtidutilisateur.setText("");
+		this.cbxUtilisateur.setSelectedItem(0);
+		//this.txtid_tresorerie.setText("");
 	}
-	
-	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -299,8 +310,16 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			txtDateDon.setText(unTableau.getValueAt(ligne, 1).toString());
 			txtMontant.setText(unTableau.getValueAt(ligne, 2).toString());
 			txtAppreciation.setText(unTableau.getValueAt(ligne, 3).toString());
-			txtidutilisateur.setText(unTableau.getValueAt(ligne, 4).toString());
-			txtid_tresorerie.setText(unTableau.getValueAt(ligne, 5).toString());
+			// idutilisateur est une clé étrangère dans la table don, elle ne
+			// peut pas et ne doit pas être modifiée
+			cbxUtilisateur.setEnabled(false);
+			// mais on affiche quand meme l'utilisateur
+			String idUtilisateur = uneTable.getValueAt(ligne, 4).toString();
+			String username = uneTable.getValueAt(ligne, 5).toString();
+			String cbxTextUtilisateur = Main.genererCbxTextFromId(idUtilisateur, username);
+			cbxUtilisateur.setSelectedItem(cbxTextUtilisateur);
+			//txtidutilisateur.setText(unTableau.getValueAt(ligne, 4).toString());
+			//txtid_tresorerie.setText(unTableau.getValueAt(ligne, 5).toString());
 			btEnregistrer.setText("Modifier");
 		}		
 	}
