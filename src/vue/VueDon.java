@@ -29,10 +29,6 @@ import controleur.Tableau;
 import controleur.Utilisateur;
 
 public class VueDon extends JFrame implements ActionListener, MouseListener{
-
-	private final static int WIDTH = 900;
-	private final static int HEIGHT = 500;
-
 	
 	private JPanel panelAjout = new JPanel();
 	private JButton btRetour = new JButton("Retour");
@@ -66,7 +62,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 //	private JButton btFiltrer = new JButton("filtrer"); 
 	
 	public VueDon() {
-		this.setBounds(100, 100, WIDTH, HEIGHT);
+		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
 		this.setTitle("Gestion des dons");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,7 +71,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.getContentPane().setBackground(new Color (206,214, 224   ));
 		
 		//installer le bouton retour 
-		this.btRetour.setBounds(WIDTH -170, HEIGHT -80, 140, 30);
+		this.btRetour.setBounds(Main.getWidth() -170, Main.getHeight() -80, 140, 30);
 		this.add(this.btRetour); 
 		this.btRetour.addActionListener(this);
 		
@@ -100,10 +96,10 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 
-		this.btFiltrer.setBounds(WIDTH /2 - 80, 20, 100, 20);
+		this.btFiltrer.setBounds(Main.getWidth() /2 - 200, 20, 100, 20);
 		this.add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
-		this.txtFiltrer.setBounds(WIDTH / 2 + 40, 20 , 100, 20);
+		this.txtFiltrer.setBounds(Main.getWidth() / 2 - 80, 20 , 100, 20);
 		this.add(txtFiltrer);
 		
 		remplirCBXUtilisateurs();
@@ -237,9 +233,9 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.panelLister.setBackground(new Color (206,214, 224  ));
 		this.panelLister.setLayout(null);
 
-		this.panelLister.setBounds(350, 80, 530, 300);
+		this.panelLister.setBounds(365, 80, this.getWidth() - 400, this.getHeight() - 170);
 		
-		this.uneScroll.setBounds(010, 10, 510, 280);
+		this.uneScroll.setBounds(20, 20, this.panelLister.getWidth() - 40, this.panelLister.getHeight() - 40);
 		this.panelLister.add(this.uneScroll);
 		
 		
@@ -253,6 +249,15 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		Object donnees [][] = this.getDonnees(mot) ;			
 		this.unTableau = new Tableau (donnees, entetes); 
 		this.uneTable = new JTable(this.unTableau); 
+		
+		// rendre les colonnes id + petites
+		this.uneTable.getColumnModel().getColumn(0).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(4).setMaxWidth(50);
+		// la colonne appréciation doit être + large pour bien afficher le texte
+		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTable.getColumnModel().getColumn(3).setMinWidth(300);
+
+		
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		
 		Main.styleTableau(this.uneTable);
