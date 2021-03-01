@@ -248,8 +248,28 @@ public class VueParticiper extends JFrame implements ActionListener{
 		Object donnees [][] = this.getDonnees(mot) ;			
 		this.unTableau = new Tableau (donnees, entetes); 
 		this.uneTable = new JTable(this.unTableau); 
+		
+		// rendre les colonnes + petites
+		this.uneTable.getColumnModel().getColumn(0).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(1).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(6).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(7).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(8).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(10).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(11).setMaxWidth(80);
+		// la colonne appréciation doit être + large pour bien afficher le texte
+		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTable.getColumnModel().getColumn(2).setMinWidth(80);
+		this.uneTable.getColumnModel().getColumn(3).setMinWidth(130);
+		this.uneTable.getColumnModel().getColumn(6).setMinWidth(70);
+		this.uneTable.getColumnModel().getColumn(7).setMinWidth(70);
+		this.uneTable.getColumnModel().getColumn(8).setMinWidth(70);
+		this.uneTable.getColumnModel().getColumn(10).setMinWidth(70);
+		this.uneTable.getColumnModel().getColumn(11).setMinWidth(80);
+		
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		Main.styleTableau(this.uneTable);
+		
 		initPanelLister();
 	}
 	
