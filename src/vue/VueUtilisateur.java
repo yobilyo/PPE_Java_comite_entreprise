@@ -609,9 +609,20 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.unTableauSalarie = new Tableau (donnees, entetes); 
 		this.uneTableSalarie = new JTable(this.unTableauSalarie); 
 		
+		// rendre les colonnes + petites
+		this.uneTableSalarie.getColumnModel().getColumn(0).setMaxWidth(50);
+		this.uneTableSalarie.getColumnModel().getColumn(4).setMaxWidth(50);
+		this.uneTableSalarie.getColumnModel().getColumn(9).setMaxWidth(40);
+		this.uneTableSalarie.getColumnModel().getColumn(11).setMaxWidth(50);
+		// la colonne appréciation doit être + large pour bien afficher le texte
+		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTableSalarie.getColumnModel().getColumn(3).setMinWidth(150);
+		
 		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
 		//this.panelListerSalarie.setBounds(350, 80, 530, 300);
 		this.uneScrollSalarie.setBounds(20, 20, this.panelListerSalarie.getWidth() - 40, this.panelListerSalarie.getHeight() - 40);
+		
+		Main.styleTableau(this.uneTableSalarie);
 		this.panelListerSalarie.add(this.uneScrollSalarie);
 	}
 	
