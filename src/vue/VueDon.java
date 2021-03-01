@@ -45,7 +45,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	private JTextField txtFiltrer = new JTextField();
 	
 	//Créer date et l'afficher
-	private JLabel labDate = new JLabel();
+	//private JLabel labDate = new JLabel();
 	private SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private Date dateDon = new Date();
 	private JTextField txtDateDon = new JTextField(sFormat.format(dateDon).toString());
@@ -65,14 +65,14 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	private JScrollPane uneScroll ; 
 	private Tableau unTableau ;
 
-//	Barre de filtrage
-//	private JTextField txtMot = new JTextField ();
-//	private JButton btFiltrer = new JButton("filtrer"); 
+	//Barre de filtrage
+	//private JTextField txtMot = new JTextField ();
+	//private JButton btFiltrer = new JButton("filtrer"); 
 	
 	//private Tableau unTableau ;
 	private DefaultTableModel unTableauDefault;
 	//ajout d'une détection du refresh pour éviter de le refaire
-	private boolean isRefreshed;
+	//private boolean isRefreshed;
 	
 	
 	public VueDon() {
@@ -194,7 +194,6 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			//modifiaction dans l'affichage tableau 
 			/*Object ligne[] = {unDon.getIddon(), datedon, montant, appreciation, idutilisateur, id_tresorerie+""};
 			this.unTableau.updateLigne(numLigne, ligne);*/
-			// TODO remplacer par la méthode de recréation d'un nouveau tableau
 			remplirPanelLister("");
 			
 			
@@ -234,6 +233,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			Don unDon = new Don(idUtilisateur, id_tresorerie, appreciation, montant, datedon, "", "");
 			Main.insertDon(unDon);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
+			// refresh du tableau
 			remplirPanelLister("");
 			this.viderLesChamps();
 		} else {
@@ -310,6 +310,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 						Main.deleteDon(iddon);
 						//suppression dans la table d'affichage 
 						//unTableauDefault.deleteLigne(ligne);
+						// refresh du tableau
 						remplirPanelLister("");
 						JOptionPane.showMessageDialog(null, "Suppression réussie");
 					}

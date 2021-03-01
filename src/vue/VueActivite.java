@@ -50,13 +50,13 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	private JTextField txtDescription = new JTextField(); 
 	
 	//Créer dateDebut et l'afficher
-	private JLabel labDateDebut = new JLabel();
+	//private JLabel labDateDebut = new JLabel();
 	private SimpleDateFormat sFormatDebut = new SimpleDateFormat("yyyy-MM-dd");
 	private Date dateDebut = new Date();
 	private JTextField txtDateDebut = new JTextField(sFormatDebut.format(dateDebut).toString());
 	
 	//Créer dateFin et l'afficher
-	private JLabel labDateFin = new JLabel();
+	//private JLabel labDateFin = new JLabel();
 	private SimpleDateFormat sFormatFin = new SimpleDateFormat("yyyy-MM-dd");
 	private Date dateFin = new Date();
 	private JTextField txtDateFin = new JTextField(sFormatFin.format(dateFin).toString());

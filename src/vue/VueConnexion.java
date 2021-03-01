@@ -1,7 +1,5 @@
 package vue;
 
-import java.awt.Font;
-
 import javax.swing.JFrame;
 
 import java.awt.Color;

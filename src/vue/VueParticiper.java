@@ -27,8 +27,6 @@ import controleur.Tableau;
 import controleur.Utilisateur;
 
 public class VueParticiper extends JFrame implements ActionListener{
-
-	private static VueConnexion uneVueConnexion; 
 	
 	private JPanel panelAjout = new JPanel();
 	private JButton btRetour = new JButton("Retour");

@@ -1,7 +1,7 @@
 package vue;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +9,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,15 +22,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controleur.Main;
 import controleur.Salarie;
 import controleur.Sponsor;
-import controleur.Tableau;
+import controleur.StretchIcon;
 
 public class VueUtilisateur extends JFrame implements ActionListener {
 	
-	private static VueConnexion uneVueConnexion; 
+	private JButton btDeleteSalarie = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+	private JButton btDeleteSponsor = new JButton("Delete", new StretchIcon("src/images/sup.png"));
 	
 	private JPanel panelAjoutSalarie = new JPanel();
 	private JButton btRetour = new JButton("Retour");
@@ -72,15 +76,21 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 	
 	//Construction de la partie Tableau Salarie
 	private JPanel panelListerSalarie = new JPanel();
-	private JTable uneTableSalarie;
+	// on instancie une seule fois la JTable à l'avance,
+	// puis on va juste refresh le model à chaque fois
+	private JTable uneTableSalarie = new JTable();
 	private JScrollPane uneScrollSalarie;
-	private Tableau unTableauSalarie;
+	//private Tableau unTableauSalarie;
+	private DefaultTableModel unTableauSalarieDefault;
 	
 	//Construction de la partie Tableau Sponsor
 	private JPanel panelListerSponsor = new JPanel();
-	private JTable uneTableSponsor;
+	// on instancie une seule fois la JTable à l'avance,
+	// puis on va juste refresh le model à chaque fois
+	private JTable uneTableSponsor = new JTable();
 	private JScrollPane uneScrollSponsor;
-	private Tableau unTableauSponsor;
+	//private Tableau unTableauSponsor;
+	private DefaultTableModel unTableauSponsorDefault;
 	
 	//bouton filtrer
 	private JButton btFiltrer = new JButton("Filtrer :");
@@ -166,37 +176,24 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() >= 2) {
-					// supprimer
-					int ligne = uneTableSalarie.getSelectedRow();
-					System.out.println(ligne);
-					int idUtilisateurSalarie = Integer.parseInt(unTableauSalarie.getValueAt(ligne, 0).toString()); 
-					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Salarié ?", "Suppression", JOptionPane.YES_NO_OPTION); 
-					if (retour == 0) {
-						//suppression dans la base 
-						Main.deleteUtilisateurSalarie(idUtilisateurSalarie);
-						//suppression dans la table d'affichage 
-						//unTableauSalarie.deleteLigne(ligne);
-						// actualiser/regénérer les données du panelListerSalarie
-						refreshPanelListerSalarie("");
-						JOptionPane.showMessageDialog(null, "Suppression réussie");
-					}
-				} else if (e.getClickCount() == 1) {
+				//if (e.getClickCount() >= 2) {
+				//} else if (e.getClickCount() == 1) {
+				if (e.getClickCount() == 1) {
 					//modifier
 					int ligne = uneTableSalarie.getSelectedRow();
 					// utilisateur
-					txtUsernameSalarie.setText(unTableauSalarie.getValueAt(ligne, 1).toString());
-					txtMdpSalarie.setText(unTableauSalarie.getValueAt(ligne, 2).toString());
-					txtEmailSalarie.setText(unTableauSalarie.getValueAt(ligne, 3).toString());
-					cbxDroitsSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 4).toString());
+					txtUsernameSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 1).toString());
+					txtMdpSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 2).toString());
+					txtEmailSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 3).toString());
+					cbxDroitsSalarie.setSelectedItem(unTableauSalarieDefault.getValueAt(ligne, 4).toString());
 					// salarie
-					txtNomSalarie.setText(unTableauSalarie.getValueAt(ligne, 5).toString());
-					txtPrenomSalarie.setText(unTableauSalarie.getValueAt(ligne, 6).toString());
-					txtTelSalarie.setText(unTableauSalarie.getValueAt(ligne, 7).toString());
-					txtAdresseSalarie.setText(unTableauSalarie.getValueAt(ligne, 8).toString());
-					cbxQuotientFamSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 9).toString());
-					cbxServiceSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 10).toString());
-					cbxSexeSalarie.setSelectedItem(unTableauSalarie.getValueAt(ligne, 11).toString());
+					txtNomSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 5).toString());
+					txtPrenomSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 6).toString());
+					txtTelSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 7).toString());
+					txtAdresseSalarie.setText(unTableauSalarieDefault.getValueAt(ligne, 8).toString());
+					cbxQuotientFamSalarie.setSelectedItem(unTableauSalarieDefault.getValueAt(ligne, 9).toString());
+					cbxServiceSalarie.setSelectedItem(unTableauSalarieDefault.getValueAt(ligne, 10).toString());
+					cbxSexeSalarie.setSelectedItem(unTableauSalarieDefault.getValueAt(ligne, 11).toString());
 					
 					btEnregistrer.setText("Modifier");
 				}
@@ -232,35 +229,22 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
-				if (e.getClickCount() >= 2) {
-					// supprimer
-					int ligne = uneTableSponsor.getSelectedRow();
-					System.out.println(ligne);
-					int idUtilisateurSponsor = Integer.parseInt(unTableauSponsor.getValueAt(ligne, 0).toString()); 
-					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Sponsor ?", "Suppression", JOptionPane.YES_NO_OPTION); 
-					if (retour == 0) {
-						//suppression dans la base 
-						Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
-						//suppression dans la table d'affichage 
-						//unTableauSponsor.deleteLigne(ligne);
-						// actualiser/regénérer les données du panelListerSponsor
-						refreshPanelListerSponsor("");
-						JOptionPane.showMessageDialog(null, "Suppression réussie");
-					}
-				} else if (e.getClickCount() == 1) {
+				//if (e.getClickCount() >= 2) {
+				//} else if (e.getClickCount() == 1) {
+				if (e.getClickCount() == 1) {
 					//modifier
 					int ligne = uneTableSponsor.getSelectedRow();
 					// utilisateur
-					txtUserSpons.setText(unTableauSponsor.getValueAt(ligne, 1).toString());
-					txtMdpSpons.setText(unTableauSponsor.getValueAt(ligne, 2).toString());
-					txtEmailSpons.setText(unTableauSponsor.getValueAt(ligne, 3).toString());
-					cbxDroitsSpons.setSelectedItem(unTableauSponsor.getValueAt(ligne, 4).toString());
+					txtUserSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 1).toString());
+					txtMdpSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 2).toString());
+					txtEmailSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 3).toString());
+					cbxDroitsSpons.setSelectedItem(unTableauSponsorDefault.getValueAt(ligne, 4).toString());
 					// sponsor
-					txtSocieteSpons.setText(unTableauSponsor.getValueAt(ligne, 5).toString());
-					txtImgurlSpons.setText(unTableauSponsor.getValueAt(ligne, 6).toString());
-					txtBudgetSpons.setText(unTableauSponsor.getValueAt(ligne, 7).toString());
-					txtTelSpons.setText(unTableauSponsor.getValueAt(ligne, 8).toString());
-					txtLienSpons.setText(unTableauSponsor.getValueAt(ligne, 9).toString());
+					txtSocieteSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 5).toString());
+					txtImgurlSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 6).toString());
+					txtBudgetSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 7).toString());
+					txtTelSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 8).toString());
+					txtLienSpons.setText(unTableauSponsorDefault.getValueAt(ligne, 9).toString());
 					
 					btEnregistrer.setText("Modifier");
 				}
@@ -399,7 +383,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				txtUsernameSalarie.setBackground(Color.WHITE);
 				txtEmailSalarie.setBackground(Color.WHITE);
 				// actualiser/regénérer les données du panelListerSalarie
-				this.refreshPanelListerSalarie("");
+				this.remplirPanelListerSalarie("");
 			}else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
@@ -442,7 +426,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				txtUserSpons.setBackground(Color.WHITE);
 				txtEmailSpons.setBackground(Color.WHITE);
 				// actualiser/regénérer les données du panelListerSponsor
-				this.refreshPanelListerSponsor("");
+				this.remplirPanelListerSponsor("");
 			} else {
 				txtUserSpons.setBackground(Color.RED);
 				txtEmailSpons.setBackground(Color.RED);
@@ -472,7 +456,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			if(!txtUsernameSalarie.getText().equals("") || !txtEmailSalarie.getText().equals("")) {
 				// récupération de l'idUtilisateur pour le constructeur du Salarie
 				int numLigne = uneTableSalarie.getSelectedRow(); 
-				int idUtilisateurSalarie = Integer.parseInt(unTableauSalarie.getValueAt(numLigne, 0).toString ());
+				int idUtilisateurSalarie = Integer.parseInt(unTableauSalarieDefault.getValueAt(numLigne, 0).toString ());
 				// update dans la base de données
 				Salarie unSalarie = new Salarie(idUtilisateurSalarie, username, mdp, email, droits, nom, prenom, tel, 
 						adresse, quotient_fam, service, sexe);
@@ -484,7 +468,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				txtUserSpons.setBackground(Color.WHITE);
 				txtEmailSpons.setBackground(Color.WHITE);
 				// actualiser/regénérer les données du panelListerSalarie
-				this.refreshPanelListerSalarie("");
+				this.remplirPanelListerSalarie("");
 			} else {
 				txtUsernameSalarie.setBackground(Color.RED);
 				txtEmailSalarie.setBackground(Color.RED);
@@ -519,7 +503,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 			if(!txtUserSpons.getText().equals("") || !txtEmailSpons.getText().equals("")) {
 				// récupération de l'idUtilisateur pour le constructeur du Spons
 				int numLigne = uneTableSponsor.getSelectedRow(); 
-				int idUtilisateurSpons = Integer.parseInt(unTableauSponsor.getValueAt(numLigne, 0).toString ());
+				int idUtilisateurSpons = Integer.parseInt(unTableauSponsorDefault.getValueAt(numLigne, 0).toString ());
 				// update dans la base de données
 				Sponsor unSponsor = new Sponsor(idUtilisateurSpons, username, mdp, email, droits, societe, image_url, budget, 
 						tel, lien);
@@ -531,7 +515,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 				txtUserSpons.setBackground(Color.WHITE);
 				txtEmailSpons.setBackground(Color.WHITE);
 				// actualiser/regénérer les données du panelListerSponsor
-				this.refreshPanelListerSponsor("");
+				this.remplirPanelListerSponsor("");
 			} else {
 				txtUserSpons.setBackground(Color.RED);
 				txtEmailSpons.setBackground(Color.RED);
@@ -603,11 +587,19 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		//remplir le panel Lister Salarie
 		this.panelListerSalarie.removeAll();
 		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
-			"Nom", "Prénom", "Téléphone", "Adresse", "Quotient Familial", "Service", "Sexe" }; // sponsor
+			"Nom", "Prénom", "Téléphone", "Adresse", "Quotient Familial", "Service", "Sexe",
+			"Opérations"}; // salarie
 		Object donnees [][] = this.getDonneesSalarie (mot) ;
 		
-		this.unTableauSalarie = new Tableau (donnees, entetes); 
-		this.uneTableSalarie = new JTable(this.unTableauSalarie); 
+		//thiunTableauSalarie = new Tableau (donnees, entetes); 
+		this.unTableauSalarieDefault = new DefaultTableModel(donnees, entetes);
+		
+		//this.uneTableSalarie = new JTable(this.unTableauSalarie);
+		this.uneTableSalarie.removeAll();
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
+		JTable laNouvelleTable = new JTable(this.unTableauSalarieDefault);
+		this.uneTableSalarie.setModel(laNouvelleTable.getModel());
 		
 		// rendre les colonnes + petites
 		this.uneTableSalarie.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -620,6 +612,37 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.uneTableSalarie.getColumnModel().getColumn(7).setMinWidth(75);
 		this.uneTableSalarie.getColumnModel().getColumn(3).setMinWidth(150);
 		
+		//ajout du btDelete à la JTable
+		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
+		this.btDeleteSalarie = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+		this.uneTableSalarie.getColumn("Opérations").setCellRenderer(new BoutonJTable());
+		this.uneTableSalarie.getColumn("Opérations").setCellEditor(new ButtonEditorSalarie(new JCheckBox()));
+		
+		System.out.println("c0");
+		this.btDeleteSalarie.removeActionListener(this);
+		this.btDeleteSalarie.addActionListener(new ActionListener() {	
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// supprimer
+				int ligne = uneTableSalarie.getSelectedRow();
+				System.out.println(ligne);
+				int idUtilisateurSalarie = Integer.parseInt(unTableauSalarieDefault.getValueAt(ligne, 0).toString()); 
+				int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Salarié ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+				if (retour == 0) {
+					//suppression dans la base 
+					Main.deleteUtilisateurSalarie(idUtilisateurSalarie);
+					//suppression dans la table d'affichage 
+					//unTableauSalarie.deleteLigne(ligne);
+					// actualiser/regénérer les données du panelListerSalarie
+					remplirPanelListerSalarie("");
+					JOptionPane.showMessageDialog(null, "Suppression réussie");
+				}
+			}
+		});
+		System.out.println("c00");
+		
+		
 		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
 		//this.panelListerSalarie.setBounds(350, 80, 530, 300);
 		this.uneScrollSalarie.setBounds(20, 20, this.panelListerSalarie.getWidth() - 40, this.panelListerSalarie.getHeight() - 40);
@@ -628,38 +651,41 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.panelListerSalarie.add(this.uneScrollSalarie);
 	}
 	
-	public void refreshPanelListerSalarie(String mot) {
-		//remplir le panel Lister Salarie
-		this.panelListerSalarie.removeAll();
-		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
-			"Nom", "Prénom", "Téléphone", "Adresse", "Quotient Familial", "Service", "Sexe" }; // sponsor
-		Object donnees [][] = this.getDonneesSalarie (mot) ;
-		
-		this.unTableauSalarie = new Tableau (donnees, entetes);
-		
-		// pour refresh la JTable tout en gardant les mêmes adresses mémoire
-		// de la JTable et Jscroll (afin de conserver les actionListener)
-		// on update uniquement la JTable sans la réinstancier
-		this.uneTableSalarie.removeAll();
-		// deep copy the JTable
-		// https://stackoverflow.com/a/38798102
-		JTable laNouvelleTable = new JTable(this.unTableauSalarie);
-		this.uneTableSalarie.setModel(laNouvelleTable.getModel());
-		
-		// instanciation d'une nouvelle JScrollPane
-		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
-		//this.panelListerSalarie.setBounds(350, 80, 530, 300);
-		this.uneScrollSalarie.setBounds(20, 20, this.panelListerSalarie.getWidth() - 40, this.panelListerSalarie.getHeight() - 40);
-		this.panelListerSalarie.add(this.uneScrollSalarie);
-	}
+
+	  class ButtonEditorSalarie extends DefaultCellEditor 
+	  {
+	    private String label;
+
+	    public ButtonEditorSalarie(JCheckBox checkBox)
+	    {
+	      super(checkBox);
+	    }
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column) 
+	    {
+	      label = (value == null) ? "Delete" : value.toString();
+	      btDeleteSalarie.setText(label);
+	      return btDeleteSalarie;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	  }
+	  
+
+	  
+	  
 	
 	public Object [] [] getDonneesSalarie(String mot) {
 		//TODO
 		//recuperer les utilisateursSalariés de la bdd 
 		ArrayList<Salarie> lesUtilisateursSalaries = Main.selectAllUtilisateursSalaries(mot);
 		
+		int length = 13; // 12 SQL rows + 1 Opération(BtDeleteSalarie)
+		
 		//transformation des utilisateursSalariés en matrice de données 
-		Object donnees [][] = new Object [lesUtilisateursSalaries.size()][12];
+		Object donnees [][] = new Object [lesUtilisateursSalaries.size()][length];
 		int i = 0;
 		for (Salarie unSalarie : lesUtilisateursSalaries) {
 			// utilisateur
@@ -697,22 +723,64 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		//remplir le panel Lister Sponsor
 		this.panelListerSponsor.removeAll();
 		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
-			"Société", "Image (URL)", "Budget", "Téléphone", "Lien" }; // sponsor
+			"Société", "Image (URL)", "Budget", "Téléphone", "Lien",
+			"Opérations"}; // sponsor
 		Object donnees [][] = this.getDonneesSponsor (mot) ;
 		
-		this.unTableauSponsor = new Tableau (donnees, entetes); 
-		this.uneTableSponsor = new JTable(this.unTableauSponsor); 
+		//this.unTableauSponsor = new Tableau (donnees, entetes); 
+		this.unTableauSponsorDefault = new DefaultTableModel(donnees, entetes);
+		
+		//this.uneTableSponsor = new JTable(this.unTableauSponsor); 
+		this.uneTableSponsor.removeAll();
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
+		JTable laNouvelleTable = new JTable(this.unTableauSponsorDefault);
+		this.uneTableSponsor.setModel(laNouvelleTable.getModel());
 		
 		// rendre les colonnes + petites
 		this.uneTableSponsor.getColumnModel().getColumn(0).setMaxWidth(50);
 		this.uneTableSponsor.getColumnModel().getColumn(4).setMaxWidth(50);
 		this.uneTableSponsor.getColumnModel().getColumn(8).setMaxWidth(75);
+		this.uneTableSponsor.getColumnModel().getColumn(10).setMaxWidth(80);
 		// la colonne appréciation doit être + large pour bien afficher le texte
 		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
-		this.uneTableSponsor.getColumnModel().getColumn(3).setMinWidth(180);
-		this.uneTableSponsor.getColumnModel().getColumn(5).setMinWidth(150);
+		this.uneTableSponsor.getColumnModel().getColumn(1).setMinWidth(80);
+		this.uneTableSponsor.getColumnModel().getColumn(3).setMinWidth(170);
+		this.uneTableSponsor.getColumnModel().getColumn(4).setMinWidth(50);
+		this.uneTableSponsor.getColumnModel().getColumn(5).setMinWidth(130);
 		this.uneTableSponsor.getColumnModel().getColumn(8).setMinWidth(75);
 		this.uneTableSponsor.getColumnModel().getColumn(9).setMinWidth(150);
+		this.uneTableSponsor.getColumnModel().getColumn(10).setMinWidth(80);
+		
+		//ajout du btDelete à la JTable
+		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
+		this.btDeleteSponsor = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+		this.uneTableSponsor.getColumn("Opérations").setCellRenderer(new BoutonJTable());
+		this.uneTableSponsor.getColumn("Opérations").setCellEditor(new ButtonEditorSponsor(new JCheckBox()));
+		
+		System.out.println("c0");
+		this.btDeleteSponsor.removeActionListener(this);
+		this.btDeleteSponsor.addActionListener(new ActionListener() {	
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// supprimer
+				int ligne = uneTableSponsor.getSelectedRow();
+				System.out.println(ligne);
+				int idUtilisateurSponsor = Integer.parseInt(unTableauSponsorDefault.getValueAt(ligne, 0).toString()); 
+				int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce Sponsor ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+				if (retour == 0) {
+					//suppression dans la base 
+					Main.deleteUtilisateurSponsor(idUtilisateurSponsor);
+					//suppression dans la table d'affichage 
+					//unTableauSponsor.deleteLigne(ligne);
+					// actualiser/regénérer les données du panelListerSponsor
+					remplirPanelListerSponsor("");
+					JOptionPane.showMessageDialog(null, "Suppression réussie");
+				}
+			}
+		});
+		System.out.println("c00");
 		
 		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
 		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
@@ -722,38 +790,40 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.panelListerSponsor.add(this.uneScrollSponsor);
 	}
 	
-	public void refreshPanelListerSponsor(String mot) {
-		//remplir le panel Lister Sponsor
-		this.panelListerSponsor.removeAll();
-		String entetes [] = { "Id Utilisateur", "Nom d'utilisateur", "Mot de passe", "Email", "Droits", // utilisateur
-			"Société", "Image (URL)", "Budget", "Téléphone", "Lien" }; // sponsor
-		Object donnees [][] = this.getDonneesSponsor (mot) ;
-		
-		this.unTableauSponsor = new Tableau (donnees, entetes); 
-		
-		// pour refresh la JTable tout en gardant les mêmes adresses mémoire
-		// de la JTable et Jscroll (afin de conserver les actionListener)
-		// on update uniquement la JTable sans la réinstancier
-		this.uneTableSponsor.removeAll();
-		// deep copy the JTable
-		// https://stackoverflow.com/a/38798102
-		JTable laNouvelleTable = new JTable(this.unTableauSponsor);
-		this.uneTableSponsor.setModel(laNouvelleTable.getModel());
-		
-		// instanciation d'une nouvelle JScrollPane
-		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
-		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
-		this.uneScrollSponsor.setBounds(20, 20, this.panelListerSponsor.getWidth() - 40, this.panelListerSponsor.getHeight() - 40);
-		this.panelListerSponsor.add(this.uneScrollSponsor);
-	}
+	
+	
+	  class ButtonEditorSponsor extends DefaultCellEditor 
+	  {
+	    private String label;
+
+	    public ButtonEditorSponsor(JCheckBox checkBox)
+	    {
+	      super(checkBox);
+	    }
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column) 
+	    {
+	      label = (value == null) ? "Delete" : value.toString();
+	      btDeleteSponsor.setText(label);
+	      return btDeleteSponsor;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	  }
+	
+
 	
 	public Object [] [] getDonneesSponsor(String mot) {
 		//TODO
 		//recuperer les utilisateursSalariés de la bdd 
 		ArrayList<Sponsor> lesUtilisateursSponsors = Main.selectAllUtilisateursSponsors(mot);
 		
+		int length = 11; // 10 SQL rows + 1 Opération(BtDeleteSponsor)
+		
 		//transofrmation des utilisateursSalariés en matrice de données 
-		Object donnees [][] = new Object [lesUtilisateursSponsors.size()][10];
+		Object donnees [][] = new Object [lesUtilisateursSponsors.size()][length];
 		int i = 0;
 		for (Sponsor unSponsor : lesUtilisateursSponsors) {
 			// utilisateur
@@ -832,9 +902,9 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		}else if (e.getSource() == this.btFiltrer)
 		{
 			if (this.isSalarie == true) {
-				this.refreshPanelListerSalarie(this.txtFiltrer.getText());
+				this.remplirPanelListerSalarie(this.txtFiltrer.getText());
 			} else {
-				this.refreshPanelListerSponsor(this.txtFiltrer.getText());
+				this.remplirPanelListerSponsor(this.txtFiltrer.getText());
 			}
 		}
 	}
