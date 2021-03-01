@@ -29,7 +29,6 @@ import controleur.Participation;
 import controleur.StretchIcon;
 import controleur.Tableau;
 import controleur.Utilisateur;
-import vue.VueDon.ButtonEditor;
 
 public class VueParticiper extends JFrame implements ActionListener{
 	
@@ -58,11 +57,12 @@ public class VueParticiper extends JFrame implements ActionListener{
 	private JComboBox<String> cbxActivite = new JComboBox<String>();
 	private JComboBox<String> cbxUtilisateur = new JComboBox<String>();
 	
-	private Tableau unTableau;
+	//private Tableau unTableau;
+	private DefaultTableModel unTableauDefault;
+	// on instancie une seule fois la JTable à l'avance,
+	// puis on va juste refresh le model à chaque fois
 	private JTable uneTable = new JTable();
 	private JScrollPane uneScroll;
-	
-	private DefaultTableModel unTableauDefault;
 	
 	public VueParticiper() {
 		super();
@@ -142,7 +142,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 					
 					// maintenant que participer est une view sql, la date
 					// est passée de la position 2 à la position 10 dans les données
-					txtDate.setText(unTableau.getValueAt(ligne, 10).toString());
+					txtDate.setText(unTableauDefault.getValueAt(ligne, 10).toString());
 					
 					btEnregistrer.setText("Modifier");
 				}		
@@ -243,10 +243,12 @@ public class VueParticiper extends JFrame implements ActionListener{
 							"Date inscription","Lieu", "Description", "Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		this.unTableauDefault = new DefaultTableModel(donnees, entetes);
+		
+		// on instancie une seule fois la JTable dans le private puis plus jamais après
+		//this.uneTable = new JTable(this.unTableau); 
 		this.uneTable.removeAll();
-		this.uneTable = new JTable(this.unTableauDefault); 
-		
-		
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
 		JTable laNouvelleTable = new JTable(this.unTableauDefault);
 		this.uneTable.setModel(laNouvelleTable.getModel());
 		
@@ -258,7 +260,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.uneTable.getColumnModel().getColumn(8).setMaxWidth(70);
 		this.uneTable.getColumnModel().getColumn(10).setMaxWidth(70);
 		this.uneTable.getColumnModel().getColumn(11).setMaxWidth(80);
-		this.uneTable.getColumnModel().getColumn(12).setMaxWidth(80);
+		this.uneTable.getColumnModel().getColumn(13).setMaxWidth(80);
 		// la colonne appréciation doit être + large pour bien afficher le texte
 		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
 		this.uneTable.getColumnModel().getColumn(2).setMinWidth(80);
@@ -268,7 +270,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.uneTable.getColumnModel().getColumn(8).setMinWidth(70);
 		this.uneTable.getColumnModel().getColumn(10).setMinWidth(70);
 		this.uneTable.getColumnModel().getColumn(11).setMinWidth(80);
-		this.uneTable.getColumnModel().getColumn(12).setMaxWidth(80);
+		this.uneTable.getColumnModel().getColumn(13).setMinWidth(80);
 		
 		//ajout du btDelete à la JTable
 		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
@@ -293,7 +295,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 						Main.deleteParticipation(idUtilisateur, idActivite);
 						//suppression dans la table d'affichage 
 						//unTableauDefault.deleteLigne(ligne);
-						// refresh du tableau
+						// refresh du tableau après delete
 						remplirPanelLister("");
 						JOptionPane.showMessageDialog(null, "Suppression réussie");
 					}
@@ -384,8 +386,8 @@ public class VueParticiper extends JFrame implements ActionListener{
 		
 		// récupération de l'ancien idUtilisateur et ancien idActivite
 		int ligne = uneTable.getSelectedRow();
-		int idUtilisateurOld = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
-		int idActiviteOld = Integer.parseInt(unTableau.getValueAt(ligne, 1).toString()); 
+		int idUtilisateurOld = Integer.parseInt(unTableauDefault.getValueAt(ligne, 0).toString()); 
+		int idActiviteOld = Integer.parseInt(unTableauDefault.getValueAt(ligne, 1).toString()); 
 		
 		// création de la nouvelle participation
 		// idutlisateur et id_activite sont des clés étrangères dans la table sql participer
@@ -398,7 +400,8 @@ public class VueParticiper extends JFrame implements ActionListener{
 		//modifiaction dans l'affichage tableau 
 		/*Object ligne[] = {uneParticipation.getIdUtilisateur(), uneParticipation.getIdActivite(), dateParticipation+""};
 		this.unTableau.updateLigne(numLigne, ligne);*/
-		//TODO à remplacer par une recréation du tableau
+		// refresh du tableau après update
+		this.remplirPanelLister("");
 		
 		JOptionPane.showMessageDialog(this,"Modification réussie !");
 		this.viderLesChamps();
@@ -448,6 +451,8 @@ public class VueParticiper extends JFrame implements ActionListener{
 		if(! this.txtDate.getText().equals("")){
 			Participation uneParticipation = new Participation(idUtilisateur, idActivite, dateComment);
 			Main.insertParticipation(uneParticipation);
+			//refresh du tableau après insert
+			remplirPanelLister("");
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
 			this.viderLesChamps();
 		} else {
