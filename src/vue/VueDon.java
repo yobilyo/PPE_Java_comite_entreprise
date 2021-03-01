@@ -1,7 +1,5 @@
 package vue;
 
-import java.awt.Font;
-
 import javax.swing.JFrame;
 
 import java.awt.Color;
@@ -32,7 +30,6 @@ import controleur.Main;
 import controleur.StretchIcon;
 import controleur.Tableau;
 import controleur.Utilisateur;
-import vue.VueActivite.ButtonEditor;
 
 public class VueDon extends JFrame implements ActionListener, MouseListener{
 	
@@ -62,6 +59,8 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	
 	//Construction de la partie Tableau
 	private JPanel panelLister = new JPanel(); 
+	// on instancie une seule fois la JTable à l'avance,
+	// puis on va juste refresh le model à chaque fois
 	private JTable uneTable = new JTable(); 
 	private JScrollPane uneScroll ; 
 	private Tableau unTableau ;
@@ -118,14 +117,14 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.add(txtFiltrer);
 		
 		remplirCBXUtilisateurs();
-		//remplirPanelLister("");
+		remplirPanelLister("");
 		this.uneTable.addMouseListener(this);
 		
 		this.setVisible(true);
 		
 		initBoutons();
 		
-		isRefreshed = false; 
+		//isRefreshed = false; 
 	}
 	
 	public void remplirCBXUtilisateurs() {
@@ -207,9 +206,6 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		
 	}
 	
-	
-	
-	
 	public void insertDon() {
 		String datedon = this.txtDateDon.getText(); 
 		float montant;
@@ -234,7 +230,6 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 
 		}
 		
-	
 		if(montant >= 1) {
 			Don unDon = new Don(idUtilisateur, id_tresorerie, appreciation, montant, datedon, "", "");
 			Main.insertDon(unDon);
@@ -265,7 +260,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	public void remplirPanelLister(String mot) {
 		this.panelLister.removeAll();
 		String entetes [] = {"ID Don", "Date don", "Montant", "Appreciation", "ID Utilisateur",
-				"Nom d'utilisateur", "Société"};
+				"Nom d'utilisateur", "Société", "Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		//this.unTableau = new Tableau (donnees, entetes); 
 		
@@ -284,12 +279,14 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.uneTable.getColumnModel().getColumn(4).setMaxWidth(50);
 		this.uneTable.getColumnModel().getColumn(5).setMaxWidth(95);
 		this.uneTable.getColumnModel().getColumn(6).setMaxWidth(130);
+		this.uneTable.getColumnModel().getColumn(7).setMaxWidth(80);
 		// la colonne appréciation doit être + large pour bien afficher le texte
 		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
 		this.uneTable.getColumnModel().getColumn(1).setMinWidth(70);
 		this.uneTable.getColumnModel().getColumn(3).setMinWidth(300);
 		this.uneTable.getColumnModel().getColumn(5).setMinWidth(95);
 		this.uneTable.getColumnModel().getColumn(6).setMinWidth(130);
+		this.uneTable.getColumnModel().getColumn(7).setMinWidth(80);
 
 		//ajout du btDelete à la JTable
 		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
@@ -327,7 +324,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		Main.styleTableau(this.uneTable);
 		initPanelLister();
 		
-		isRefreshed = true;
+		//isRefreshed = true;
 
 	}
 	
@@ -390,9 +387,9 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() >=2) {
-			
-		}else if (e.getClickCount() ==1) {
+		//if (e.getClickCount() >=2) {
+		//}else if (e.getClickCount() ==1) {
+		if (e.getClickCount() ==1) {
 			int ligne = uneTable.getSelectedRow();
 			txtDateDon.setText(unTableau.getValueAt(ligne, 1).toString());
 			txtMontant.setText(unTableau.getValueAt(ligne, 2).toString());

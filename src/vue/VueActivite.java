@@ -74,7 +74,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 	//private Tableau unTableau ;
 	private DefaultTableModel unTableauDefault;
 	//ajout d'une détection du refresh pour éviter de le refaire
-	private boolean isRefreshed;
+	//private boolean isRefreshed;
 	
 	public VueActivite() {
 		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
@@ -138,7 +138,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		
 		initBoutons();
 		
-		isRefreshed = false; // par défaut
+		//isRefreshed = false; // par défaut
 	}
 
 	/*public void remplircbxTresorerie() {
@@ -392,7 +392,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		Main.styleTableau(this.uneTable);
 		initPanelLister();
 		
-		isRefreshed = true;
+		//isRefreshed = true;
 	}
 	
 	
