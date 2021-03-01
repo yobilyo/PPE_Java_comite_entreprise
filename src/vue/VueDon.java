@@ -292,7 +292,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.txtMontant.setText("");
 		this.txtAppreciation.setText("");
 		//this.txtidutilisateur.setText("");
-		this.cbxUtilisateur.setSelectedItem(0);
+		this.cbxUtilisateur.setSelectedIndex(0);
 		//this.txtid_tresorerie.setText("");
 	}
 	
