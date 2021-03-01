@@ -113,30 +113,31 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		
 		//construction du panel Ajout Salarie
 		this.remplirPanelAjoutSalarie();
+		panelAjoutSalarie.setForeground(Color.BLACK);
 		getContentPane().add(this.panelAjoutSalarie);
 		
 		//construction du panel Ajout Sponsor
 		this.remplirPanelAjoutSponsor();
-		this.add(panelAjoutSponsor);
+		getContentPane().add(panelAjoutSponsor);
 		
 		// rendre visible les panels pour mieux comprendre
 		this.panelAjoutSponsor.setBorder(LineBorder.createBlackLineBorder());
-		this.panelAjoutSalarie.setBorder(LineBorder.createBlackLineBorder());
+		this.panelAjoutSalarie.setBorder(new LineBorder(new Color(0, 0, 0), 0));
 		
 		this.btAnnuler.setBounds(50, 360, 140, 25);
-		this.add(this.btAnnuler);
+		getContentPane().add(this.btAnnuler);
 		this.btEnregistrer.setBounds(200, 360, 140, 25);
-		this.add(this.btEnregistrer); 
+		getContentPane().add(this.btEnregistrer); 
 		this.btEnregistrer.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 
 		// boutons pour toggle salarie/sponsor
 		this.btSalarie.setBounds(50 , 25, 140, 25);
-		this.add(btSalarie);
+		getContentPane().add(btSalarie);
 		this.btSalarie.addActionListener(this);
 		
 		this.btSponsor.setBounds(200 , 25, 140, 25);
-		this.add(btSponsor);
+		getContentPane().add(btSponsor);
 		this.btSponsor.addActionListener(this);
 		
 		// Construire le panel Lister Salarie, puis le remplir avec une Scroll
@@ -565,10 +566,10 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		Main.styleBoutonDark(this.btFiltrer);
 		
 		this.btFiltrer.setBounds(Main.getWidth() /2 - 200, 20, 100, 20);
-		this.add(btFiltrer);
+		getContentPane().add(btFiltrer);
 		this.btFiltrer.addActionListener(this);
 		this.txtFiltrer.setBounds(Main.getWidth() / 2 - 80, 20 , 100, 20);
-		this.add(txtFiltrer);
+		getContentPane().add(txtFiltrer);
 		
 		Main.styleBoutonDark(this.btSalarie);
 		Main.styleBoutonDark(this.btSponsor);
@@ -580,7 +581,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.panelListerSalarie.setLayout(null);
 		this.panelListerSalarie.setBounds(365, 80, this.getWidth() - 400, this.getHeight() - 170);
 
-		this.add(this.panelListerSalarie);
+		getContentPane().add(this.panelListerSalarie);
 	}
 	
 	public void remplirPanelListerSalarie(String mot) {
@@ -716,7 +717,7 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.panelListerSponsor.setLayout(null);
 		this.panelListerSponsor.setBounds(350, 80, this.getWidth() - 400, this.getHeight() - 170);
 
-		this.add(this.panelListerSponsor);
+		getContentPane().add(this.panelListerSponsor);
 	}
 	
 	public void remplirPanelListerSponsor(String mot) {
