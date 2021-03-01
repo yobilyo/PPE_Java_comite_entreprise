@@ -17,7 +17,6 @@ import vue.VueParticiper;
 import vue.VueTresorerie;
 import vue.VueUtilisateur;
 import vue.VueActivite;
-import vue.VueCommentaire;
 
 
 public class Main {
@@ -33,7 +32,6 @@ public class Main {
 	public static VueConnexion uneVueConnexion;
 	public static VueActivite uneVueActivite;
 	public static VueParticiper uneVueParticiper;
-	public static VueCommentaire uneVueCommentaire;
 	public static VueDon uneVueDon;
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueTresorerie uneVueTresorerie;
@@ -46,7 +44,6 @@ public class Main {
 				uneVueConnexion = new VueConnexion();
 				//new VueConnexion();
 				//new VueUtilisateur();
-				//new VueCommentaire();
 			//	new VueActivite();
 			}
 		});
@@ -140,10 +137,6 @@ public class Main {
 		uneVueParticiper = new VueParticiper();
 	}
 	
-	public static void instancierVueCommentaire() {
-		uneVueCommentaire = new VueCommentaire();
-	}
-	
 	public static void instancierVueDon() {
 		uneVueDon = new VueDon();
 	}
@@ -190,17 +183,6 @@ public class Main {
 		Modele.updateParticipation(uneParticipation, idUtilisateurOld, idActiviteOld);
 	}
 	
-	/********************* CONTROLEUR COMMENTAIRE ***************************/
-	
-	
-	public static ArrayList<Commentaire> selectAllCommentaires(String mot) {
-		return Modele.selectAllCommentaires(mot);
-	}
-
-	public static void insertCommentaire(Commentaire unCommentaire) {
-		Modele.insertCommentaire(unCommentaire); 
-	}
-	
 	/********************* CONTROLEUR DON ***************************/
 	
 	public static void insertDon(Don unDon) {
@@ -222,7 +204,7 @@ public class Main {
 		return Modele.selectFindUtilisateur(username, email, droits);
 	}
 	
-	// TODO: ancienne méthode pour debugger les autres VueDon et VueCommentaire, à améliorer + tard
+	// TODO: ancienne méthode pour debugger les autres VueDon, à améliorer + tard
 	public static ArrayList<Utilisateur> selectAllUtilisateurs(String mot) {
 		return Modele.selectAllUtilisateurs(mot);
 	}

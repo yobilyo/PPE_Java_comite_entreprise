@@ -34,8 +34,7 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 	private JPanel panelMenu = new JPanel (); 
 	private JPanel panelQuitter = new JPanel (); 
 
-	private JButton btActivites = new JButton("Activités"); 
-	private JButton btCommentaires = new JButton("Commentaires"); 
+	private JButton btActivites = new JButton("Activités");  
 	private JButton btDons = new JButton("Dons"); 
 	private JButton btUtilisateur = new JButton("Utilisateurs"); 
 	private JButton btParticiper = new JButton("Participer"); 
@@ -87,7 +86,6 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		
 		this.panelMenu.add(this.btActivites); 
 		this.panelMenu.add(this.btParticiper);
-		this.panelMenu.add(this.btCommentaires); 
 		this.panelMenu.add(this.btDons); 
 		this.panelMenu.add(this.btUtilisateur);
 		this.panelMenu.add(this.btTresorerie);
@@ -98,7 +96,6 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		//rendre les boutons ecoutables du panelMenu 
 		this.btActivites.addActionListener(this);
 		this.btParticiper.addActionListener(this);	
-		this.btCommentaires.addActionListener(this);
 		this.btDons.addActionListener(this);
 		this.btUtilisateur.addActionListener(this);
 		this.btTresorerie.addActionListener(this);
@@ -123,7 +120,6 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 		Main.styleBoutonBleu(this.btAnnuler);
 		Main.styleBoutonDark(this.btActivites);
 		Main.styleBoutonDark(this.btParticiper);
-		Main.styleBoutonDark(this.btCommentaires);
 		Main.styleBoutonDark(this.btDons);
 		Main.styleBoutonDark(this.btUtilisateur);
 		Main.styleBoutonBleu(this.btSeDeconnecter);
@@ -160,9 +156,6 @@ public class VueConnexion extends JFrame implements ActionListener, KeyListener
 			this.setVisible(false);
 			//on instancie la vue Participer 
 			Main.instancierParticiper();
-		}else if (e.getSource() == this.btCommentaires) {
-			this.setVisible(false);
-			Main.instancierVueCommentaire();
 		}else if (e.getSource() == this.btDons) {
 			this.setVisible(false);
 			Main.instancierVueDon();

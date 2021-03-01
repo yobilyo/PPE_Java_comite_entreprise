@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import controleur.Activite;
-import controleur.Commentaire;
 import controleur.Don;
 import controleur.Main;
 import controleur.Participation;
@@ -227,47 +226,6 @@ public class Modele
 		+ "  where iddon = " + unDon.getIddon() + " ;" ;
 		executerRequete(requete);		
 	}
-
-	
-	/************* COMMENTAIRE ********************/	
-	
-	
-	public static ArrayList<Commentaire> selectAllCommentaires(String mot) {
-		String requete ; 
-		if (mot.equals("")) {
-			requete ="select * from commentaire ;" ;
-		}else {
-			requete ="select * from commentaire where datecomment like '%"+mot+"%' or contenu like '%"+mot+"%'; " ;
-		}
-		ArrayList<Commentaire> lesCommentaires = new ArrayList<Commentaire>();  
-		try {
-			uneBdd.seConnecter();
-			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
-			ResultSet desRes = unStat.executeQuery(requete);
-			while (desRes.next()) {
-				Commentaire unCommentaire = new Commentaire (
-						desRes.getInt("id_commentaire"), desRes.getDate("datecomment"), desRes.getString("contenu"), desRes.getInt("id_activite"), 
-						desRes.getInt("idutilisateur")
-						);
-				lesCommentaires.add(unCommentaire);
-			}
-			unStat.close();
-			uneBdd.seDeconnecter();
-		}
-		catch(SQLException exp) {
-			System.out.println("Erreur d'exécution de la requete : " + requete
-			+ "\n" + exp.getMessage());
-		}
-		return lesCommentaires ; 
-	}
-
-	public static void insertCommentaire(Commentaire unCommentaire) {
-		String requete = "insert into commentaire values (null, '" + unCommentaire.getDateComment() + "', '" + unCommentaire.getContenu()
-		 +"', " + unCommentaire.getIdActivite() + ", " + unCommentaire.getIdUtilisateur() + " "
-		 + ");";
-		executerRequete(requete);
-	}
-	
 	
 	/************* UTILISATEUR ********************/
 	
