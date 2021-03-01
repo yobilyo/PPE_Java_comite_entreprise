@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +10,9 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,14 +21,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import controleur.Activite;
 import controleur.Main;
 import controleur.Participation;
+import controleur.StretchIcon;
 import controleur.Tableau;
 import controleur.Utilisateur;
+import vue.VueDon.ButtonEditor;
 
 public class VueParticiper extends JFrame implements ActionListener{
+	
+	private JButton btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+
 	
 	private JPanel panelAjout = new JPanel();
 	private JButton btRetour = new JButton("Retour");
@@ -50,8 +59,10 @@ public class VueParticiper extends JFrame implements ActionListener{
 	private JComboBox<String> cbxUtilisateur = new JComboBox<String>();
 	
 	private Tableau unTableau;
-	private JTable uneTable;
+	private JTable uneTable = new JTable();
 	private JScrollPane uneScroll;
+	
+	private DefaultTableModel unTableauDefault;
 	
 	public VueParticiper() {
 		super();
@@ -94,7 +105,8 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.btFiltrer.addActionListener(this);
 		this.txtFiltrer.setBounds(409, 51 , 100, 20);
 		getContentPane().add(txtFiltrer);
-		
+		this.setVisible(true);
+		initBoutons();
 		this.uneTable.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -103,22 +115,10 @@ public class VueParticiper extends JFrame implements ActionListener{
 				
 			}
 			
+			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if (e.getClickCount() >=2) {
-					int ligne = uneTable.getSelectedRow();
-					System.out.println(ligne);
-					int idutilisateur = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
-					int id_activite = Integer.parseInt(unTableau.getValueAt(ligne, 1).toString()); 
-					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette participation ?", "Suppression", JOptionPane.YES_NO_OPTION); 
-					if (retour == 0) {
-						//suppression dans la base 
-						Main.deleteParticipation(idutilisateur, id_activite);
-						//suppression dans la table d'affichage 
-						unTableau.deleteLigne(ligne);
-						JOptionPane.showMessageDialog(null, "Suppression réussie");
-					}
-				}else if (e.getClickCount() ==1) {
+				if (e.getClickCount() ==1) {
 					int ligne = uneTable.getSelectedRow();
 					
 					//cbxUtilisateur.setSelectedItem(unTableau.getValueAt(ligne, 0).toString());
@@ -168,8 +168,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 		});
 		
 		
-		initBoutons();
-		this.setVisible(true);
+
 	}
 
 	@Override
@@ -241,10 +240,15 @@ public class VueParticiper extends JFrame implements ActionListener{
 		String entetes [] = {"IdUtilisateur", "IdActivite", 
 							"Username", "Email", "Nom", "Prenom",
 							"Tel","Adresse","Service","Activite", 
-							"Date inscription","Lieu", "Description"};
+							"Date inscription","Lieu", "Description", "Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
-		this.unTableau = new Tableau (donnees, entetes); 
-		this.uneTable = new JTable(this.unTableau); 
+		this.unTableauDefault = new DefaultTableModel(donnees, entetes);
+		this.uneTable.removeAll();
+		this.uneTable = new JTable(this.unTableauDefault); 
+		
+		
+		JTable laNouvelleTable = new JTable(this.unTableauDefault);
+		this.uneTable.setModel(laNouvelleTable.getModel());
 		
 		// rendre les colonnes + petites
 		this.uneTable.getColumnModel().getColumn(0).setMaxWidth(50);
@@ -254,6 +258,7 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.uneTable.getColumnModel().getColumn(8).setMaxWidth(70);
 		this.uneTable.getColumnModel().getColumn(10).setMaxWidth(70);
 		this.uneTable.getColumnModel().getColumn(11).setMaxWidth(80);
+		this.uneTable.getColumnModel().getColumn(12).setMaxWidth(80);
 		// la colonne appréciation doit être + large pour bien afficher le texte
 		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
 		this.uneTable.getColumnModel().getColumn(2).setMinWidth(80);
@@ -263,6 +268,40 @@ public class VueParticiper extends JFrame implements ActionListener{
 		this.uneTable.getColumnModel().getColumn(8).setMinWidth(70);
 		this.uneTable.getColumnModel().getColumn(10).setMinWidth(70);
 		this.uneTable.getColumnModel().getColumn(11).setMinWidth(80);
+		this.uneTable.getColumnModel().getColumn(12).setMaxWidth(80);
+		
+		//ajout du btDelete à la JTable
+		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
+		this.btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+		this.uneTable.getColumn("Opérations").setCellRenderer(new BoutonJTable());
+		this.uneTable.getColumn("Opérations").setCellEditor(new ButtonEditor(new JCheckBox()));
+		
+		System.out.println("c0");
+		this.btDelete.removeActionListener(this);
+		this.btDelete.addActionListener(new ActionListener() {	
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int ligne = uneTable.getSelectedRow();
+				//if (isRefreshed == false) {
+					System.out.println("ligne du tableau :" + ligne);
+					int idUtilisateur = Integer.parseInt(unTableauDefault.getValueAt(ligne, 0).toString());
+					int idActivite = Integer.parseInt(unTableauDefault.getValueAt(ligne, 1).toString()); 
+					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette participation ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+					if (retour == 0) {
+						//suppression dans la base 
+						Main.deleteParticipation(idUtilisateur, idActivite);
+						//suppression dans la table d'affichage 
+						//unTableauDefault.deleteLigne(ligne);
+						// refresh du tableau
+						remplirPanelLister("");
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
+					}
+					//isRefreshed = true;
+				//}
+			}
+		});
+		System.out.println("c00");
 		
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		Main.styleTableau(this.uneTable);
@@ -270,11 +309,35 @@ public class VueParticiper extends JFrame implements ActionListener{
 		initPanelLister();
 	}
 	
+	  class ButtonEditor extends DefaultCellEditor 
+	  {
+	    private String label;
+	    
+	    public ButtonEditor(JCheckBox checkBox)
+	    {
+	      super(checkBox);
+	    }
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column) 
+	    {
+	      label = (value == null) ? "Delete" : value.toString();
+	      btDelete.setText(label);
+	      return btDelete;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	  }
+	  
+	
 	public Object [] [] getDonnees(String mot) {
 		//recuperer les pilotes de la bdd 
-		ArrayList<Participation> lesParticipations = Main.selectAllParticipations(mot); 
+		ArrayList<Participation> lesParticipations = Main.selectAllParticipations(mot);
+		
+		int length = 14; // 7 SQL rows + 1 Opération(BtDelete)
 		//transofrmation des pilotes en matrice de donnÃ©es 
-		Object donnees [][] = new Object [lesParticipations.size()][13];
+		Object donnees [][] = new Object [lesParticipations.size()][length];
 		int i = 0 ; 
 		for (Participation uneParticipation : lesParticipations) {
 			donnees[i][0] = uneParticipation.getIdUtilisateur()+""; 
