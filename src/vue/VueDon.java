@@ -252,12 +252,18 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		
 		// rendre les colonnes id + petites
 		this.uneTable.getColumnModel().getColumn(0).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(1).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(2).setMaxWidth(70);
 		this.uneTable.getColumnModel().getColumn(4).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(5).setMaxWidth(95);
+		this.uneTable.getColumnModel().getColumn(6).setMaxWidth(130);
 		// la colonne appréciation doit être + large pour bien afficher le texte
 		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTable.getColumnModel().getColumn(1).setMinWidth(70);
 		this.uneTable.getColumnModel().getColumn(3).setMinWidth(300);
+		this.uneTable.getColumnModel().getColumn(5).setMinWidth(95);
+		this.uneTable.getColumnModel().getColumn(6).setMinWidth(130);
 
-		
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		
 		Main.styleTableau(this.uneTable);
