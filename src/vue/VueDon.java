@@ -5,6 +5,7 @@ import java.awt.Font;
 import javax.swing.JFrame;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,13 +25,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import controleur.Don;
 import controleur.Main;
+import controleur.StretchIcon;
 import controleur.Tableau;
 import controleur.Utilisateur;
+import vue.VueActivite.ButtonEditor;
 
 public class VueDon extends JFrame implements ActionListener, MouseListener{
+	
+	private JButton btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+
 	
 	private JPanel panelAjout = new JPanel();
 	private JButton btRetour = new JButton("Retour");
@@ -53,13 +62,19 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	
 	//Construction de la partie Tableau
 	private JPanel panelLister = new JPanel(); 
-	private JTable uneTable ; 
+	private JTable uneTable = new JTable(); 
 	private JScrollPane uneScroll ; 
 	private Tableau unTableau ;
 
 //	Barre de filtrage
 //	private JTextField txtMot = new JTextField ();
 //	private JButton btFiltrer = new JButton("filtrer"); 
+	
+	//private Tableau unTableau ;
+	private DefaultTableModel unTableauDefault;
+	//ajout d'une détection du refresh pour éviter de le refaire
+	private boolean isRefreshed;
+	
 	
 	public VueDon() {
 		this.setBounds(100, 100, Main.getWidth(), Main.getHeight());
@@ -103,12 +118,14 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.add(txtFiltrer);
 		
 		remplirCBXUtilisateurs();
-		remplirPanelLister("");
+		//remplirPanelLister("");
 		this.uneTable.addMouseListener(this);
 		
 		this.setVisible(true);
 		
 		initBoutons();
+		
+		isRefreshed = false; 
 	}
 	
 	public void remplirCBXUtilisateurs() {
@@ -179,6 +196,8 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			/*Object ligne[] = {unDon.getIddon(), datedon, montant, appreciation, idutilisateur, id_tresorerie+""};
 			this.unTableau.updateLigne(numLigne, ligne);*/
 			// TODO remplacer par la méthode de recréation d'un nouveau tableau
+			remplirPanelLister("");
+			
 			
 			JOptionPane.showMessageDialog(this,"Modification réussie !");
 			this.viderLesChamps();
@@ -220,6 +239,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			Don unDon = new Don(idUtilisateur, id_tresorerie, appreciation, montant, datedon, "", "");
 			Main.insertDon(unDon);
 			JOptionPane.showMessageDialog(this,"Insertion réussie !");
+			remplirPanelLister("");
 			this.viderLesChamps();
 		} else {
 			this.txtMontant.setBackground(Color.red);
@@ -247,9 +267,16 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		String entetes [] = {"ID Don", "Date don", "Montant", "Appreciation", "ID Utilisateur",
 				"Nom d'utilisateur", "Société"};
 		Object donnees [][] = this.getDonnees(mot) ;			
-		this.unTableau = new Tableau (donnees, entetes); 
-		this.uneTable = new JTable(this.unTableau); 
+		//this.unTableau = new Tableau (donnees, entetes); 
 		
+		this.unTableauDefault = new DefaultTableModel(donnees, entetes);
+		
+		//this.uneTable = new JTable(this.unTableau); 
+		this.uneTable.removeAll();
+		// deep copy the JTable
+		// https://stackoverflow.com/a/38798102
+		JTable laNouvelleTable = new JTable(this.unTableauDefault);
+		this.uneTable.setModel(laNouvelleTable.getModel());
 		// rendre les colonnes id + petites
 		this.uneTable.getColumnModel().getColumn(0).setMaxWidth(50);
 		this.uneTable.getColumnModel().getColumn(1).setMaxWidth(70);
@@ -264,20 +291,79 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		this.uneTable.getColumnModel().getColumn(5).setMinWidth(95);
 		this.uneTable.getColumnModel().getColumn(6).setMinWidth(130);
 
+		//ajout du btDelete à la JTable
+		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
+		this.btDelete = new JButton("Delete", new StretchIcon("src/images/sup.png"));
+		this.uneTable.getColumn("Opérations").setCellRenderer(new BoutonJTable());
+		this.uneTable.getColumn("Opérations").setCellEditor(new ButtonEditor(new JCheckBox()));
+		
+		System.out.println("c0");
+		this.btDelete.removeActionListener(this);
+		this.btDelete.addActionListener(new ActionListener() {	
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int ligne = uneTable.getSelectedRow();
+				//if (isRefreshed == false) {
+					System.out.println("ligne du tableau :" + ligne);
+					int iddon = Integer.parseInt(unTableauDefault.getValueAt(ligne, 0).toString()); 
+					int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce don ?", "Suppression", JOptionPane.YES_NO_OPTION); 
+					if (retour == 0) {
+						//suppression dans la base 
+						Main.deleteDon(iddon);
+						//suppression dans la table d'affichage 
+						//unTableauDefault.deleteLigne(ligne);
+						remplirPanelLister("");
+						JOptionPane.showMessageDialog(null, "Suppression réussie");
+					}
+					//isRefreshed = true;
+				//}
+			}
+		});
+		System.out.println("c00");
+		
 		this.uneScroll = new JScrollPane(this.uneTable); 
 		
 		Main.styleTableau(this.uneTable);
 		initPanelLister();
+		
+		isRefreshed = true;
 
 	}
+	
+	
+
+	  class ButtonEditor extends DefaultCellEditor 
+	  {
+	    private String label;
+	    
+	    public ButtonEditor(JCheckBox checkBox)
+	    {
+	      super(checkBox);
+	    }
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column) 
+	    {
+	      label = (value == null) ? "Delete" : value.toString();
+	      btDelete.setText(label);
+	      return btDelete;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	  }
+	
 	
 
 	
 	public Object [] [] getDonnees(String mot) {
 		//recuperer les pilotes de la bdd 
 		ArrayList<Don> lesDons = Main.selectAllDons(mot); 
+		
+		int length = 8; // 7 SQL rows + 1 Opération(BtDelete)
 		//transofrmation des pilotes en matrice de donnÃ©es 
-		Object donnees [][] = new Object [lesDons.size()][7];
+		Object donnees [][] = new Object [lesDons.size()][length];
 		int i = 0 ; 
 		for (Don unDon : lesDons) {
 			donnees[i][0] = unDon.getIddon()+""; 
@@ -305,17 +391,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() >=2) {
-			int ligne = uneTable.getSelectedRow();
-			System.out.println(ligne);
-			int iddon = Integer.parseInt(unTableau.getValueAt(ligne, 0).toString()); 
-			int retour = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce don ?", "Suppression", JOptionPane.YES_NO_OPTION); 
-			if (retour == 0) {
-				//suppression dans la base 
-				Main.deleteDon(iddon);
-				//suppression dans la table d'affichage 
-				unTableau.deleteLigne(ligne);
-				JOptionPane.showMessageDialog(null, "Suppression réussie");
-			}
+			
 		}else if (e.getClickCount() ==1) {
 			int ligne = uneTable.getSelectedRow();
 			txtDateDon.setText(unTableau.getValueAt(ligne, 1).toString());
