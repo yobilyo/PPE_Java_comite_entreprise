@@ -474,7 +474,7 @@ insert into activite values (1, "Parc Asterix", "Plailly", "lib/images/activites
 insert into utilisateur values (1, "melcfaduv", "45D4E", "melanie@cfa-insta.fr", "salarie"), 
 	(2, "julcfabarr", "885DE", "julien@cfa-insta.fr", "salarie"), 
 	(3, "gercfadepa", "8555ed", "gerard@cfa-insta.fr", "admin"),
-	(4, "fracfahami", "445d4d", "Franck@cfa-insta.fr", "admin"),
+	(4, "fracfahami", "445d4d", "franck@cfa-insta.fr", "admin"),
 	(5, "damcfadeni", "23daeez", "damiens@cfa-insta.fr", "salarie"),
 	(6, "cedrairfra", "c85d4ee", "cedric@airfrance.fr", "sponsor"),
 	(7, "jesslysdor", "jess744", "jessica@lysdor.com", "sponsor"),
