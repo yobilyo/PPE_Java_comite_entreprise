@@ -612,10 +612,12 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		// rendre les colonnes + petites
 		this.uneTableSalarie.getColumnModel().getColumn(0).setMaxWidth(50);
 		this.uneTableSalarie.getColumnModel().getColumn(4).setMaxWidth(50);
+		this.uneTableSalarie.getColumnModel().getColumn(7).setMaxWidth(75);
 		this.uneTableSalarie.getColumnModel().getColumn(9).setMaxWidth(40);
 		this.uneTableSalarie.getColumnModel().getColumn(11).setMaxWidth(50);
 		// la colonne appréciation doit être + large pour bien afficher le texte
 		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTableSalarie.getColumnModel().getColumn(7).setMinWidth(75);
 		this.uneTableSalarie.getColumnModel().getColumn(3).setMinWidth(150);
 		
 		this.uneScrollSalarie = new JScrollPane(this.uneTableSalarie); 
@@ -701,9 +703,22 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.unTableauSponsor = new Tableau (donnees, entetes); 
 		this.uneTableSponsor = new JTable(this.unTableauSponsor); 
 		
+		// rendre les colonnes + petites
+		this.uneTableSponsor.getColumnModel().getColumn(0).setMaxWidth(50);
+		this.uneTableSponsor.getColumnModel().getColumn(4).setMaxWidth(50);
+		this.uneTableSponsor.getColumnModel().getColumn(8).setMaxWidth(75);
+		// la colonne appréciation doit être + large pour bien afficher le texte
+		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTableSponsor.getColumnModel().getColumn(3).setMinWidth(180);
+		this.uneTableSponsor.getColumnModel().getColumn(5).setMinWidth(150);
+		this.uneTableSponsor.getColumnModel().getColumn(8).setMinWidth(75);
+		this.uneTableSponsor.getColumnModel().getColumn(9).setMinWidth(150);
+		
 		this.uneScrollSponsor = new JScrollPane(this.uneTableSponsor); 
 		//this.panelListerSponsor.setBounds(350, 80, 530, 300);
 		this.uneScrollSponsor.setBounds(20, 20, this.panelListerSponsor.getWidth() - 40, this.panelListerSponsor.getHeight() - 40);
+		
+		Main.styleTableau(this.uneTableSponsor);
 		this.panelListerSponsor.add(this.uneScrollSponsor);
 	}
 	
