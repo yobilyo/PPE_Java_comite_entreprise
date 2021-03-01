@@ -325,8 +325,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		
 		this.panelLister.removeAll();
 		String entetes [] = {"IdActivite", "Nom", "Lieu", "Image (URL)", "Lien", "Budget",
-		"Description", "Date de Début", "Date de Fin", "Prix", "Nb de Personnes",
-		"Id Trésorerie", "Opérations"};
+		"Description", "Date de Début", "Date de Fin", "Prix", "Nb de Personnes", "Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		//this.unTableau = new Tableau (donnees, entetes); 
 		this.unTableauDefault = new DefaultTableModel(donnees, entetes);
@@ -342,6 +341,20 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		// https://stackoverflow.com/a/38798102
 		JTable laNouvelleTable = new JTable(this.unTableauDefault);
 		this.uneTable.setModel(laNouvelleTable.getModel());
+		
+		// rendre les colonnes + petites
+		this.uneTable.getColumnModel().getColumn(0).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(7).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(8).setMaxWidth(70);
+		this.uneTable.getColumnModel().getColumn(10).setMaxWidth(50);
+		this.uneTable.getColumnModel().getColumn(11).setMaxWidth(80);
+		// la colonne appréciation doit être + large pour bien afficher le texte
+		//https://stackoverflow.com/questions/953972/java-jtable-setting-column-width
+		this.uneTable.getColumnModel().getColumn(1).setMinWidth(150);
+		this.uneTable.getColumnModel().getColumn(2).setMinWidth(120);
+		this.uneTable.getColumnModel().getColumn(7).setMinWidth(70);
+		this.uneTable.getColumnModel().getColumn(8).setMinWidth(70);
+		this.uneTable.getColumnModel().getColumn(11).setMinWidth(80);
 		
 		//ajout du btDelete à la JTable
 		// on instancie un nouveau btDelete pour détruire l'ActionListener précédent
@@ -414,7 +427,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		ArrayList<Activite> lesActivites = Main.selectAllActivites(mot); 
 		//transofrmation des pilotes en matrice de donnÃ©es 
 		
-		int length = 13; // 12 SQL rows + 1 Opération(BtDelete)
+		int length = 12; // 11 SQL rows + 1 Opération(BtDelete)
 		
 		Object donnees [][] = new Object [lesActivites.size()][length];
 		int i = 0 ; 
@@ -430,7 +443,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 			donnees[i][8] = uneActivite.getDate_fin();
 			donnees[i][9] = uneActivite.getPrix(); 
 			donnees[i][10] = uneActivite.getNb_personnes();
-			donnees[i][11] = uneActivite.getIdTresorerie();
+			//donnees[i][11] = uneActivite.getIdTresorerie();
 
 			i++; 
 		}
