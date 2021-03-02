@@ -118,11 +118,12 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		
 		//construction du panel Ajout Sponsor
 		this.remplirPanelAjoutSponsor();
+		panelAjoutSponsor.setForeground(Color.BLACK);
 		getContentPane().add(panelAjoutSponsor);
 		
 		// rendre visible les panels pour mieux comprendre
-		this.panelAjoutSponsor.setBorder(LineBorder.createBlackLineBorder());
-		this.panelAjoutSalarie.setBorder(new LineBorder(new Color(0, 0, 0), 0));
+		this.panelAjoutSponsor.setBorder(null);
+		this.panelAjoutSalarie.setBorder(null);
 		
 		this.btAnnuler.setBounds(50, 360, 140, 25);
 		getContentPane().add(this.btAnnuler);
@@ -320,7 +321,6 @@ public class VueUtilisateur extends JFrame implements ActionListener {
 		this.panelAjoutSponsor.add(txtLienSpons);
 
 		this.remplircbxDroitsSpons();
-		this.panelAjoutSponsor.setVisible(false);
 	}
 	
 	public void remplircbxDroitsSalarie()
