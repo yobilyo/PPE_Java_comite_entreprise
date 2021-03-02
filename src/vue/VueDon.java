@@ -63,14 +63,13 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 	// puis on va juste refresh le model à chaque fois
 	private JTable uneTable = new JTable(); 
 	private JScrollPane uneScroll ; 
-	private Tableau unTableau ;
+	//private Tableau unTableau ;
+	private DefaultTableModel unTableauDefault;
 
 	//Barre de filtrage
 	//private JTextField txtMot = new JTextField ();
 	//private JButton btFiltrer = new JButton("filtrer"); 
 	
-	//private Tableau unTableau ;
-	private DefaultTableModel unTableauDefault;
 	//ajout d'une détection du refresh pour éviter de le refaire
 	//private boolean isRefreshed;
 	
@@ -174,7 +173,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		String appreciation = this.txtAppreciation.getText();
 		// récupération de l'ancien idUtilisateur
 		int ligne = uneTable.getSelectedRow();
-		int idUtilisateurOld = Integer.parseInt(unTableau.getValueAt(ligne, 4).toString()); 
+		int idUtilisateurOld = Integer.parseInt(unTableauDefault.getValueAt(ligne, 4).toString()); 
 		int id_tresorerie = 1;
 		
 		try {
@@ -186,7 +185,7 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		}
 		if (montant >=0 ) {
 			int numLigne = uneTable.getSelectedRow(); 
-			int iddon = Integer.parseInt(unTableau.getValueAt(numLigne, 0).toString ());
+			int iddon = Integer.parseInt(unTableauDefault.getValueAt(numLigne, 0).toString ());
 			Don unDon = new Don(iddon , idUtilisateurOld, id_tresorerie, appreciation, montant, datedon, "", "");
 			//update dans la base de donnÃ©es 
 			Main.updateDon(unDon);
@@ -263,7 +262,6 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 				"Nom d'utilisateur", "Société", "Opérations"};
 		Object donnees [][] = this.getDonnees(mot) ;			
 		//this.unTableau = new Tableau (donnees, entetes); 
-		
 		this.unTableauDefault = new DefaultTableModel(donnees, entetes);
 		
 		//this.uneTable = new JTable(this.unTableau); 
@@ -392,9 +390,9 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 		//}else if (e.getClickCount() ==1) {
 		if (e.getClickCount() ==1) {
 			int ligne = uneTable.getSelectedRow();
-			txtDateDon.setText(unTableau.getValueAt(ligne, 1).toString());
-			txtMontant.setText(unTableau.getValueAt(ligne, 2).toString());
-			txtAppreciation.setText(unTableau.getValueAt(ligne, 3).toString());
+			txtDateDon.setText(unTableauDefault.getValueAt(ligne, 1).toString());
+			txtMontant.setText(unTableauDefault.getValueAt(ligne, 2).toString());
+			txtAppreciation.setText(unTableauDefault.getValueAt(ligne, 3).toString());
 			// idutilisateur est une clé étrangère dans la table don, elle ne
 			// peut pas et ne doit pas être modifiée
 			cbxUtilisateur.setEnabled(false);
@@ -403,8 +401,8 @@ public class VueDon extends JFrame implements ActionListener, MouseListener{
 			String username = uneTable.getValueAt(ligne, 5).toString();
 			String cbxTextUtilisateur = Main.genererCbxTextFromId(idUtilisateur, username);
 			cbxUtilisateur.setSelectedItem(cbxTextUtilisateur);
-			//txtidutilisateur.setText(unTableau.getValueAt(ligne, 4).toString());
-			//txtid_tresorerie.setText(unTableau.getValueAt(ligne, 5).toString());
+			//txtidutilisateur.setText(unTableauDefault.getValueAt(ligne, 4).toString());
+			//txtid_tresorerie.setText(unTableauDefault.getValueAt(ligne, 5).toString());
 			btEnregistrer.setText("Modifier");
 		}		
 	}

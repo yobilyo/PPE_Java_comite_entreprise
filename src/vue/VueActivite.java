@@ -93,7 +93,7 @@ public class VueActivite extends JFrame implements ActionListener, MouseListener
 		//construction du panel Ajout
 		this.panelAjout.setBounds(40, 100, 300, 250);
 		this.panelAjout.setBackground(new Color (206,214, 224  ));
-		this.panelAjout.setLayout(new GridLayout(11, 2, 5, 5));
+		this.panelAjout.setLayout(new GridLayout(11, 2));
 		this.panelAjout.add(new JLabel("Nom activité :")); 
 		this.panelAjout.add(this.txtNomAct);
 		this.panelAjout.add(new JLabel("Lieu de l'activité :")); 
