@@ -132,6 +132,49 @@ public class Modele
 		}
 		return lesActivites ; 
 	}
+	
+	public static ArrayList<Activite> selectAllActivitesLast (String mot){
+		
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from activite order by date_debut desc limit 5;" ;
+		}else {
+			requete ="select * from activite where nom like '%"+mot+"%'" + " or prix like '%"+mot+"%'"
+					+ " or lieu like '%"+mot+"%' or budget like '%" + mot + 
+					 "%' or description like '%"+mot+"%' or nb_personnes like '%"+mot+"%' ; " ;
+		}
+		ArrayList<Activite> lesActivites = new ArrayList<Activite>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Activite uneActivite = new Activite (
+					desRes.getInt("id_activite"),
+					desRes.getString("nom"), 
+					desRes.getString("lieu"),
+					desRes.getString("image_url"),
+					desRes.getString("lien"),
+					desRes.getFloat("budget"), 
+					desRes.getString("description"),
+					desRes.getDate("date_debut"),
+					desRes.getDate("date_fin"),
+					desRes.getFloat("prix"),
+					desRes.getInt("nb_personnes"),
+					desRes.getInt("id_tresorerie")
+				);
+				lesActivites.add(uneActivite);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
+		}
+		return lesActivites ; 
+	}
 
 	public static void deleteActivite (int idActivite)
 	{
@@ -180,6 +223,46 @@ public class Modele
 		String requete ; 
 		if (mot.equals("")) {
 			requete ="select * from utilisateur_sponsor_don ;" ;
+		}else {
+			requete ="select * from utilisateur_sponsor_don where appreciation like '%"+mot+"%'" + " or montant like '%"+mot+"%'"
+					+ " or iddon like '%"+mot+"%' or datedon like '%" + mot + "%' ; " ;
+		}
+		ArrayList<Don> lesDons = new ArrayList<Don>();  
+		
+		try {
+			uneBdd.seConnecter();
+			Statement unStat = uneBdd.getMaConnexion().createStatement(); 
+			ResultSet desRes = unStat.executeQuery(requete);
+			while (desRes.next()) {
+				Don unDon = new Don (
+						desRes.getInt("iddon"), 
+						desRes.getInt("idutilisateur"), 
+						desRes.getInt("id_tresorerie"), 
+						desRes.getString("appreciation"), 
+						desRes.getFloat("montant"), 
+						desRes.getString("datedon"),
+						desRes.getString("username"),
+						desRes.getString("societe")
+						);
+				lesDons.add(unDon);
+			}
+			unStat.close();
+			uneBdd.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'exécution de la requete : " + requete
+			+ "\n" + exp.getMessage());
+		}
+		return lesDons ; 
+	}
+	
+	public static ArrayList<Don> selectAllDonsLast (String mot){
+		// on prend la view sql utilisateur_sponsor_don pour afficher l'username et la société
+		// du sponsor dans le panelLister dans VueDon.java
+		
+		String requete ; 
+		if (mot.equals("")) {
+			requete ="select * from utilisateur_sponsor_don order by datedon desc limit 5;" ;
 		}else {
 			requete ="select * from utilisateur_sponsor_don where appreciation like '%"+mot+"%'" + " or montant like '%"+mot+"%'"
 					+ " or iddon like '%"+mot+"%' or datedon like '%" + mot + "%' ; " ;

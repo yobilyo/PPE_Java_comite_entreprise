@@ -14,6 +14,7 @@ import modele.Modele;
 import vue.VueConnexion;
 import vue.VueDon;
 import vue.VueParticiper;
+import vue.VueTBord;
 import vue.VueTresorerie;
 import vue.VueUtilisateur;
 import vue.VueActivite;
@@ -35,6 +36,7 @@ public class Main {
 	public static VueDon uneVueDon;
 	public static VueUtilisateur uneVueUtilisateur;
 	public static VueTresorerie uneVueTresorerie;
+	public static VueTBord uneVueTBord;
 	
 	public static void main(String[] args) {
 		//lancement plus propre
@@ -145,6 +147,10 @@ public class Main {
 		uneVueTresorerie = new VueTresorerie();
 	}
 	
+	public static void instancierVueTBord() {
+		uneVueTBord = new VueTBord();
+	}
+	
 	public static void instancierVueUtilisateur() {
 		uneVueUtilisateur = new VueUtilisateur();
 	}
@@ -159,6 +165,10 @@ public class Main {
 	}
 	public static ArrayList<Activite> selectAllActivites(String mot) {
 		return Modele.selectAllActivites(mot);
+	}
+	
+	public static ArrayList<Activite> selectAllActivitesLast(String mot) {
+		return Modele.selectAllActivitesLast(mot);
 	}
 
 	public static void updateActivite(Activite uneActivite) {
@@ -193,6 +203,9 @@ public class Main {
 	}
 	public static ArrayList<Don> selectAllDons(String mot) {
 		return Modele.selectAllDons(mot);
+	}
+	public static ArrayList<Don> selectAllDonsLast(String mot) {
+		return Modele.selectAllDonsLast(mot);
 	}
 	public static void updateDon(Don unDon) {
 		Modele.updateDon(unDon);
