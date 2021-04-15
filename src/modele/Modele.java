@@ -349,6 +349,13 @@ public class Modele
 	
 	
 	public static void insertUtilisateurSalarie(Salarie unSalarie) {
+		// select * from utilisateur where email = unSalarie.getEmail();
+		// if (result = null) {
+		//
+		// } else {
+		//     return
+		// }
+		
 		// Utilisateur
 		String requeteUtilisateur = "insert into utilisateur values (null, '"
 		+ unSalarie.getUsername() + "', '" + unSalarie.getPassword() +"', '"
@@ -607,6 +614,8 @@ public class Modele
 	}
 
 	public static void insertParticipation(Participation uneParticipation) {
+		// si l'utilisateur participe déjà une activité cette date là (à la même date que la date de la participation, alors on refuse l'insertion)
+		
 		String requete = "insert into participer values ('" + uneParticipation.getIdUtilisateur()
 		+ "', '" + uneParticipation.getIdActivite() + "', '" + uneParticipation.getDate_inscription()
 		+ "' "
